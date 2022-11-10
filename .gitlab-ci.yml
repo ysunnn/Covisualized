@@ -1,0 +1,40 @@
+image: node:18
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+stages: # List of stages for jobs, and their order of execution
+  - build
+  # - test
+  - deploy
+
+build:
+  stage: build
+  artifacts:
+    expire_in: 1 hour
+    untracked: true
+  script:
+    - mkdir dist
+    - cp src/index.html dist/index.html
+    # - npm ci --cache .npm --prefer-offline
+    # - PUBLIC_URL=/team-32/ npm run build
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+
+pages:
+  stage: deploy
+  environment: production
+  script:
+    - rm -rf public
+    - mv dist public
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
