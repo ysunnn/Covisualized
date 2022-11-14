@@ -1,24 +1,25 @@
 image: node:18
 
-workflow:
-  rules:
-    - if: $CI_COMMIT_BRANCH
-
 stages: # List of stages for jobs, and their order of execution
   - build
   # - test
   - deploy
 
+# Build for review or production (pages):
 build:
   stage: build
+  script:
+    - npm ci --cache .npm --prefer-offline
+    - |- # depending on the target environment, we need to change build base path
+      if [[ $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH ]]; then
+          npm run build -- --base=/$CI_PROJECT_NAME/
+      else
+          npm run build -- --base=/%%%DEPLOY_PATH%%%/
+      fi
   artifacts:
     expire_in: 1 hour
-    untracked: true
-  script:
-    - mkdir dist
-    - cp src/index.html dist/index.html
-    # - npm ci --cache .npm --prefer-offline
-    # - PUBLIC_URL=/team-32/ npm run build
+    paths:
+      - dist
   cache:
     key:
       files:
@@ -26,15 +27,36 @@ build:
     paths:
       - .npm/
 
-pages:
+# Deploy to a review environment if we're not on the default branch:
+deploy:review:
   stage: deploy
-  environment: production
   script:
-    - rm -rf public
-    - mv dist public
+    # Fill in the actual deploy path here, as it contains the job ID of this job (which is unknown at the build stage).
+    - grep -rl '%%%DEPLOY_PATH%%%' dist | xargs sed -i "s/%%%DEPLOY_PATH%%%/-\/$CI_PROJECT_NAME\/-\/jobs\/$CI_JOB_ID\/artifacts/g"
+    - mv dist/* . # unpack dist from /dist/ to /
+    - rm -d dist
+  artifacts:
+    expire_in: 1 week
+    untracked: true
+    paths:
+      - index.html
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: $CI_SERVER_PROTOCOL://$CI_PROJECT_ROOT_NAMESPACE.$CI_PAGES_DOMAIN/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/index.html
+  rules:
+    - if: $CI_COMMIT_BRANCH && $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+
+# Deploy straight to pages if on the default branch:
+pages: # special job name to target GitLab pages
+  stage: deploy
+  script:
+    - mv dist public # special folder name where GitLab pages serves content from
   artifacts:
     expire_in: 1 week
     paths:
       - public
+  environment:
+    name: production
+    url: $CI_PAGES_URL
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
