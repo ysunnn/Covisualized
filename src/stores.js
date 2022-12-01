@@ -1,25 +1,21 @@
 import { readable, writable, derived } from "svelte/store";
 
 // TODO: get more extensive data set (with time), remove debug features
-export let debug_setData;
-export const data = readable({
-	bw: { revenue: 54 },
-	by: { revenue: 32 },
-	be: { revenue: 74 },
-	bb: { revenue: 102 },
-	hb: { revenue: 53 },
-	hh: { revenue: 26 },
-	he: { revenue: 73 },
-	mv: { revenue: 84 },
-	ni: { revenue: 36 },
-	nw: { revenue: 78 },
-	rp: { revenue: 55 },
-	sl: { revenue: 27 },
-	sn: { revenue: 84 },
-	st: { revenue: 52 },
-	sh: { revenue: 63 },
-	th: { revenue: 95 },
-}, (set) => {
+const generateExampleData = () => Object.fromEntries([
+	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
+	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
+].map(id => [id, {
+	revenue: Math.ceil(Math.random() * 100),
+	regulations: Object.fromEntries([
+		"leavehome", "dist", "msk", "shppng", "hcut", "ess_shps",
+		"zoo", "demo", "school", "church", "onefriend", "morefriends",
+		"plygrnd", "daycare", "trvl", "gastr",
+	].map(id => [id, Math.floor(Math.random() * 3)])),
+}]));
+
+export let debug_setData, debug_randomizeData;
+export const data = readable(generateExampleData(), (set) => {
+	debug_randomizeData = () => set(generateExampleData());
 	debug_setData = (data) => set(data);
 });
 
