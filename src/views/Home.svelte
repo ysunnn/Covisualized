@@ -4,13 +4,26 @@
 
 	import { filter } from "../stores.js";
 	import { getStateName } from "../util.js";
+
+	let projectionStyle = "geo";
+	let regulationsStyle = 0;
 </script>
 
 <main>
 	<div class="variables" />
 	<div class="map">
 		Selected state: <b>{getStateName($filter.state) || "None"}</b>
-		<Map />
+		<select bind:value={projectionStyle}>
+			{#each ["geo", "optimized"] as style}
+				<option value={style}>{style}</option>
+			{/each}
+		</select>
+		<select bind:value={regulationsStyle}>
+			{#each [0, 1, 2] as i}
+				<option value={i}>{i}</option>
+			{/each}
+		</select>
+		<Map {projectionStyle} {regulationsStyle} />
 	</div>
 	<div class="timeline" />
 	<div class="details">
