@@ -1,6 +1,8 @@
 <script>
 	import Map from "../lib/Map.svelte";
+	import timelineData from "../assets/TimelineSimData.js";
 	import DebugDataInput from "../lib/DebugDataInput.svelte";
+	import Timeline from "../lib/Timeline.svelte";
 
 	import { filter } from "../stores.js";
 	import { getStateName } from "../util.js";
@@ -12,7 +14,9 @@
 		Selected state: <b>{getStateName($filter.state) || "None"}</b>
 		<Map />
 	</div>
-	<div class="timeline" />
+	<div class="timeline">
+		<Timeline chartProps={{ chartWidth: 1080, chartHeight: 720, data: timelineData, xVar: "Date", yVar: "Revenue"}}/> <!-- chartProps should be dynamic, TODO -->
+	</div>
 	<div class="details">
 		<DebugDataInput />
 	</div>
@@ -28,11 +32,7 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 1em;
 	}
-
-	.map {
-		grid-area: map;
-	}
-
+	.map { grid-area: map; }
 	.variables { grid-area: variables; }
 	.timeline { grid-area: timeline; }
 	.details { grid-area: details; }
