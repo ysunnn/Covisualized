@@ -1,5 +1,6 @@
 <script>
 	import Map from "../lib/Map.svelte";
+	import LineChart from "../lib/LineChart.svelte";
 	import DebugDataInput from "../lib/DebugDataInput.svelte";
 
 	import { filter } from "../stores.js";
@@ -25,7 +26,9 @@
 		</select>
 		<Map {projectionStyle} {regulationsStyle} />
 	</div>
-	<div class="timeline" />
+	<div class="timeline">
+		<LineChart />
+	</div>
 	<div class="details">
 		<DebugDataInput />
 	</div>
