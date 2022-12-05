@@ -25,6 +25,9 @@ module.exports = {
 		"semi": ["warn", "always"],
 		"eqeqeq": ["error", "always"],
 		"no-var": "error",
+		"no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+
+		"svelte/valid-compile": ["error", { "ignoreWarnings": true }],
 	},
 	"overrides": [
 		{
