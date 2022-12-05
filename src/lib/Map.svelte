@@ -1,50 +1,150 @@
 <script>
+	// This component currently would not work reliably with multiple instances, due to the SVG ids
+	// not being unique anymore.
+
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
-	import { filter, valuesPerState } from "../stores.js";
+	import { states, valuesPerState, filter } from "../stores.js";
+
+	export let projectionStyle = "geo";
+	export let regulationsStyle = 0;
 
 	const onSelectState = (id) => {
-		$filter.state = id;
+		if ($filter.state === id) $filter.state = null;
+		else $filter.state = id;
 	};
 </script>
 
 <svg viewBox="0 0 1000 1360" fill="none">
-	{#each $valuesPerState.states as { id, value }}
-		<path {id} d={paths[id]} vector-effect="non-scaling-stroke" />
+	<defs>
+		{#each states as state}
+			<!-- Base vector path per state: -->
+			<path id="map-state-path-{state}" d={paths[projectionStyle][state]} vector-effect="non-scaling-stroke" />
+
+			<!-- Clip can be used to cut off anything OUTSIDE the state. Used for inside borders. -->
+			<clipPath id="map-state-clip-{state}">
+				<use href="#map-state-path-{state}" />
+			</clipPath>
+
+			<!-- Mask can be used to cut off anything INSIDE the state. Used for outside borders. -->
+			<mask id="map-state-mask-{state}">
+				<rect width="100%" height="100%" fill="white" />
+				<use href="#map-state-path-{state}" fill="black" />
+			</mask>
+		{/each}
+	</defs>
+
+
+	{#each $valuesPerState.states as { id: state, value, regulationsTotal }}
 		<use
 			class="state"
-			href="#{id}"
-			style="--fraction: {value / $valuesPerState.max}"
+			href="#map-state-path-{state}"
+			style="--fraction: {value / $valuesPerState.max.value}"
 			tabindex="0"
-			on:click={() => onSelectState(id)}
-			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(id)}
+			on:click={() => onSelectState(state)}
+			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(state)}
 		/>
+
+		{#if regulationsStyle === 0}
+			<g clip-path="url(#map-state-clip-{state})">
+				{#each { length: Math.floor(regulationsTotal / $valuesPerState.max.regulationsTotal * 4) } as _, i }
+					<use class="regulation-border" href="#map-state-path-{state}" style="--index: {i}" />
+				{/each}
+			</g>
+		{:else if regulationsStyle === 1}
+			<pattern
+				id="map-state-regulations-fill={state}"
+				class="regulation-circles"
+				width="16" height="16"
+				patternUnits="userSpaceOnUse"
+			>
+
+				<circle cx="8" cy="8" r={regulationsTotal / $valuesPerState.max.regulationsTotal * 8} />
+			</pattern>
+			<use class="regulation-circles" href="#map-state-path-{state}" fill="url(#map-state-regulations-fill={state})" />
+		{:else if regulationsStyle === 2}
+			<pattern
+				id="map-state-regulations-tilt={state}"
+				class="regulation-tilt"
+				width="32" height="32"
+				patternTransform="rotate({regulationsTotal / $valuesPerState.max.regulationsTotal * 45})"
+				patternUnits="userSpaceOnUse"
+			>
+
+				<line
+					y1="16"
+					y2="16"
+					x1={16 - regulationsTotal / $valuesPerState.max.regulationsTotal * 16}
+					x2={16 + regulationsTotal / $valuesPerState.max.regulationsTotal * 16}
+					stroke-width={1 + regulationsTotal / $valuesPerState.max.regulationsTotal * 3}
+				/>
+			</pattern>
+			<use class="regulation-tilt" href="#map-state-path-{state}" fill="url(#map-state-regulations-tilt={state})" />
+		{/if}
 	{/each}
+
+	<!-- Outlines are extra, so we can hide the inside part with a mask (otherwise would remove the fill) -->
+	<g>
+		{#each states as state}
+			<use
+				class="state-outline"
+				href="#map-state-path-{state}"
+				mask={$filter.state && `url(#map-state-mask-${$filter.state})`}
+			/>
+		{/each}
+	</g>
+
 	{#if $filter.state}
-		<defs>
-			<mask id="mask-selected">
-				<rect width="100%" height="100%" fill="white" />
-				<use href={`#${$filter.state}`} fill="black" />
-			</mask>
-		</defs>
-		<use id="selected" href={`#${$filter.state}`} mask="url(#mask-selected)" />
+		<use class="selected" href="#map-state-path-{$filter.state}" mask="url(#map-state-mask-{$filter.state})" />
 	{/if}
 </svg>
 
 <style>
 	svg {
-		--stroke-width: 3px;
-
 		display: block;
+		stroke-linejoin: round;
+		--stroke-width-outline: 1px;
+		--stroke-width-selected: 2px;
+		--stroke-width-regulation: 4px;
 	}
 
 	svg use.state {
 		fill: hsla(var(--col-primary-hsl), var(--fraction));
+
+		transition: fill 300ms ease;
+	}
+	svg use.state-outline {
+		stroke: white;
+		stroke-width: calc(var(--stroke-width-outline) / 2);
 	}
 
-	svg use#selected {
-		pointer-events: none; /* prevent blocking of clicks on bordering states */
+	svg use.regulation-border {
+		pointer-events: none;
+		stroke: #c92d34;
+		opacity: 0.5;
+		/* multiply by 2 because we clip off outside half of the stroke */
+		stroke-width: calc(var(--stroke-width-regulation) * 2 * (var(--index) + 1) + var(--stroke-width-outline) / 2);
+	}
+
+	svg pattern.regulation-circles {
+		fill: #c92d34;
+	}
+	svg use.regulation-circles {
+		pointer-events: none;
+	}
+
+	svg pattern.regulation-tilt {
+		stroke: #c92d34;
+		stroke-width: 2px;
+	}
+	svg use.regulation-tilt {
+		pointer-events: none;
+	}
+
+	svg use.selected {
+		pointer-events: none;
 
 		stroke: gold;
-		stroke-width: calc(var(--stroke-width) * 2);
+		/* multiply by 2 because we mask off inside half of the stroke */
+		stroke-width: calc(var(--stroke-width-selected) * 2);
 	}
 </style>
