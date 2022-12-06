@@ -6,15 +6,18 @@
 		extent,
 		scaleTime,
 		timeMonths,
+		bisector,
 	} from "d3";
 	import data from "../assets/data.js";
+	import TooltipPoint from "./TooltipPoint.svelte";
+	import TooltipLine from "./TooltipLine.svelte";
 
 	let el;
 
 	const monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 	const width = 1080;
-	const height = 135;
+	const height = 130;
 	const margin = {top: 10, bottom: 10, left: 40, right: 10};
 
 	// scales
@@ -49,6 +52,31 @@
 	// d's for axis paths
 	let xPath = `M${margin.left + .5},6V0H${width - margin.right + 1}V6`;
 	let yPath = `M-6,${height + .5}H0.5V0.5H-6`;
+
+	// d3's bisector function
+	let bisect = bisector((d) => d.date).right;
+
+	let m = { x: 0, y: 0 };
+	let point = data[0];
+
+	function handleMousemove(event) {
+		m.x = event.offsetX;
+		m.y = event.offsetY;
+
+		// returns point to right of our current mouse position
+		let i = bisect(data, xScale.invert(m.x));
+
+		if (i < data.length) {
+			point = data[i]; // update point
+		}
+	}
+
+	// coords for tooltip line
+	let tooltipLine = {};
+	$: tooltipLine.y1 = 0;
+	$: tooltipLine.y2 = height - margin.bottom;
+	$: tooltipLine.x1 = xScale(point.date);
+	$: tooltipLine.x2 = xScale(point.date);
 </script>
 
 <style>
@@ -61,41 +89,47 @@
 	}
 </style>
 
-<svg bind:this={el} transform="translate({margin.left}, {margin.top})">
-	<g>
-		<!-- line -->
-		<path
-			d="{path(data)}"
-			fill="none"
-			stroke="blue"
-		/>
-	</g>
+<div bind:this={el} transform="translate({margin.left}, {margin.top})">
+	<svg on:mousemove={handleMousemove}>
+		<g>
+			<!-- line -->
+			<path
+				d="{path(data)}"
+				fill="none"
+				stroke="blue"
+			/>
+		</g>
 
-	<!-- y axis -->
-	<g transform="translate({margin.left}, 0)">
-		<path stroke="currentColor" d="{yPath}" fill="none" />
+		<!-- y axis -->
+		<g transform="translate({margin.left}, 0)">
+			<path stroke="currentColor" d="{yPath}" fill="none" />
 
-		{#each yTicks as y}
-			<g class="tick" opacity="1" transform="translate(0,{yScale(y)})">
-				<line stroke="currentColor" x2="-5" />
-				<text dy="0.32em" fill="currentColor" x="-{margin.left}">
-					{y}
-				</text>
-			</g>
-		{/each}
-	</g>
+			{#each yTicks as y}
+				<g class="tick" opacity="1" transform="translate(0,{yScale(y)})">
+					<line stroke="currentColor" x2="-5" />
+					<text dy="0.32em" fill="currentColor" x="-{margin.left}">
+						{y}
+					</text>
+				</g>
+			{/each}
+		</g>
 
-	<!-- x axis -->
-	<g transform="translate(0, {height})">
-		<path stroke="currentColor" d="{xPath}" fill="none" />
+		<!-- x axis -->
+		<g transform="translate(0, {height})">
+			<path stroke="currentColor" d="{xPath}" fill="none" />
 
-		{#each xTicks as x}
-			<g class="tick" opacity="1" transform="translate({xScale(x)},0)">
-				<line stroke="currentColor" y2="6" />
-				<text fill="currentColor" y="9" dy="0.71em" x="-{margin.left}">
-					{xLabel(x)}
-				</text>
-			</g>
-		{/each}
-	</g>
-</svg>
+			{#each xTicks as x}
+				<g class="tick" opacity="1" transform="translate({xScale(x)},0)">
+					<line stroke="currentColor" y2="6" />
+					<text fill="currentColor" y="9" dy="0.71em" x="-{margin.left}">
+						{xLabel(x)}
+					</text>
+				</g>
+			{/each}
+		</g>
+
+		<!-- Tooltip -->
+		<TooltipLine {tooltipLine} />
+		<TooltipPoint x={xScale(point.date)} y={yScale(point.revenue)} />
+	</svg>
+</div>
