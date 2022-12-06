@@ -1,5 +1,6 @@
 <script>
 	import {
+		timeFormat,
 		line,
 		curveLinear,
 		scaleLinear,
@@ -7,18 +8,31 @@
 		scaleTime,
 		timeMonths,
 		bisector,
+		format,
+		formatLocale,
 	} from "d3";
 	import data from "../assets/data.js";
 	import TooltipPoint from "./TooltipPoint.svelte";
 	import TooltipLine from "./TooltipLine.svelte";
+	import Tooltip from "./Tooltip.svelte";
 
 	let el;
 
 	const monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+	// format for tooltip
+	const localFormat = formatLocale({
+		"decimal": ".",
+		"thousands": ",",
+		"grouping": [3],
+		"currency": ["", "€"],
+	});
+	let euro = localFormat.format("$,.2f");
+	let formatTime = timeFormat("%b %d %Y");
+
 	const width = 1080;
 	const height = 130;
-	const margin = {top: 10, bottom: 10, left: 40, right: 10};
+	const margin = {top: 10, bottom: 10, left: 30, right: 10};
 
 	// scales
 	let extentX = extent(data, (d) => d.date);
@@ -90,6 +104,7 @@
 </style>
 
 <div bind:this={el} transform="translate({margin.left}, {margin.top})">
+	<Tooltip date={formatTime(point.date)} value={euro(point.revenue)} left={xScale(point.date)} />
 	<svg on:mousemove={handleMousemove}>
 		<g>
 			<!-- line -->
@@ -108,7 +123,7 @@
 				<g class="tick" opacity="1" transform="translate(0,{yScale(y)})">
 					<line stroke="currentColor" x2="-5" />
 					<text dy="0.32em" fill="currentColor" x="-{margin.left}">
-						{y}
+						{format("~s")(y)}
 					</text>
 				</g>
 			{/each}
