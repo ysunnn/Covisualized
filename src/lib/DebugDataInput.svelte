@@ -8,13 +8,12 @@
 </button>
 <textarea
 	value={JSON.stringify($data, undefined, 2)}
-	on:input={({ target: { value } }) => debug_setData(JSON.parse(value))}
-/>
+	on:input={({ target: { value } }) => debug_setData(JSON.parse(value))}></textarea>
 
 <style>
 	textarea {
 		width: 100%;
-		height: 100%;
+		height: 70%;
 		resize: none;
 	}
 </style>
