@@ -1,13 +1,13 @@
 <script>
 	import {
 		line,
-		curveStep,
+		curveLinear,
 		scaleLinear,
-		timeParse,
 		extent,
 		scaleTime,
+		timeMonths,
 	} from "d3";
-	import data from '../assets/data.js';
+	import data from "../assets/data.js";
 
 	let el;
 
@@ -16,16 +16,6 @@
 	const width = 1080;
 	const height = 135;
 	const margin = {top: 10, bottom: 10, left: 40, right: 10};
-	console.log(data);
-	data.forEach((d) => {
-		d.date = timeParse("%Y%m%d")(d.date);
-		console.log(d);
-		d.date = new Date(d.date); // x
-		console.log(d);
-		d.revenue = d["revenue"];
-	});
-
-	console.log(data);
 
 	// scales
 	let extentX = extent(data, (d) => d.date);
@@ -41,19 +31,14 @@
 	let path = line()
 		.x((d) => xScale(d.date))
 		.y((d) => yScale(d.revenue))
-		.curve(curveStep)
+		.curve(curveLinear);
 
-	// ticks for x axis - first day of each month found in the data
-	let xTicks = [];
-	data.forEach(d => {
-		if (d.date.getDate() === 1) {
-			xTicks.push(d.date)
-		}
-	})
+	// ticks for x-axis - all the months with date
+	let xTicks = timeMonths(data[0].date, data[data.length-1].date);
 
-	// x axis labels string formatting
+	// x-axis labels string formatting
 	let xLabel = (x) =>
-		monthNames[x.getMonth()] + ' 20' + x.getYear().toString().substring(x.getYear(), 1)
+		monthNames[x.getMonth()] + " " + x.getFullYear().toString();
 
 	// y ticks count to label by 50000's
 	let yTicks = [];
@@ -62,9 +47,8 @@
 	}
 
 	// d's for axis paths
-	let xPath = `M${margin.left + .5},6V0H${width - margin.right + 1}V6`
-	let yPath = `M-6,${height + .5}H0.5V0.5H-6`
-
+	let xPath = `M${margin.left + .5},6V0H${width - margin.right + 1}V6`;
+	let yPath = `M-6,${height + .5}H0.5V0.5H-6`;
 </script>
 
 <style>

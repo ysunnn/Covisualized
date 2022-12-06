@@ -1,3 +1,5 @@
+import {timeParse, dsvFormat} from "d3";
+
 const tsv = `date revenue
 20210101 224894
 20210102 196928
@@ -273,9 +275,11 @@ const tsv = `date revenue
 20210929 761094
 20210930 437489`;
 
-const data = tsv.split("\n").slice(1).map(str => {
-	const [date, revenue] = str.trim().split(" ");
-	return {date, revenue};
+const data = dsvFormat(" ").parse(tsv, (d) => {
+	return {
+		date: timeParse("%Y%m%d")(d.date),
+		revenue: d.revenue,
+	};
 });
 
 export default data;
