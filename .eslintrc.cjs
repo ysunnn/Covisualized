@@ -18,7 +18,6 @@ module.exports = {
 		"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
 		"no-trailing-spaces": "error",
 		"eol-last": ["error", "always"],
-		"linebreak-style": ["error", "unix"],
 
 		"comma-dangle": ["warn", "always-multiline"],
 		"quotes": ["warn", "double"],
