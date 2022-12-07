@@ -1,7 +1,7 @@
 <script>
 	export let date;
 	export let value;
-	export let left;
+	export let tooltipCoords;
 
 	const width = 80;
 	const height = 40;
@@ -9,12 +9,10 @@
 
 <div
 	class="arrowBox"
-	style:--after-border="{height / 6}px"
-	style:width="{width}px"
-	style:height="{height}px"
-	style:left="{left - width / 2}px"
-	style:line-height="{height / 2}px"
-	style:--after-margin-left="{-height / 4}px"
+	style="--after-border: {height / 6}px; --after-margin-left: {-height /
+		4}px; width: {width}px; height: {height}px; line-height: {height / 2}px; left: {tooltipCoords.x -
+		width / 2}px
+	"
 >
 	{date}
 	{value}

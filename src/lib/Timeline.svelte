@@ -85,12 +85,11 @@
 		}
 	}
 
-	// coords for tooltip line
-	const tooltipLine = {};
-	tooltipLine.y1 = 0;
-	tooltipLine.y2 = height - margin.bottom;
-	$: tooltipLine.x1 = xScale(point.date);
-	$: tooltipLine.x2 = xScale(point.date);
+	// coords for tooltip
+	const tooltipCoords = {};
+	tooltipCoords.lineLength = height - margin.bottom;
+	$: tooltipCoords.x = xScale(point.date);
+	$: tooltipCoords.y = yScale(point.revenue);
 </script>
 
 <style>
@@ -104,7 +103,7 @@
 </style>
 
 <div bind:this={el} transform="translate({margin.left}, {margin.top})">
-	<Tooltip date={formatTime(point.date)} value={euro(point.revenue)} left={xScale(point.date)} />
+	<Tooltip date={formatTime(point.date)} value={euro(point.revenue)} {tooltipCoords} />
 	<svg on:mousemove={handleMousemove}>
 		<g>
 			<!-- line -->
@@ -144,7 +143,7 @@
 		</g>
 
 		<!-- Tooltip -->
-		<TooltipLine {tooltipLine} />
-		<TooltipPoint x={xScale(point.date)} y={yScale(point.revenue)} />
+		<TooltipLine {tooltipCoords} />
+		<TooltipPoint {tooltipCoords} />
 	</svg>
 </div>

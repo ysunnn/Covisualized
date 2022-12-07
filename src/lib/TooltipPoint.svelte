@@ -1,10 +1,9 @@
 <script>
-	export let x = 0;
-	export let y = 0;
+	export let tooltipCoords;
 </script>
 
 <g>
-	<circle class="point" cx={x} cy={y} r="4" />
+	<circle class="point" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
 </g>
 
 <style>
