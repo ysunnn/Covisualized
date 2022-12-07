@@ -1,11 +1,8 @@
 import { readable, writable, derived } from "svelte/store";
+import { stateIDs } from "./util";
 
 // TODO: get more extensive data set (with time), remove debug features
-export const states = [
-	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
-	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
-];
-const generateExampleData = () => Object.fromEntries(states.map(id => {
+const generateExampleData = () => Object.fromEntries(stateIDs.map(id => {
 	return [id, {
 		variables: {
 			revenue: Math.ceil(Math.random() * 100),

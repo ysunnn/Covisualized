@@ -9,7 +9,8 @@
 		y1={tooltipLine.y1}
 		y2={tooltipLine.y2}
 		x1={tooltipLine.x1}
-		x2={tooltipLine.x2}></line>
+		x2={tooltipLine.x2}
+	/>
 </g>
 
 <style>
