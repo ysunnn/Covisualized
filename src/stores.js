@@ -13,7 +13,7 @@ const generateExampleData = () => Object.fromEntries(stateIDs.map(id => {
 			"plygrnd", "daycare", "trvl", "gastr",
 		].map(id => {
 			const bias = Math.ceil(Math.random() * 3);
-			return [id, Math.floor(Math.random() * bias)];
+			return [id, Math.min(Math.floor(Math.random() * bias + 0.5), 2)];
 		})),
 	}];
 }));
