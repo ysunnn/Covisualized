@@ -1,3 +1,9 @@
+// Returns a numeric id unique to this project only.
+let uid = 0;
+export const getUID = () => {
+	return uid++;
+};
+
 export const stateIDs = [
 	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
@@ -12,8 +18,8 @@ export const getStateName = (id) => {
 		hb: "Bremen",
 		hh: "Hamburg",
 		he: "Hesse",
-		mv: "Lower Saxony",
-		ni: "Mecklenburg-Vorpommern",
+		mv: "Mecklenburg-Vorpommern",
+		ni: "Lower Saxony",
 		nw: "North Rhine-Westphalia",
 		rp: "Rhineland-Palatinate",
 		sl: "Saarland",

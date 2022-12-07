@@ -3,8 +3,10 @@
 	import Timeline from "../lib/Timeline.svelte";
 	import DebugDataInput from "../lib/DebugDataInput.svelte";
 
-	import { filter } from "../stores.js";
-	import { getStateName } from "../util.js";
+	import { filter } from "../stores";
+	import { getStateName, getUID } from "../util";
+
+	const id = getUID();
 
 	let projectionStyle = "geo";
 	let regulationsStyle = 0;
@@ -15,17 +17,23 @@
 <main>
 	<div class="variables" />
 	<div class="map">
-		Selected state: <b>{getStateName(state) || "None"}</b>
-		<select bind:value={projectionStyle}>
-			{#each ["geo", "optimized"] as style}
-				<option value={style}>{style}</option>
-			{/each}
-		</select>
-		<select bind:value={regulationsStyle}>
-			{#each [0, 1, 2] as i}
-				<option value={i}>{i}</option>
-			{/each}
-		</select>
+		<span>Selected state: <b>{getStateName(state) || "None"}</b></span>
+		<div>
+			<label for="projection-style-{id}">Projection Style</label>
+			<select id="projection-style-{id}" bind:value={projectionStyle}>
+				{#each ["geo", "optimized"] as style}
+					<option value={style}>{style}</option>
+				{/each}
+			</select>
+		</div>
+		<div>
+			<label for="regulations-style-{id}">COVID Regulations Style</label>
+			<select id="regulations-style-{id}" bind:value={regulationsStyle}>
+				{#each [0, 1, 2] as i}
+					<option value={i}>{i}</option>
+				{/each}
+			</select>
+		</div>
 		<Map {projectionStyle} {regulationsStyle} />
 	</div>
 	<div class="timeline">
@@ -45,6 +53,11 @@
 			"timeline  timeline";
 		grid-template-columns: 1fr 1fr;
 		gap: 1em;
+	}
+
+	main > * {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.map {
