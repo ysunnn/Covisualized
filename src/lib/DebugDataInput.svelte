@@ -8,7 +8,7 @@
 </button>
 <textarea
 	value={JSON.stringify($data, undefined, 2)}
-	on:input={({ target: { value } }) => debug_setData(JSON.parse(value))}></textarea>
+	on:input={({ target: { value } }) => debug_setData(JSON.parse(value))} />
 
 <style>
 	textarea {

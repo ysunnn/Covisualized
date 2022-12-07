@@ -1,3 +1,8 @@
+export const stateIDs = [
+	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
+	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
+];
+
 export const getStateName = (id) => {
 	return {
 		bw: "Baden-Württemberg",

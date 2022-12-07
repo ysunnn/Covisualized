@@ -1,6 +1,6 @@
 <script>
 	import Map from "../lib/Map.svelte";
-	import LineChart from "../lib/LineChart.svelte";
+	import Timeline from "../lib/Timeline.svelte";
 	import DebugDataInput from "../lib/DebugDataInput.svelte";
 
 	import { filter } from "../stores.js";
@@ -8,12 +8,14 @@
 
 	let projectionStyle = "geo";
 	let regulationsStyle = 0;
+
+	$: ({ state } = $filter);
 </script>
 
 <main>
 	<div class="variables" />
 	<div class="map">
-		Selected state: <b>{getStateName($filter.state) || "None"}</b>
+		Selected state: <b>{getStateName(state) || "None"}</b>
 		<select bind:value={projectionStyle}>
 			{#each ["geo", "optimized"] as style}
 				<option value={style}>{style}</option>
@@ -27,7 +29,7 @@
 		<Map {projectionStyle} {regulationsStyle} />
 	</div>
 	<div class="timeline">
-		<LineChart />
+		<Timeline />
 	</div>
 	<div class="details">
 		<DebugDataInput />

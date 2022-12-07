@@ -4,7 +4,7 @@
 </script>
 
 <g>
-	<circle class="point" cx={x} cy={y} r="4"></circle>
+	<circle class="point" cx={x} cy={y} r="4" />
 </g>
 
 <style>

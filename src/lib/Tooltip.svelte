@@ -3,15 +3,18 @@
 	export let value;
 	export let left;
 
-	let width = 80;
-	let height = 40;
+	const width = 80;
+	const height = 40;
 </script>
 
 <div
 	class="arrowBox"
-	style="--after-border: {height / 6}px; --after-margin-left: {-height /
-		4}px; width: {width}px; height: {height}px; line-height: {height/2}px; left: {left -
-		width / 2}px"
+	style:--after-border="{height / 6}px"
+	style:width="{width}px"
+	style:height="{height}px"
+	style:left="{left - width / 2}px"
+	style:line-height="{height / 2}px"
+	style:--after-margin-left="{-height / 4}px"
 >
 	{date}
 	{value}

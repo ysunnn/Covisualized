@@ -1,4 +1,4 @@
-import {timeParse, dsvFormat} from "d3";
+import { timeParse, dsvFormat } from "d3";
 
 const tsv = `date revenue
 20210101 224894

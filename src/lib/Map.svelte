@@ -1,9 +1,10 @@
 <script>
-	// This component currently would not work reliably with multiple instances, due to the SVG ids
-	// not being unique anymore.
+	// This component currently would not work reliably with multiple instances,
+	// due to the SVG ids not being unique anymore.
 
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
-	import { states, valuesPerState, filter } from "../stores.js";
+	import { valuesPerState, filter } from "../stores.js";
+	import { stateIDs } from "../util";
 
 	export let projectionStyle = "geo";
 	export let regulationsStyle = 0;
@@ -12,11 +13,14 @@
 		if ($filter.state === id) $filter.state = null;
 		else $filter.state = id;
 	};
+
+	$: ({ states, max } = $valuesPerState);
+	$: ({ state: selectedState } = $filter);
 </script>
 
 <svg viewBox="0 0 1000 1360" fill="none">
 	<defs>
-		{#each states as state}
+		{#each stateIDs as state}
 			<!-- Base vector path per state: -->
 			<path id="map-state-path-{state}" d={paths[projectionStyle][state]} vector-effect="non-scaling-stroke" />
 
@@ -34,11 +38,11 @@
 	</defs>
 
 
-	{#each $valuesPerState.states as { id: state, value, regulationsTotal }}
+	{#each states as { id: state, value, regulationsTotal }}
 		<use
 			class="state"
 			href="#map-state-path-{state}"
-			style="--fraction: {value / $valuesPerState.max.value}"
+			style:--fraction={value / max.value}
 			tabindex="0"
 			on:click={() => onSelectState(state)}
 			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(state)}
@@ -46,8 +50,8 @@
 
 		{#if regulationsStyle === 0}
 			<g clip-path="url(#map-state-clip-{state})">
-				{#each { length: Math.floor(regulationsTotal / $valuesPerState.max.regulationsTotal * 4) } as _, i }
-					<use class="regulation-border" href="#map-state-path-{state}" style="--index: {i}" />
+				{#each { length: Math.floor(regulationsTotal / max.regulationsTotal * 4) } as _, i}
+					<use class="regulation-border" href="#map-state-path-{state}" style:--index={i} />
 				{/each}
 			</g>
 		{:else if regulationsStyle === 1}
@@ -58,7 +62,7 @@
 				patternUnits="userSpaceOnUse"
 			>
 
-				<circle cx="8" cy="8" r={regulationsTotal / $valuesPerState.max.regulationsTotal * 8} />
+				<circle cx="8" cy="8" r={regulationsTotal / max.regulationsTotal * 8} />
 			</pattern>
 			<use class="regulation-circles" href="#map-state-path-{state}" fill="url(#map-state-regulations-fill={state})" />
 		{:else if regulationsStyle === 2}
@@ -66,16 +70,16 @@
 				id="map-state-regulations-tilt={state}"
 				class="regulation-tilt"
 				width="32" height="32"
-				patternTransform="rotate({regulationsTotal / $valuesPerState.max.regulationsTotal * 45})"
+				patternTransform="rotate({regulationsTotal / max.regulationsTotal * 45})"
 				patternUnits="userSpaceOnUse"
 			>
 
 				<line
 					y1="16"
 					y2="16"
-					x1={16 - regulationsTotal / $valuesPerState.max.regulationsTotal * 16}
-					x2={16 + regulationsTotal / $valuesPerState.max.regulationsTotal * 16}
-					stroke-width={1 + regulationsTotal / $valuesPerState.max.regulationsTotal * 3}
+					x1={16 - regulationsTotal / max.regulationsTotal * 16}
+					x2={16 + regulationsTotal / max.regulationsTotal * 16}
+					stroke-width={1 + regulationsTotal / max.regulationsTotal * 3}
 				/>
 			</pattern>
 			<use class="regulation-tilt" href="#map-state-path-{state}" fill="url(#map-state-regulations-tilt={state})" />
@@ -84,7 +88,7 @@
 
 	<!-- Outlines are extra, so we can hide the inside part with a mask (otherwise would remove the fill) -->
 	<g>
-		{#each states as state}
+		{#each stateIDs as state}
 			<use
 				class="state-outline"
 				href="#map-state-path-{state}"
@@ -93,8 +97,8 @@
 		{/each}
 	</g>
 
-	{#if $filter.state}
-		<use class="selected" href="#map-state-path-{$filter.state}" mask="url(#map-state-mask-{$filter.state})" />
+	{#if selectedState}
+		<use class="selected" href="#map-state-path-{selectedState}" mask="url(#map-state-mask-{selectedState})" />
 	{/if}
 </svg>
 
