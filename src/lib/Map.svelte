@@ -3,11 +3,13 @@
 	// due to the SVG ids not being unique anymore.
 
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
-	import { valuesPerState, filter } from "../stores.js";
-	import { stateIDs } from "../util";
+	import { valuesPerState, filter } from "../stores";
+	import { getUID, stateIDs } from "../util";
 
 	export let projectionStyle = "geo";
 	export let regulationsStyle = 0;
+
+	const id = getUID();
 
 	const onSelectState = (id) => {
 		if ($filter.state === id) $filter.state = null;
@@ -22,17 +24,21 @@
 	<defs>
 		{#each stateIDs as state}
 			<!-- Base vector path per state: -->
-			<path id="map-state-path-{state}" d={paths[projectionStyle][state]} vector-effect="non-scaling-stroke" />
+			<path
+				id="map-state-path-{state}-{id}"
+				d={paths[projectionStyle][state]}
+				vector-effect="non-scaling-stroke"
+			/>
 
 			<!-- Clip can be used to cut off anything OUTSIDE the state. Used for inside borders. -->
-			<clipPath id="map-state-clip-{state}">
-				<use href="#map-state-path-{state}" />
+			<clipPath id="map-state-clip-{state}-{id}">
+				<use href="#map-state-path-{state}-{id}" />
 			</clipPath>
 
 			<!-- Mask can be used to cut off anything INSIDE the state. Used for outside borders. -->
-			<mask id="map-state-mask-{state}">
+			<mask id="map-state-mask-{state}-{id}">
 				<rect width="100%" height="100%" fill="white" />
-				<use href="#map-state-path-{state}" fill="black" />
+				<use href="#map-state-path-{state}-{id}" fill="black" />
 			</mask>
 		{/each}
 	</defs>
@@ -41,7 +47,7 @@
 	{#each states as { id: state, value, regulationsTotal }}
 		<use
 			class="state"
-			href="#map-state-path-{state}"
+			href="#map-state-path-{state}-{id}"
 			style:--fraction={value / max.value}
 			tabindex="0"
 			on:click={() => onSelectState(state)}
@@ -49,14 +55,14 @@
 		/>
 
 		{#if regulationsStyle === 0}
-			<g clip-path="url(#map-state-clip-{state})">
+			<g clip-path="url(#map-state-clip-{state}-{id})">
 				{#each { length: Math.floor(regulationsTotal / max.regulationsTotal * 4) } as _, i}
-					<use class="regulation-border" href="#map-state-path-{state}" style:--index={i} />
+					<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
 				{/each}
 			</g>
 		{:else if regulationsStyle === 1}
 			<pattern
-				id="map-state-regulations-fill={state}"
+				id="map-state-regulations-fill={state}-{id}"
 				class="regulation-circles"
 				width="16" height="16"
 				patternUnits="userSpaceOnUse"
@@ -64,10 +70,14 @@
 
 				<circle cx="8" cy="8" r={regulationsTotal / max.regulationsTotal * 8} />
 			</pattern>
-			<use class="regulation-circles" href="#map-state-path-{state}" fill="url(#map-state-regulations-fill={state})" />
+			<use
+				class="regulation-circles"
+				href="#map-state-path-{state}-{id}"
+				fill="url(#map-state-regulations-fill={state}-{id})"
+			/>
 		{:else if regulationsStyle === 2}
 			<pattern
-				id="map-state-regulations-tilt={state}"
+				id="map-state-regulations-tilt={state}-{id}"
 				class="regulation-tilt"
 				width="32" height="32"
 				patternTransform="rotate({regulationsTotal / max.regulationsTotal * 45})"
@@ -82,23 +92,31 @@
 					stroke-width={1 + regulationsTotal / max.regulationsTotal * 3}
 				/>
 			</pattern>
-			<use class="regulation-tilt" href="#map-state-path-{state}" fill="url(#map-state-regulations-tilt={state})" />
+			<use
+				class="regulation-tilt"
+				href="#map-state-path-{state}-{id}"
+				fill="url(#map-state-regulations-tilt={state}-{id})"
+			/>
 		{/if}
 	{/each}
 
-	<!-- Outlines are extra, so we can hide the inside part with a mask (otherwise would remove the fill) -->
+	<!-- Outlines are extra, so we can hide the inside half with a mask (otherwise removes the fill) -->
 	<g>
 		{#each stateIDs as state}
 			<use
 				class="state-outline"
-				href="#map-state-path-{state}"
-				mask={$filter.state && `url(#map-state-mask-${$filter.state})`}
+				href="#map-state-path-{state}-{id}"
+				mask={selectedState && `url(#map-state-mask-${selectedState}-${id})`}
 			/>
 		{/each}
 	</g>
 
 	{#if selectedState}
-		<use class="selected" href="#map-state-path-{selectedState}" mask="url(#map-state-mask-{selectedState})" />
+		<use
+			class="selected"
+			href="#map-state-path-{selectedState}-{id}"
+			mask="url(#map-state-mask-{selectedState}-{id})"
+		/>
 	{/if}
 </svg>
 

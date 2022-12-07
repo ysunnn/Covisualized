@@ -1,3 +1,9 @@
+// Returns a numeric id unique to this project only.
+let uid = 0;
+export const getUID = () => {
+	return uid++;
+};
+
 export const stateIDs = [
 	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
