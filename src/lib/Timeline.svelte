@@ -13,7 +13,6 @@
 	} from "d3";
 	import data from "../assets/data.js";
 	import TooltipPoint from "./TooltipPoint.svelte";
-	import TooltipLine from "./TooltipLine.svelte";
 	import Tooltip from "./Tooltip.svelte";
 
 	let el;
@@ -142,8 +141,7 @@
 			{/each}
 		</g>
 
-		<!-- Tooltip -->
-		<TooltipLine {tooltipCoords} />
+		<!-- Tooltip line and Point -->
 		<TooltipPoint {tooltipCoords} />
 	</svg>
 </div>
