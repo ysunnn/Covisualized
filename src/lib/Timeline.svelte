@@ -11,13 +11,16 @@
 		axisBottom,
 		axisLeft,
 		scaleUtc,
+		zoom,
+		pointer,
 	} from "d3";
 	import data from "../assets/data.js";
 	import TooltipPoint from "./TooltipPoint.svelte";
 	import Tooltip from "./Tooltip.svelte";
 
 	let el;
-	let pinXAxis, pinYAxis;
+	let pinXAxis, pinYAxis, bindLineZoom;
+	let newScale = null;
 
 	// format for tooltip
 	const localFormat = formatLocale({
@@ -64,6 +67,7 @@
 			.attr("font-weight", "bold")
 			.text(data.y));
 
+	// draw Axis
 	$: if (pinXAxis) {
 		select(pinXAxis).call(xAxis, xScale);
 	}
@@ -71,19 +75,19 @@
 		select(pinYAxis).call(yAxis, yScale);
 	}
 
-	// d3's bisector function
-	const bisect = bisector((d) => d.date).right;
+	// select point for tooltip
+	const bisect = bisector((d) => d.date).center;
 
-	const m = { x: 0, y: 0 };
 	let point = data[0];
 
 	function handleMousemove(event) {
-		m.x = event.offsetX;
-		m.y = event.offsetY;
+		const [mx] = pointer(event);
 
 		// returns point to right of our current mouse position
-		const i = bisect(data, xScale.invert(m.x));
-
+		let i = bisect(data, xScale.invert(mx));
+		if (newScale !== null) {
+			i = bisect(data, newScale.invert(mx));
+		}
 		if (i < data.length) {
 			point = data[i]; // update point
 		}
@@ -92,8 +96,35 @@
 	// coords for tooltip
 	const tooltipCoords = {};
 	tooltipCoords.lineLength = height - margin.bottom;
-	$: tooltipCoords.x = xScale(point.date);
-	$: tooltipCoords.y = yScale(point.revenue);
+	// check if scale has changed due to zoom
+	$: if (newScale !== null) {
+		tooltipCoords.x = newScale(point.date);
+		tooltipCoords.y = yScale(point.revenue);
+	} else {
+		tooltipCoords.x = xScale(point.date);
+		tooltipCoords.y = yScale(point.revenue);
+	}
+
+	// zoom
+	$: zoomX = zoom()
+		.scaleExtent([1, 32])
+		.extent([[margin.left, 0], [width - margin.right, height]])
+		.translateExtent([[margin.left, -Infinity], [width - margin.right, Infinity]])
+		.on("zoom", updateChart);
+
+	// select zoom area
+	$: if (el) {
+		select(el).call(zoomX).transition().duration(750).call(zoomX.scaleTo, 2, [xScale(Date.UTC(2021, 5, 1)), 0]);
+	}
+
+	function updateChart(e) {
+		// update scale based on event
+		newScale = e.transform.rescaleX(xScale);
+		// update X Axis
+		select(pinXAxis).call(xAxis, newScale);
+		// update Line
+		select(bindLineZoom).attr("d", chartLine(data, newScale));
+	}
 </script>
 
 <style>
@@ -121,6 +152,7 @@
 		<g>
 			<!-- line -->
 			<path
+				bind:this={bindLineZoom}
 				id="line"
 				d={chartLine(data, xScale)}
 				fill="none"
