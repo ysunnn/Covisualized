@@ -1,0 +1,18 @@
+export default [
+	{ gState: "BB", income: 1439324 },
+	{ gState: "BE", income: 1380004 },
+	{ gState: "BW", income: 331003 },
+	{ gState: "BY", income: 273524 },
+	{ gState: "HB", income: 220892 },
+	{ gState: "HE", income: 212559 },
+	{ gState: "HH", income: 206140 },
+	{ gState: "MV", income: 164689 },
+	{ gState: "NI", income: 145934 },
+	{ gState: "NW", income: 128933 },
+	{ gState: "RP", income: 128933 },
+	{ gState: "SH", income: 128933 },
+	{ gState: "SL", income: 128933 },
+	{ gState: "SN", income: 128933 },
+	{ gState: "ST", income: 128933 },
+	{ gState: "TH", income: 128933 },
+]

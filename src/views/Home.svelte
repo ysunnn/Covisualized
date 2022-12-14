@@ -5,6 +5,7 @@
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
 	import Details from "../lib/Details.svelte";
+	import DetailView from "../lib/DetailView.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -20,14 +21,15 @@
 		<Timeline />
 	</div>
 	<div class="details">
-		<Details />
+		<Details>
+			<DetailView />
+		</Details>
 	</div>
 
 	<div class="dev-button">
 		<Button on:click={() => devOverlayOpen = !devOverlayOpen} variant="outline">
 			{devOverlayOpen ? "❌" : "🚧"}
 		</Button>
-	</div>
 	{#if devOverlayOpen}
 		<DevOverlay />
 	{/if}
