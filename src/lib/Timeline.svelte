@@ -32,18 +32,17 @@
 	const euro = localFormat.format("$,.2f");
 	const formatTime = timeFormat("%b %d %Y");
 
-	const width = 1080;
+	let width = 1080;
 	const height = 130;
 	const margin = { top: 10, bottom: 10, left: 40, right: 10 };
 
 	// scales
-	const xScale = scaleUtc()
+	$: xScale = scaleUtc()
 		.domain(extent(data, d => d.date))
 		.range([margin.left, width - margin.right]);
 
-	const extentY = extent(data, (d) => d.revenue);
-	const yScale = scaleLinear()
-		.domain(extentY).nice()
+	$: yScale = scaleLinear()
+		.domain(extent(data, (d) => d.revenue)).nice()
 		.range([height - margin.bottom, margin.top]);
 
 	const chartLine = (data, xScale) => line()
@@ -114,7 +113,7 @@
 
 	// select zoom area
 	$: if (el) {
-		select(el).call(zoomX).transition().duration(750).call(zoomX.scaleTo, 2, [xScale(Date.UTC(2021, 5, 1)), 0]);
+		select(el).call(zoomX).transition().duration(750);
 	}
 
 	function updateChart(e) {
@@ -134,7 +133,7 @@
 	}
 </style>
 
-<div id="area" bind:this={el} transform="translate({margin.left}, {margin.top})">
+<div id="area" bind:this={el} bind:clientWidth={width} transform="translate({margin.left}, {margin.top})">
 	<Tooltip date={formatTime(point.date)} value={euro(point.revenue)} {tooltipCoords} />
 	<svg on:mousemove={handleMousemove}>
 		<!-- clipPath -->
