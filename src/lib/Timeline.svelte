@@ -130,6 +130,7 @@
 	svg {
 		width: 100%;
 		height: 100%;
+		cursor: move;
 	}
 </style>
 
@@ -155,7 +156,8 @@
 				id="line"
 				d={chartLine(data, xScale)}
 				fill="none"
-				stroke="blue"
+				stroke="rebeccapurple"
+				stroke-width="2"
 				clip-path="url(#clip)"
 			/>
 		</g>

@@ -22,5 +22,6 @@
 	}
 	.tooltip-line line {
 		stroke: #666;
+		stroke-width: 2;
 	}
 </style>
