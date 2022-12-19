@@ -5,20 +5,22 @@
 		curveLinear,
 		scaleLinear,
 		extent,
-		scaleTime,
-		timeMonths,
 		bisector,
-		format,
 		formatLocale,
+		select,
+		axisBottom,
+		axisLeft,
+		scaleUtc,
+		zoom,
+		pointer,
 	} from "d3";
 	import data from "../assets/data.js";
 	import TooltipPoint from "./TooltipPoint.svelte";
-	import TooltipLine from "./TooltipLine.svelte";
 	import Tooltip from "./Tooltip.svelte";
 
 	let el;
-
-	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	let pinXAxis, pinYAxis, bindLineZoom;
+	let newScale = null;
 
 	// format for tooltip
 	const localFormat = formatLocale({
@@ -30,121 +32,153 @@
 	const euro = localFormat.format("$,.2f");
 	const formatTime = timeFormat("%b %d %Y");
 
-	const width = 1080;
+	let width = 1080;
 	const height = 130;
-	const margin = { top: 10, bottom: 10, left: 30, right: 10 };
+	const margin = { top: 10, bottom: 10, left: 40, right: 10 };
 
 	// scales
-	const extentX = extent(data, (d) => d.date);
-	const xScale = scaleTime()
-		.domain(extentX)
+	$: xScale = scaleUtc()
+		.domain(extent(data, d => d.date))
 		.range([margin.left, width - margin.right]);
 
-	const extentY = extent(data, (d) => d.revenue);
-	const yScale = scaleLinear()
-		.domain(extentY)
+	$: yScale = scaleLinear()
+		.domain(extent(data, (d) => d.revenue)).nice()
 		.range([height - margin.bottom, margin.top]);
 
-	const path = line()
+	const chartLine = (data, xScale) => line()
+		.curve(curveLinear)
 		.x((d) => xScale(d.date))
 		.y((d) => yScale(d.revenue))
-		.curve(curveLinear);
+		// eslint-disable-next-line no-unexpected-multiline
+		(data);
 
-	// ticks for x-axis - all the months with date
-	const xTicks = timeMonths(data[0].date, data[data.length - 1].date);
+	const xAxis = (g, x) => g
+		.attr("transform", `translate(0,${height - margin.bottom})`)
+		.call(axisBottom(x).ticks(width / 80).tickSizeOuter(0));
 
-	// x-axis labels string formatting
-	const xLabel = (x) =>
-		monthNames[x.getMonth()] + " " + x.getFullYear().toString();
+	const yAxis = (g, y) => g
+		.attr("transform", `translate(${margin.left},0)`)
+		.call(axisLeft(y).ticks(null, "s"))
+		.call(g => g.select(".domain").remove())
+		.call(g => g.select(".tick:last-of-type text").clone()
+			.attr("x", 3)
+			.attr("text-anchor", "start")
+			.attr("font-weight", "bold")
+			.text(data.y));
 
-	// y ticks count to label by 50000's
-	const yTicks = [];
-	for (let i = Math.round(extentY[0]); i < Math.round(extentY[1] + 1); i = i + 100000) {
-		yTicks.push(Math.floor(i / 100000) * 100000);
+	// draw Axis
+	$: if (pinXAxis) {
+		select(pinXAxis).call(xAxis, xScale);
+	}
+	$: if (pinYAxis) {
+		select(pinYAxis).call(yAxis, yScale);
 	}
 
-	// d's for axis paths
-	const xPath = `M${margin.left + .5},6V0H${width - margin.right + 1}V6`;
-	const yPath = `M-6,${height + .5}H0.5V0.5H-6`;
+	// select point for tooltip
+	const bisect = bisector((d) => d.date).center;
 
-	// d3's bisector function
-	const bisect = bisector((d) => d.date).right;
-
-	const m = { x: 0, y: 0 };
 	let point = data[0];
 
 	function handleMousemove(event) {
-		m.x = event.offsetX;
-		m.y = event.offsetY;
+		const [mx] = pointer(event);
 
 		// returns point to right of our current mouse position
-		const i = bisect(data, xScale.invert(m.x));
-
+		let i = bisect(data, xScale.invert(mx));
+		if (newScale !== null) {
+			i = bisect(data, newScale.invert(mx));
+		}
 		if (i < data.length) {
 			point = data[i]; // update point
 		}
 	}
 
-	// coords for tooltip line
-	const tooltipLine = {};
-	tooltipLine.y1 = 0;
-	tooltipLine.y2 = height - margin.bottom;
-	$: tooltipLine.x1 = xScale(point.date);
-	$: tooltipLine.x2 = xScale(point.date);
+	// coords for tooltip
+	const tooltipCoords = {};
+	tooltipCoords.lineLength = height - margin.bottom;
+	// check if scale has changed due to zoom
+	$: if (newScale !== null) {
+		tooltipCoords.x = newScale(point.date);
+		tooltipCoords.y = yScale(point.revenue);
+	} else {
+		tooltipCoords.x = xScale(point.date);
+		tooltipCoords.y = yScale(point.revenue);
+	}
+
+	// zoom
+	$: zoomX = zoom()
+		.scaleExtent([1, 32])
+		.extent([[margin.left, 0], [width - margin.right, height]])
+		.translateExtent([[margin.left, -Infinity], [width - margin.right, Infinity]])
+		.on("zoom", updateChart);
+
+	// select zoom area
+	$: if (el) {
+		select(el).call(zoomX).transition().duration(750);
+	}
+
+	function updateChart(e) {
+		// update scale based on event
+		newScale = e.transform.rescaleX(xScale);
+		// update X Axis
+		select(pinXAxis).call(xAxis, newScale);
+		// update Line
+		select(bindLineZoom).attr("d", chartLine(data, newScale));
+	}
 </script>
 
 <style>
 	svg {
 		width: 100%;
 		height: 100%;
-	}
-	.tick {
-		font-size: 11px;
+		cursor: move;
 	}
 </style>
 
-<div bind:this={el} transform="translate({margin.left}, {margin.top})">
-	<Tooltip date={formatTime(point.date)} value={euro(point.revenue)} left={xScale(point.date)} />
+<div id="area" bind:this={el} bind:clientWidth={width} transform="translate({margin.left}, {margin.top})">
+	<Tooltip date={formatTime(point.date)} value={euro(point.revenue)} {tooltipCoords} />
 	<svg on:mousemove={handleMousemove}>
+		<!-- clipPath -->
+		<defs>
+			<clipPath id="clip">
+				<rect
+					x={margin.left}
+					y={margin.top}
+					width={width - margin.left - margin.right}
+					height={height - margin.top - margin.bottom}
+				/>
+			</clipPath>
+		</defs>
+
 		<g>
 			<!-- line -->
 			<path
-				d={path(data)}
+				bind:this={bindLineZoom}
+				id="line"
+				d={chartLine(data, xScale)}
 				fill="none"
-				stroke="blue"
+				stroke="rebeccapurple"
+				stroke-width="2"
+				clip-path="url(#clip)"
 			/>
 		</g>
 
 		<!-- y axis -->
-		<g transform="translate({margin.left}, 0)">
-			<path stroke="currentColor" d={yPath} fill="none" />
-
-			{#each yTicks as y}
-				<g class="tick" opacity="1" transform="translate(0,{yScale(y)})">
-					<line stroke="currentColor" x2="-5" />
-					<text dy="0.32em" fill="currentColor" x="-{margin.left}">
-						{format("~s")(y)}
-					</text>
-				</g>
-			{/each}
-		</g>
+		<g
+			class="yAxis"
+			bind:this={pinYAxis}
+			transform="translate({margin.left}, 0)"
+		/>
 
 		<!-- x axis -->
-		<g transform="translate(0, {height})">
-			<path stroke="currentColor" d={xPath} fill="none" />
+		<g
+			class="xAxis"
+			bind:this={pinXAxis}
+			transform="translate(0, {height})"
+		/>
 
-			{#each xTicks as x}
-				<g class="tick" opacity="1" transform="translate({xScale(x)},0)">
-					<line stroke="currentColor" y2="6" />
-					<text fill="currentColor" y="9" dy="0.71em" x="-{margin.left}">
-						{xLabel(x)}
-					</text>
-				</g>
-			{/each}
+		<!-- Tooltip line and Point -->
+		<g class="tooltipPoint" clip-path="url(#clip)">
+			<TooltipPoint {tooltipCoords} />
 		</g>
-
-		<!-- Tooltip -->
-		<TooltipLine {tooltipLine} />
-		<TooltipPoint x={xScale(point.date)} y={yScale(point.revenue)} />
 	</svg>
 </div>
