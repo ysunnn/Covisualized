@@ -1,5 +1,5 @@
 <script>
-	import { data, debug_setData, debug_randomizeData } from "../stores";
+	import { data, debug_setData, debug_randomizeData } from "../../stores";
 </script>
 
 <h2>Raw Data</h2>
@@ -13,6 +13,7 @@
 <style>
 	textarea {
 		flex-grow: 1;
+		margin-top: 1rem;
 		resize: none;
 	}
 </style>

@@ -1,47 +1,30 @@
 <script>
 	import Map from "../lib/Map.svelte";
 	import Timeline from "../lib/Timeline.svelte";
-	import DebugDataInput from "../lib/DebugDataInput.svelte";
+	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 
-	import { filter } from "../stores";
-	import { getStateName, getUID } from "../util";
-
-	const id = getUID();
-
-	let projectionStyle = "geo";
-	let regulationsStyle = 0;
-
-	$: ({ state } = $filter);
+	let devOverlayOpen = false;
 </script>
 
 <main>
 	<div class="variables" />
 	<div class="map">
-		<span>Selected state: <b>{getStateName(state) || "None"}</b></span>
-		<div>
-			<label for="projection-style-{id}">Projection Style</label>
-			<select id="projection-style-{id}" bind:value={projectionStyle}>
-				{#each ["geo", "optimized"] as style}
-					<option value={style}>{style}</option>
-				{/each}
-			</select>
-		</div>
-		<div>
-			<label for="regulations-style-{id}">COVID Regulations Style</label>
-			<select id="regulations-style-{id}" bind:value={regulationsStyle}>
-				{#each [0, 1, 2] as i}
-					<option value={i}>{i}</option>
-				{/each}
-			</select>
-		</div>
-		<Map {projectionStyle} {regulationsStyle} />
+		<Map />
 	</div>
 	<div class="timeline">
 		<Timeline />
 	</div>
-	<div class="details">
-		<DebugDataInput />
-	</div>
+	<div class="details" />
+
+	<button
+		class="dev-button"
+		on:click={() => devOverlayOpen = !devOverlayOpen}
+	>
+		{devOverlayOpen ? "❌" : "🚧"}
+	</button>
+	{#if devOverlayOpen}
+		<DevOverlay />
+	{/if}
 </main>
 
 <style>
@@ -67,4 +50,12 @@
 	.variables { grid-area: variables; }
 	.timeline { grid-area: timeline; }
 	.details { grid-area: details; }
+
+	.dev-button {
+		position: fixed;
+		top: 1rem;
+		right: 1rem;
+		z-index: 1050;
+		background-color: mistyrose;
+	}
 </style>
