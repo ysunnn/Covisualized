@@ -1,13 +1,7 @@
 <script>
-	// This component currently would not work reliably with multiple instances,
-	// due to the SVG ids not being unique anymore.
-
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
 	import { valuesPerState, filter } from "../stores";
 	import { getUID, stateIDs } from "../util";
-
-	export let projectionStyle = "geo";
-	export let regulationsStyle = 0;
 
 	const id = getUID();
 
@@ -26,7 +20,7 @@
 			<!-- Base vector path per state: -->
 			<path
 				id="map-state-path-{state}-{id}"
-				d={paths[projectionStyle][state]}
+				d={paths[state]}
 				vector-effect="non-scaling-stroke"
 			/>
 
@@ -54,49 +48,12 @@
 			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(state)}
 		/>
 
-		{#if regulationsStyle === 0}
+		{#if false}
 			<g clip-path="url(#map-state-clip-{state}-{id})">
 				{#each { length: Math.floor(regulationsTotal / max.regulationsTotal * 4) } as _, i}
 					<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
 				{/each}
 			</g>
-		{:else if regulationsStyle === 1}
-			<pattern
-				id="map-state-regulations-fill={state}-{id}"
-				class="regulation-circles"
-				width="16" height="16"
-				patternUnits="userSpaceOnUse"
-			>
-
-				<circle cx="8" cy="8" r={regulationsTotal / max.regulationsTotal * 8} />
-			</pattern>
-			<use
-				class="regulation-circles"
-				href="#map-state-path-{state}-{id}"
-				fill="url(#map-state-regulations-fill={state}-{id})"
-			/>
-		{:else if regulationsStyle === 2}
-			<pattern
-				id="map-state-regulations-tilt={state}-{id}"
-				class="regulation-tilt"
-				width="32" height="32"
-				patternTransform="rotate({regulationsTotal / max.regulationsTotal * 45})"
-				patternUnits="userSpaceOnUse"
-			>
-
-				<line
-					y1="16"
-					y2="16"
-					x1={16 - regulationsTotal / max.regulationsTotal * 16}
-					x2={16 + regulationsTotal / max.regulationsTotal * 16}
-					stroke-width={1 + regulationsTotal / max.regulationsTotal * 3}
-				/>
-			</pattern>
-			<use
-				class="regulation-tilt"
-				href="#map-state-path-{state}-{id}"
-				fill="url(#map-state-regulations-tilt={state}-{id})"
-			/>
 		{/if}
 	{/each}
 
@@ -134,9 +91,10 @@
 
 		transition: fill 300ms ease;
 	}
+
 	svg use.state-outline {
 		stroke: white;
-		stroke-width: calc(var(--stroke-width-outline) / 2);
+		stroke-width: var(--stroke-width-outline);
 	}
 
 	svg use.regulation-border {
@@ -145,21 +103,6 @@
 		opacity: 0.5;
 		/* multiply by 2 because we clip off outside half of the stroke */
 		stroke-width: calc(var(--stroke-width-regulation) * 2 * (var(--index) + 1) + var(--stroke-width-outline) / 2);
-	}
-
-	svg pattern.regulation-circles {
-		fill: #c92d34;
-	}
-	svg use.regulation-circles {
-		pointer-events: none;
-	}
-
-	svg pattern.regulation-tilt {
-		stroke: #c92d34;
-		stroke-width: 2px;
-	}
-	svg use.regulation-tilt {
-		pointer-events: none;
 	}
 
 	svg use.selected {
