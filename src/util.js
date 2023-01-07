@@ -4,6 +4,8 @@ export const getUID = () => {
 	return uid++;
 };
 
+export const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const stateIDs = [
 	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",

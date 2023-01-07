@@ -1,6 +1,6 @@
 <script>
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
-	import { valuesPerState, filter } from "../stores";
+	import { statesForVariableAtDate, filter } from "../stores";
 	import { getUID, stateIDs } from "../util";
 
 	const id = getUID();
@@ -10,7 +10,7 @@
 		else $filter.state = id;
 	};
 
-	$: ({ states, max } = $valuesPerState);
+	$: ({ states, ranges } = $statesForVariableAtDate);
 	$: ({ state: selectedState } = $filter);
 </script>
 
@@ -38,11 +38,11 @@
 	</defs>
 
 
-	{#each states as { id: state, value, regulationsTotal }}
+	{#each stateIDs as state}
 		<use
 			class="state"
 			href="#map-state-path-{state}-{id}"
-			style:--fraction={value / max.value}
+			style:--fraction={states[state] ? (states[state].value - ranges.value.min) / (ranges.value.max - ranges.value.min) : 0.5}
 			tabindex="0"
 			on:click={() => onSelectState(state)}
 			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(state)}
@@ -50,7 +50,7 @@
 
 		{#if false}
 			<g clip-path="url(#map-state-clip-{state}-{id})">
-				{#each { length: Math.floor(regulationsTotal / max.regulationsTotal * 4) } as _, i}
+				{#each { length: states[state] ? Math.floor(states[state].regulationsTotal / ranges.regulationsTotal.max * 4) : 0 } as _, i}
 					<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
 				{/each}
 			</g>

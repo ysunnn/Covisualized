@@ -25,6 +25,8 @@ module.exports = {
 		"array-bracket-spacing": ["warn", "never"],
 		"object-curly-spacing": ["warn", "always"],
 		"space-infix-ops": ["warn", { "int32Hint": false }],
+		"camelcase": "warn",
+		"keyword-spacing": "warn",
 
 		"eqeqeq": ["error", "always"],
 		"no-var": "error",
@@ -41,7 +43,7 @@ module.exports = {
 		"svelte/no-reactive-functions": "error",
 		"svelte/no-reactive-literals": "error",
 		"svelte/no-useless-mustaches": "warn",
-		"svelte/prefer-destructured-store-props": "warn",
+		// "svelte/prefer-destructured-store-props": "warn",
 		"svelte/require-optimized-style-attribute": "warn",
 
 		"svelte/derived-has-same-inputs-outputs": "error",

@@ -14,7 +14,7 @@
 		zoom,
 		pointer,
 	} from "d3";
-	import data from "../assets/data.js";
+	import data from "../assets/mock-data-timeline.js";
 	import TooltipPoint from "./TooltipPoint.svelte";
 	import Tooltip from "./Tooltip.svelte";
 

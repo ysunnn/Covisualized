@@ -1,11 +1,15 @@
 <script>
 	import { fly } from "svelte/transition";
 
-	import RawData from "./RawData.svelte";
+	import DataRaw from "./DataRaw.svelte";
+	import DataDerived from "./DataDerived.svelte";
+	import Filters from "./Filters.svelte";
 </script>
 
 <div class="dev-overlay" transition:fly={{ x: 520 }}>
-	<RawData />
+	<Filters />
+	<DataRaw />
+	<DataDerived />
 </div>
 
 <style>
