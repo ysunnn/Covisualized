@@ -5,7 +5,7 @@ const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
 	const data = {};
 
-	// parser function must return date (YYYY-MM-DD), state (id), value (as number)
+	// parser function must return date (YYYY-MM), state (id), value (as number)
 	const addVariable = async (variable, parser) => {
 		for (const { date, state, value } of await parser()) {
 			if (!data[date]) data[date] = {};
@@ -41,7 +41,7 @@ export const filter = writable({ date: null, state: null, variable: "revenue" })
 export let DEBUGSetData, DEBUGReparseData;
 export const data = readable({}, (set) => {
 	// Our main data store is an empty object on page load. Once all data has been parsed,
-	// it get's updated with it accordingly:
+	// it gets updated with it accordingly:
 	(async () => {
 		const data = await parseData();
 		set(data);
