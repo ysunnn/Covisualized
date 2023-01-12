@@ -1,13 +1,17 @@
 <script>
+	import Variables from "../lib/Variables.svelte";
 	import Map from "../lib/Map.svelte";
 	import Timeline from "../lib/Timeline.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
+	import Button from "../lib/Button.svelte";
 
 	let devOverlayOpen = false;
 </script>
 
 <main>
-	<div class="variables" />
+	<div class="variables">
+		<Variables />
+	</div>
 	<div class="map">
 		<Map />
 	</div>
@@ -16,12 +20,11 @@
 	</div>
 	<div class="details" />
 
-	<button
-		class="dev-button"
-		on:click={() => devOverlayOpen = !devOverlayOpen}
-	>
-		{devOverlayOpen ? "❌" : "🚧"}
-	</button>
+	<div class="dev-button">
+		<Button on:click={() => devOverlayOpen = !devOverlayOpen} variant="outline">
+			{devOverlayOpen ? "❌" : "🚧"}
+		</Button>
+	</div>
 	{#if devOverlayOpen}
 		<DevOverlay />
 	{/if}
@@ -56,6 +59,5 @@
 		top: 1rem;
 		right: 1rem;
 		z-index: 1050;
-		background-color: mistyrose;
 	}
 </style>
