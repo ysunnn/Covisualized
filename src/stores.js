@@ -1,5 +1,5 @@
 import { readable, writable, derived } from "svelte/store";
-import { parseRevenue } from "./assets/data";
+import { parseRevenue, parseEmployees } from "./assets/data";
 
 const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
@@ -15,6 +15,7 @@ const parseData = async () => {
 	};
 
 	await addVariable("revenue", parseRevenue);
+	await addVariable("employees", parseEmployees);
 
 	// Create some mock data for the regulations for now...
 	for (const date in data) {
@@ -59,7 +60,8 @@ export const data = readable({}, (set) => {
 export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]) => {
 	const allValuesForVariable = Object.values($data).flatMap(states => {
 		return Object.values(states).flatMap(variables => variables[$filter.variable]);
-	});
+	}).filter(value => value);
+	console.log(allValuesForVariable);
 	return {
 		ranges: {
 			value: {
