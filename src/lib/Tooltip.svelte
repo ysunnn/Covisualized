@@ -15,6 +15,7 @@
 	"
 >
 	{date}
+	<br />
 	{value}
 </div>
 
