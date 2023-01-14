@@ -32,12 +32,19 @@
 	{/if}
 </g>
 
+<g>
+	<circle class="selectedPoint" cx={tooltipCoords.selectedX} cy={tooltipCoords.selectedY} r="4"></circle>
+</g>
+
 <style>
 	.pointGermany {
 		fill: #663399;
 	}
 	.pointState {
 		fill: #4169E1;
+	}
+	.point {
+		fill: #666;
 	}
 	.tooltip-line line {
 		stroke: #666;
