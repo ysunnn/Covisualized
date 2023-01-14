@@ -19,7 +19,6 @@
 	let el;
 	let dataGermany;
 	let pinXAxis, pinYAxis, bindLineZoom;
-	let point;
 	let newScale = null;
 	const formatDate = timeFormat("%Y %b");
 
@@ -74,7 +73,8 @@
 	// select point for tooltip
 	const bisect = bisector((d) => d.date).center;
 
-	$: point = dataGermany[0];
+	$: point = dataGermany[Object.keys($data).indexOf($filter.date)];
+	$: selectedPoint = dataGermany[Object.keys($data).indexOf($filter.date)];
 
 	function handleMousemove(event) {
 		const [mx] = pointer(event);
@@ -97,10 +97,19 @@
 		if (newScale !== null) {
 			tooltipCoords.x = newScale(point.date);
 			tooltipCoords.y = yScale(point.value);
+			tooltipCoords.selectedX = newScale(selectedPoint.date);
+			tooltipCoords.selectedY = yScale(selectedPoint.value);
 		} else {
 			tooltipCoords.x = xScale(point.date);
 			tooltipCoords.y = yScale(point.value);
+			tooltipCoords.selectedX = xScale(selectedPoint.date);
+			tooltipCoords.selectedY = yScale(selectedPoint.value);
 		}
+	}
+
+	function handleMouseClick() {
+		const formatDateFilter = timeFormat("%Y-%m");
+		$filter.date = (formatDateFilter(point.date));
 	}
 
 	// zoom
@@ -129,7 +138,6 @@
 	svg {
 		width: 100%;
 		height: 100%;
-		cursor: move;
 	}
 </style>
 
@@ -177,8 +185,8 @@
 			transform="translate(0, {height})"
 		/>
 
-		<!-- Tooltip line and Point onclick={handleMouseClick}/ -->
-		<g class="tooltipPoint" clip-path="url(#clip)">
+		<!-- Tooltip line and Point -->
+		<g class="tooltipPoint" clip-path="url(#clip)" on:click={handleMouseClick}>
 			<TooltipPoint {tooltipCoords} />
 		</g>
 	</svg>
