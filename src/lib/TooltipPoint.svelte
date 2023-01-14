@@ -16,9 +16,16 @@
 	<circle class="point" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
 </g>
 
+<g>
+	<circle class="selectedPoint" cx={tooltipCoords.selectedX} cy={tooltipCoords.selectedY} r="4"></circle>
+</g>
+
 <style>
-	.point {
+	.selectedPoint {
 		fill: #000;
+	}
+	.point {
+		fill: #666;
 	}
 	.tooltip-line line {
 		stroke: #666;
