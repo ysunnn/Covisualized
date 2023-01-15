@@ -47,17 +47,20 @@
 		color: white;
 		text-align: center;
 		left: 50px;
+		border-bottom: 5px solid #000;
 	}
 
 	.arrowBox:after {
 		content: " ";
-		z-index: 0;
 		width: 0;
 		height: 0;
-		border-radius: 2px;
 		position: absolute;
-		right: 50%;
-		top: 100%;
-		margin-right: -7px;
+		right: 0;
+		left: 0;
+		top: 100% ;
+		margin: 0 auto;
+		border-top: 10px solid #000;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
 	}
 </style>
