@@ -38,7 +38,7 @@
 
 	let width = 1080;
 	const height = 130;
-	const margin = { top: 10, bottom: 10, left: 40, right: 10 };
+	const margin = { top: 20, bottom: 10, left: 40, right: 10 };
 
 	// scales
 	$: xScale = scaleUtc()
@@ -68,7 +68,13 @@
 			.attr("x", 3)
 			.attr("text-anchor", "start")
 			.attr("font-weight", "bold")
-			.text(dataGermany.y));
+			.text(dataGermany.y))
+		.call(g => g.append("text")
+			.attr("x", -margin.left)
+			.attr("y", 10)
+			.attr("fill", "currentColor")
+			.attr("text-anchor", "start")
+			.text("↑ " + $filter.variable + " (2015 = 1.0)"));
 
 	// draw Axis
 	$: if (pinXAxis) {
