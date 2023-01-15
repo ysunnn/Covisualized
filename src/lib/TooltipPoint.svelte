@@ -37,10 +37,6 @@
 	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
 </g>
 
-{#if $filter.state}
-	<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4"></circle>
-{/if}
-
 <style>
 	.pointGermany {
 		fill: #663399;
