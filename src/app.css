@@ -14,7 +14,35 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 
-	--col-primary-hsl: 266, 35%, 19%;
+	--c-primary-h: 266;
+	--c-primary-s: 35%;
+	--c-primary-l: 19%;
+	--c-primary-hsl: var(--c-primary-h), var(--c-primary-s), var(--c-primary-l);
+	--c-primary: hsl(var(--c-primary-hsl));
+
+	--c-restaurants-h: 220;
+	--c-restaurants-s: 89%;
+	--c-restaurants-l: 50%;
+	--c-restaurants-hsl: var(--c-restaurants-h), var(--c-restaurants-s), var(--c-restaurants-l);
+	--c-restaurants: hsl(var(--c-restaurants-hsl));
+
+	--c-hotels-h: 292;
+	--c-hotels-s: 69%;
+	--c-hotels-l: 45%;
+	--c-hotels-hsl: var(--c-hotels-h), var(--c-hotels-s), var(--c-hotels-l);
+	--c-hotels: hsl(var(--c-hotels-hsl));
+
+	--c-bars-h: 184;
+	--c-bars-s: 45%;
+	--c-bars-l: 50%;
+	--c-bars-hsl: var(--c-bars-h), var(--c-bars-s), var(--c-bars-l);
+	--c-bars: hsl(var(--c-bars-hsl));
+
+	--c-covid-h: 356;
+	--c-covid-s: 50%;
+	--c-covid-l: 45%;
+	--c-covid-hsl: var(--c-covid-h), var(--c-covid-s), var(--c-covid-l);
+	--c-covid: hsl(var(--c-covid-hsl));
 }
 
 body {
@@ -46,26 +74,8 @@ h1 {
 #app {
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 2rem;
+	padding: 1rem;
 	text-align: center;
-}
-
-button {
-	border-radius: 4px;
-	border: 1px solid transparent;
-	padding: 0.6em 1.2em;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	background-color: #f9f9f9;
-	box-shadow:
-		0 1px 4px -2px black,
-		inset 0 2px 1px -1px rgba(255, 255, 255, 0.25);
-
-	transition: border-color 0.25s;
-}
-button:hover {
-	border-color: #646cff;
 }
 
 /* @media (prefers-color-scheme: dark) {

@@ -87,7 +87,7 @@
 	}
 
 	svg use.state {
-		fill: hsla(var(--col-primary-hsl), var(--fraction));
+		fill: hsl(var(--c-primary-hsl), var(--fraction));
 
 		transition: fill 300ms ease;
 	}
