@@ -1,25 +1,42 @@
 <script>
 	export let date;
-	export let value;
+	export let valueGermany;
+	export let valueState = null;
 	export let tooltipCoords;
 
+	import { filter } from "../stores.js";
+
 	const width = 80;
-	const height = 40;
 </script>
 
 <div
 	class="arrowBox"
-	style="--after-border: {height / 6}px; --after-margin-left: {-height /
-		4}px; width: {width}px; height: {height}px; line-height: {height / 2}px; left: {tooltipCoords.x -
-		width / 2}px
-	"
+	style:width="{width}px" style:left="{tooltipCoords.x - width / 2}px" style:line-height="18px"
 >
 	{date}
 	<br />
-	{value}
+	<span class="squareGermany"></span> all: {valueGermany}
+	{#if $filter.state}
+		<br />
+		<span class="squareState"></span> {$filter.state}: {valueState}
+	{/if}
 </div>
 
 <style>
+	.squareGermany {
+		display: inline-block;
+		height: 10px;
+		width: 10px;
+		background-color: #663399;
+	}
+
+	.squareState {
+		display: inline-block;
+		height: 10px;
+		width: 10px;
+		background-color: #4169E1;
+	}
+
 	.arrowBox {
 		z-index: 0;
 		background-color: #000;
@@ -37,10 +54,6 @@
 		z-index: 0;
 		width: 0;
 		height: 0;
-		border-top: var(--after-border) solid #000;
-		border-left: var(--after-border) solid transparent;
-		border-bottom: var(--after-border) solid transparent;
-		border-right: var(--after-border) solid transparent;
 		border-radius: 2px;
 		position: absolute;
 		right: 50%;
