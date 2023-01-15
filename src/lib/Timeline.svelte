@@ -14,11 +14,12 @@
 	} from "d3";
 	import TooltipPoint from "./TooltipPoint.svelte";
 	import Tooltip from "./Tooltip.svelte";
-	import { data, filter } from "../stores.js";
+	import { data, filter, statesForVariableAtDate } from "../stores.js";
 
 	let el;
-	let dataGermany;
-	let pinXAxis, pinYAxis, bindLineZoom;
+	let dataGermany, dataState;
+	let point, selectedPoint, pointState;
+	let pinXAxis, pinYAxis, bindLineGermanyZoom, bindLineStateZoom;
 	let newScale = null;
 	const formatDate = timeFormat("%Y %b");
 
@@ -27,6 +28,13 @@
 		date: timeParse("%Y-%m")(date),
 		value: states["de"][$filter.variable],
 	}));
+
+	$: if ($filter.state !== null){
+		dataState = Object.entries($data).map(([date, states]) => ({
+			date: timeParse("%Y-%m")(date),
+			value: states[$filter.state][$filter.variable],
+		}));
+	}
 
 	let width = 1080;
 	const height = 130;
@@ -38,7 +46,7 @@
 		.range([margin.left, width - margin.right]);
 
 	$: yScale = scaleLinear()
-		.domain(extent(dataGermany, d => d.value)).nice()
+		.domain([$statesForVariableAtDate.ranges.value.min, $statesForVariableAtDate.ranges.value.max]).nice()
 		.range([height - margin.bottom, margin.top]);
 
 	const chartLine = (data, xScale) => line()
@@ -75,6 +83,9 @@
 
 	$: point = dataGermany[Object.keys($data).indexOf($filter.date)];
 	$: selectedPoint = dataGermany[Object.keys($data).indexOf($filter.date)];
+	if ($filter.state){
+		pointState = dataState[Object.keys($data).indexOf($filter.date)];
+	}
 
 	function handleMousemove(event) {
 		const [mx] = pointer(event);
@@ -85,7 +96,10 @@
 			i = bisect(dataGermany, newScale.invert(mx));
 		}
 		if (i < dataGermany.length) {
-			point = dataGermany[i]; // update point
+			point = dataGermany[i];
+			if ($filter.state){
+				pointState = dataState[i];
+			}
 		}
 	}
 
@@ -96,14 +110,15 @@
 	$: if (point !== undefined) {
 		if (newScale !== null) {
 			tooltipCoords.x = newScale(point.date);
-			tooltipCoords.y = yScale(point.value);
 			tooltipCoords.selectedX = newScale(selectedPoint.date);
-			tooltipCoords.selectedY = yScale(selectedPoint.value);
 		} else {
 			tooltipCoords.x = xScale(point.date);
-			tooltipCoords.y = yScale(point.value);
 			tooltipCoords.selectedX = xScale(selectedPoint.date);
-			tooltipCoords.selectedY = yScale(selectedPoint.value);
+		}
+		tooltipCoords.y = yScale(point.value);
+		tooltipCoords.selectedY = yScale(selectedPoint.value);
+		if (pointState !== undefined && $filter.state){
+			tooltipCoords.stateY = yScale(pointState.value);
 		}
 	}
 
@@ -130,7 +145,8 @@
 		// update X Axis
 		select(pinXAxis).call(xAxis, newScale);
 		// update Line
-		select(bindLineZoom).attr("d", chartLine(dataGermany, newScale));
+		select(bindLineGermanyZoom).attr("d", chartLine(dataGermany, newScale));
+		select(bindLineStateZoom).attr("d", chartLine(dataState, newScale));
 	}
 </script>
 
@@ -142,8 +158,10 @@
 </style>
 
 <div id="area" bind:this={el} bind:clientWidth={width} transform="translate({margin.left}, {margin.top})">
-	{#if point !== undefined}
-		<Tooltip date={formatDate(point.date)} value={point.value} {tooltipCoords} />
+	{#if point !== undefined && pointState !== undefined}
+		<Tooltip date={formatDate(point.date)} valueGermany={point.value} valueState={pointState.value} {tooltipCoords} />
+	{:else if point !== undefined}
+		<Tooltip date={formatDate(point.date)} valueGermany={point.value} valueState={null} {tooltipCoords} />
 	{/if}
 	<svg on:mousemove={handleMousemove}>
 		<!-- clipPath -->
@@ -159,9 +177,9 @@
 		</defs>
 
 		<g>
-			<!-- line -->
+			<!-- line Germany -->
 			<path
-				bind:this={bindLineZoom}
+				bind:this={bindLineGermanyZoom}
 				id="line"
 				d={chartLine(dataGermany, xScale)}
 				fill="none"
@@ -169,6 +187,21 @@
 				stroke-width="2"
 				clip-path="url(#clip)"
 			/>
+		</g>
+
+		<g>
+			<!-- line state -->
+			{#if $filter.state}
+				<path
+					bind:this={bindLineStateZoom}
+					id="line"
+					d={chartLine(dataState, xScale)}
+					fill="none"
+					stroke="RoyalBlue"
+					stroke-width="2"
+					clip-path="url(#clip)"
+				/>
+			{/if}
 		</g>
 
 		<!-- y axis -->
