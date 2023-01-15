@@ -2,8 +2,8 @@ import { csv, timeFormatLocale } from "d3";
 import localeDefDe from "d3-time-format/locale/de-DE";
 
 import revenuePerStateCSV from "./data/revenue.csv?url";
-
 import employeesPerStateCSV from "./data/employees.csv?url";
+import incidencesPerStateCSV from "./data/incidences.csv?url";
 
 const localeDe = timeFormatLocale(localeDefDe);
 
@@ -62,5 +62,16 @@ export async function parseEmployees() {
 		date: localeDe.utcParse("%Y %B")(`${year} ${month}`).toISOString().slice(0, 7),
 		state: stateNameToID(state),
 		value: normalizePercentage(employees),
+	}));
+}
+
+export async function parseIncidences() {
+	const data = await csv(incidencesPerStateCSV);
+	return data.map(({ year, month, state, incidences }) => ({
+		// We save the Date as YYYY-MM instead of a Date object, because using an object to index
+		// our data is a bad idea. We can always convert this by passing it to the Date constructor.
+		date: localeDe.utcParse("%Y %B")(`${year} ${month}`).toISOString().slice(0, 7),
+		state: stateNameToID(state),
+		value: normalizePercentage(incidences),
 	}));
 }
