@@ -32,9 +32,14 @@
 	{/if}
 </g>
 
+<!-- tooltip point -->
 <g>
-	<circle class="selectedPoint" cx={tooltipCoords.selectedX} cy={tooltipCoords.selectedY} r="4"></circle>
+	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
 </g>
+
+{#if $filter.state}
+	<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4"></circle>
+{/if}
 
 <style>
 	.pointGermany {
@@ -43,8 +48,8 @@
 	.pointState {
 		fill: #4169E1;
 	}
-	.point {
-		fill: #666;
+	.pointState {
+		fill: #4169E1;
 	}
 	.tooltip-line line {
 		stroke: #666;
