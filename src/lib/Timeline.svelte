@@ -53,6 +53,7 @@
 		.curve(curveLinear)
 		.x((d) => xScale(d.date))
 		.y((d) => yScale(d.value))
+		.defined(function (d) { return d.value !== 0; })
 		// eslint-disable-next-line no-unexpected-multiline
 		(data);
 
