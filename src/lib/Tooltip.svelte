@@ -7,6 +7,14 @@
 	import { filter } from "../stores.js";
 
 	const width = 80;
+
+	function setNaN(v) {
+		if (v === 0){
+			return "NaN";
+		} else {
+			return v;
+		}
+	}
 </script>
 
 <div
@@ -15,10 +23,10 @@
 >
 	{date}
 	<br />
-	<span class="squareGermany"></span> all: {valueGermany}
+	<span class="squareGermany"></span> all: {setNaN(valueGermany)}
 	{#if $filter.state}
 		<br />
-		<span class="squareState"></span> {$filter.state}: {valueState}
+		<span class="squareState"></span> {$filter.state}: {setNaN(valueState)}
 	{/if}
 </div>
 

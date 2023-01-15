@@ -24,12 +24,13 @@
 
 <!-- tooltip point -->
 <g>
-	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+	{#if (tooltipCoords.y !== 120)}
+		<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+	{/if}
+	{#if $filter.state && tooltipCoords.stateY !== 120}
+		<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4"></circle>
+	{/if}
 </g>
-
-{#if $filter.state}
-	<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4"></circle>
-{/if}
 
 <style>
 	.pointGermany {
