@@ -15,7 +15,7 @@
 
 	$: yScale = scaleBand().domain(xDomain).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
-		.domain([0, Math.max.apply(null, yDomain)])
+		.domain([Math.min.apply(null, yDomain), Math.max.apply(null, yDomain)])
 		.range([0, innerWidth]);
 </script>
 
@@ -38,12 +38,26 @@
 			>
 				{d.gState}
 			</text>
-			<rect
-				x="0"
-				y={yScale(d.gState)}
-				width={xScale(d.income)}
-				height={yScale.bandwidth() * 0.8}
-			/>
+			{#if d.income >= 0}
+				<rect
+					x={xScale(0)}
+					y={yScale(d.gState)}
+					width={xScale(d.income) - xScale(0)}
+					height={yScale.bandwidth() * 0.8}
+					fill="#0062B1"
+					fill-opacity={Math.abs(xScale(d.income)) / Math.abs(Math.max.apply(null, yDomain))}
+				/>
+			{/if}
+			{#if d.income < 0}
+				<rect
+					x={xScale(d.income)}
+					y={yScale(d.gState)}
+					width={xScale(0) - xScale(d.income)}
+					height={yScale.bandwidth() * 0.8}
+					fill="rgb(255,0,0)"
+					fill-opacity={Math.abs(xScale(0) - xScale(d.income)) / Math.abs(Math.min.apply(null, yDomain))}
+				/>
+			{/if}
 		{/each}
 	</g>
 </svg>
