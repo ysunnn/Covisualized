@@ -69,13 +69,7 @@
 			.attr("x", 3)
 			.attr("text-anchor", "start")
 			.attr("font-weight", "bold")
-			.text(dataGermany.y))
-		.call(g => g.append("text")
-			.attr("x", -margin.left)
-			.attr("y", 10)
-			.attr("fill", "currentColor")
-			.attr("text-anchor", "start")
-			.text("↑ " + $filter.variable + " (2015 = 1.0)"));
+			.text(dataGermany.y));
 
 	// draw Axis
 	$: if (pinXAxis) {
@@ -162,6 +156,9 @@
 		width: 100%;
 		height: 100%;
 	}
+	.yAxisLabel {
+		font-size: 10px;
+	}
 </style>
 
 <div id="area" bind:this={el} bind:clientWidth={width} transform="translate({margin.left}, {margin.top})">
@@ -217,6 +214,8 @@
 			bind:this={pinYAxis}
 			transform="translate({margin.left}, 0)"
 		/>
+
+		<text class="yAxisLabel" x={-margin.left + 55} y="10">↑ {$filter.variable} (2015 = 1.0) </text>
 
 		<!-- x axis -->
 		<g
