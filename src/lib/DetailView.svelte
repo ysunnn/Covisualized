@@ -1,12 +1,11 @@
 <script>
-	import path from "../assets/Bayern.png";
-	import mask from "../assets/masks.png";
+	import Icon from "./Icon.svelte";
 	import vaccinated from "../assets/vaccines.png";
 	import distance from "../assets/6_ft_apart.png";
 	import personlimit from "../assets/reduce_capacity.png";
 
 	import { filter } from "../stores";
-	import { getStateName } from "../util";
+	import { getStateFlag, getStateName } from "../util";
 	import data from "../assets/2019";
 	import BarChart from "./BarChart.svelte";
 
@@ -14,12 +13,12 @@
 
 </script>
 
-<div id="header">
+<div class="header">
 	<h2>{getStateName(state) || "None"}</h2>
-	<img id="flag" src={path} alt="flag" height="80px" width="120px" />
+	<img class="flag" src={getStateFlag(state)} alt={state} height="80px" width="120px" />
 </div>
-<div id="regulations">
-	<img src={mask} alt="flag" height="15px" width="30px" />
+<div class="regulations">
+	<Icon name="msk" size="30px" />
 	<p> Masks in Public </p>
 	<img src={personlimit} alt="flag" height="30px" width="30px" />
 	<p> max. 4 People </p>
@@ -47,17 +46,16 @@
     img {
         align-self: center;
     }
-    #regulations {
+    .regulations {
         background-color: #d8aeae;
         border-radius: 5px;
         display: flex;
         margin-left: 150px;
-    }
-    p {
-        color: #a43e45;
+        color: var(--c-covid);
         font-weight: bold;
+        align-items: center;
     }
-    #flag {
+    .flag {
         border:3px solid #000000;
         border-radius: 5px;
     }

@@ -55,7 +55,7 @@
 					width={xScale(0) - xScale(d.income)}
 					height={yScale.bandwidth() * 0.8}
 					fill="rgb(255,0,0)"
-					fill-opacity={Math.abs(xScale(0) - xScale(d.income)) / Math.abs(Math.min.apply(null, yDomain))}
+					fill-opacity={Math.abs(xScale(0) - xScale(d.income)) / Math.abs(Math.min.apply(null, yDomain)) + 0.2}
 				/>
 			{/if}
 		{/each}

@@ -1,3 +1,5 @@
+import flags from "./assets/flags/index.js";
+
 // Returns a numeric id unique to this project only.
 let uid = 0;
 export const getUID = () => {
@@ -17,6 +19,10 @@ export const stateIDs = [
 	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
 ];
+
+export const getStateFlag = (id) => {
+	return flags[id];
+};
 
 export const getStateName = (id) => {
 	return {

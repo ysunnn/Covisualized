@@ -2,7 +2,7 @@ export default [
 	{ gState: "BB", income: -49 },
 	{ gState: "BE", income: 146 },
 	{ gState: "BW", income: 278 },
-	{ gState: "BY", income: 268 },
+	{ gState: "BY", income: 18 },
 	{ gState: "HB", income: -24 },
 	{ gState: "HE", income: 123 },
 	{ gState: "HH", income: -311 },
@@ -15,4 +15,4 @@ export default [
 	{ gState: "SN", income: -178 },
 	{ gState: "ST", income: 98 },
 	{ gState: "TH", income: 150 },
-]
+];
