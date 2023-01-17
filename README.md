@@ -20,11 +20,26 @@ Information visualization project for Lecture *Information Visualization* of the
 3. Install project dependencies locally: `npm install`
 4. Start a local development server: `npm run dev`
 
+## Usage
+
+### The Map
+
+To the top left, the user can see a map of germany (note the state cities Hamburg, Bremen and Berlin were enlarged for better visibility and accesibility). The states are highlighted with different colors, based on which variable is selected in the top row and which point in time is selected in the timeline. Pale/white coloring of a state indicates low values of the selected variable, higher saturation indicates higher values of the selected variable per state. Note that the colorscale is constant for each variable across all points in time, thus if e.g. Bavaria's coloring is more saturated at one chosen point in time, then it also has a higher value at that point.
+
+Covid19 regulation measures are indicated by a red border of each state, which grows thicker when regulations are more restrictive. Note that Covid19 regulations were first introduced in March 2020, thus there is no such red border in the months before that time.
+
+### The Timeline
+
+At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `"June 2020"`.
+
+When a state is selected in the map, a second line appears in the line chart which represents the selected state. 
+
 ## 📦 Features
 ### Already implemented
 - Visualization:
-  - Map of Germany & its states. Information regarding the states is highlighted in the map.
-  - Timeline representing information about Germany as a whole. When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany.
+
+  - Map of Germany & its states. The variable which is selected at the top is represented as the coloring of each state. Red borders around each state indicate how restrictive covid regulations are.
+  - Timeline representing information about Germany as a whole. The timeline shows the same variable as the map (the variable which is selected at the top). When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany.
   - Switching between visualized datasets (revenue, number of employees, average 7-day-incidences per month)
 - Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
   - __hospitality revenue__. Source: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*
