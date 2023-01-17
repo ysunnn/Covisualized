@@ -23,10 +23,10 @@
 >
 	{date}
 	<br />
-	<span class="squareGermany"></span> all: {setNaN(valueGermany)}
+	<span class="squareGermany" /> all: {setNaN(valueGermany)}
 	{#if $filter.state}
 		<br />
-		<span class="squareState"></span> {$filter.state}: {setNaN(valueState)}
+		<span class="squareState" /> {$filter.state}: {setNaN(valueState)}
 	{/if}
 </div>
 

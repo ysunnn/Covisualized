@@ -32,9 +32,17 @@
 	{/if}
 </g>
 
+<!-- tooltip point -->
+<g>
+	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+</g>
+
 <style>
 	.pointGermany {
 		fill: #663399;
+	}
+	.pointState {
+		fill: #4169E1;
 	}
 	.pointState {
 		fill: #4169E1;
