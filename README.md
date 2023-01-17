@@ -24,7 +24,7 @@ Information visualization project for Lecture *Information Visualization* of the
 ### Already implemented
 - Visualization:
   - Map of Germany & its states. Information regarding the states is highlighted in the map.
-  - Timeline representing information about Germany as a whole.
+  - Timeline representing information about Germany as a whole. When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany.
   - Switching between visualized datasets (revenue, number of employees, average 7-day-incidences per month)
 - Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
   - __hospitality revenue__. Source: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*
