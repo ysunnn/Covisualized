@@ -1,4 +1,4 @@
--# **Covi**sualize**d**
+# **Covi**sualize**d**
 > **How did the COVID-19 regulations affect the hospitality industry in each of Germany's states?**
 
 ## ℹ️ About
