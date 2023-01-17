@@ -1,24 +1,53 @@
 <script>
+	import { format } from "d3";
+	import { filter } from "../stores.js";
+	import { isNullish } from "../util.js";
+
 	export let date;
-	export let value;
+	export let valueGermany;
+	export let valueState = null;
 	export let tooltipCoords;
 
-	const width = 80;
-	const height = 40;
+	const width = 85;
+
+	function setValueFormat(v) {
+		if (isNullish(v)){
+			return "No Data";
+		} else {
+			const formatRound = format(".5");
+			return formatRound(v);
+		}
+	}
 </script>
 
 <div
 	class="arrowBox"
-	style="--after-border: {height / 6}px; --after-margin-left: {-height /
-		4}px; width: {width}px; height: {height}px; line-height: {height / 2}px; left: {tooltipCoords.x -
-		width / 2}px
-	"
+	style:width="{width}px" style:left="{tooltipCoords.x - width / 2}px" style:line-height="18px"
 >
 	{date}
-	{value}
+	<br />
+	<span class="squareGermany"></span> all: {setValueFormat(valueGermany)}
+	{#if $filter.state}
+		<br />
+		<span class="squareState"></span> {$filter.state}: {setValueFormat(valueState)}
+	{/if}
 </div>
 
 <style>
+	.squareGermany {
+		display: inline-block;
+		height: 10px;
+		width: 10px;
+		background-color: #663399;
+	}
+
+	.squareState {
+		display: inline-block;
+		height: 10px;
+		width: 10px;
+		background-color: #4169E1;
+	}
+
 	.arrowBox {
 		z-index: 0;
 		background-color: #000;
@@ -29,21 +58,20 @@
 		color: white;
 		text-align: center;
 		left: 50px;
+		border-bottom: 5px solid #000;
 	}
 
 	.arrowBox:after {
 		content: " ";
-		z-index: 0;
 		width: 0;
 		height: 0;
-		border-top: var(--after-border) solid #000;
-		border-left: var(--after-border) solid transparent;
-		border-bottom: var(--after-border) solid transparent;
-		border-right: var(--after-border) solid transparent;
-		border-radius: 2px;
 		position: absolute;
-		right: 50%;
-		top: 100%;
-		margin-right: -7px;
+		right: 0;
+		left: 0;
+		top: 100% ;
+		margin: 0 auto;
+		border-top: 10px solid #000;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
 	}
 </style>

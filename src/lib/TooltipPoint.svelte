@@ -1,4 +1,6 @@
 <script>
+	import { filter } from "../stores.js";
+
 	export let tooltipCoords;
 </script>
 
@@ -11,17 +13,46 @@
 		x2={tooltipCoords.x}></line>
 </g>
 
+<!-- tooltip line -->
+<g class="selected-tooltip-line" transform="translate(0, 0)">
+	<line
+		y1="0"
+		y2={tooltipCoords.lineLength}
+		x1={tooltipCoords.selectedX}
+		x2={tooltipCoords.selectedX}></line>
+</g>
+
 <!-- tooltip point -->
 <g>
-	<circle class="point" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+	{#if (tooltipCoords.y !== 120)}
+		<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+	{/if}
+	{#if $filter.state && tooltipCoords.stateY !== 120}
+		<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4"></circle>
+	{/if}
+</g>
+
+<!-- tooltip point -->
+<g>
+	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
 </g>
 
 <style>
-	.point {
-		fill: #000;
+	.pointGermany {
+		fill: #663399;
+	}
+	.pointState {
+		fill: #4169E1;
+	}
+	.pointState {
+		fill: #4169E1;
 	}
 	.tooltip-line line {
 		stroke: #666;
+		stroke-width: 2;
+	}
+	.selected-tooltip-line line {
+		stroke: #000;
 		stroke-width: 2;
 	}
 </style>
