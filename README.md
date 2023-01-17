@@ -33,12 +33,14 @@ Information visualization project for Lecture *Information Visualization* of the
 
 Note: __revenue__ and __number of employees__ values are **relative** and use revenue / number of employees from 2015 as a reference value. Revenue / number of employees from 2015 is represented as 100%. Thus, if e.g. revenue has increased by 10%, it is shown as 110%.
 
-### Additional Features:
+### Next thoughts
+
+#### Additional Features:
 1. Add a detailed view for each state which is shown when the corresponding state is clicked.
 2. Add tabs in detailed view with graphs and additional information.
 3. Adding filters to timeline to scope out different sections of the hospitality industry (difficult to find datasets which cover the time period and show the values for each state of Germany).
 
-### Nice to have:
+#### Nice to have:
 1. Timeline play button & short tutorial
 2. COVID-19 cases timeline/map variable
 3. About section (project & team)
