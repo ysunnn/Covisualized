@@ -62,13 +62,11 @@
 			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(state)}
 		/>
 
-		{#if false}
-			<g clip-path="url(#map-state-clip-{state}-{id})">
-				{#each { length: !isNullish(regulationsTotal) ? Math.floor(regulationsTotal / ranges.regulationsTotal.max * 4) : 0 } as _, i}
-					<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
-				{/each}
-			</g>
-		{/if}
+		<g clip-path="url(#map-state-clip-{state}-{id})">
+			{#each { length: !isNullish(regulationsTotal) ? Math.floor(regulationsTotal / ranges.regulationsTotal.max * 4) : 0 } as _, i}
+				<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
+			{/each}
+		</g>
 	{/each}
 
 	<!-- Outlines are extra, so we can hide the inside half with a mask (otherwise removes the fill) -->

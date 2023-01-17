@@ -1,5 +1,5 @@
 import { readable, writable, derived } from "svelte/store";
-import { parseRevenue, parseEmployees, parseIncidences } from "./assets/data";
+import { parseRevenue, parseEmployees, parseIncidences, parseRegulations } from "./assets/data";
 import { stateIDs } from "./util";
 
 const parseData = async () => {
@@ -7,8 +7,8 @@ const parseData = async () => {
 	const data = {};
 
 	// parser function must return date (YYYY-MM), state (id), value (as number)
-	const addVariable = async (variable, parser) => {
-		for (const { date, state, value } of await parser()) {
+	const addVariable = async (variable, parser, ...args) => {
+		for (const { date, state, value } of await parser(...args)) {
 			if (!data[date]) data[date] = {};
 			if (!data[date][state]) data[date][state] = {};
 			data[date][state][variable] = value;
@@ -18,23 +18,7 @@ const parseData = async () => {
 	await addVariable("revenue", parseRevenue);
 	await addVariable("employees", parseEmployees);
 	await addVariable("incidences", parseIncidences);
-
-	// Create some mock data for the regulations for now...
-	for (const date in data) {
-		for (const state in data[date]) {
-			const regulations = Object.fromEntries([
-				"leavehome", "dist", "msk", "shppng", "hcut", "ess_shps",
-				"zoo", "demo", "school", "church", "onefriend", "morefriends",
-				"plygrnd", "daycare", "trvl", "gastr",
-			].map(id => {
-				const bias = Math.ceil(Math.random() * 3);
-				return [id, Math.min(Math.floor(Math.random() * bias + 0.5), 2)];
-			}));
-			const total = Object.entries(regulations).reduce((total, [, value]) => total + value, 0);
-			data[date][state]["regulations"] = regulations;
-			data[date][state]["regulationsTotal"] = total;
-		}
-	}
+	await addVariable("regulations", parseRegulations);
 
 	return data;
 };
@@ -83,7 +67,7 @@ export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]
 			return [stateID, {
 				value,
 				valueFrac: value && (value - ranges.value.min) / (ranges.value.max - ranges.value.min),
-				regulationsTotal: variables?.regulationsTotal,
+				regulationsTotal: variables?.regulations?.total,
 			}];
 		})),
 	};
