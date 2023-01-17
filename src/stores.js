@@ -1,13 +1,14 @@
 import { readable, writable, derived } from "svelte/store";
-import { parseRevenue } from "./assets/data";
+import { parseRevenue, parseEmployees, parseIncidences, parseRegulations } from "./assets/data";
+import { stateIDs } from "./util";
 
 const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
 	const data = {};
 
 	// parser function must return date (YYYY-MM), state (id), value (as number)
-	const addVariable = async (variable, parser) => {
-		for (const { date, state, value } of await parser()) {
+	const addVariable = async (variable, parser, ...args) => {
+		for (const { date, state, value } of await parser(...args)) {
 			if (!data[date]) data[date] = {};
 			if (!data[date][state]) data[date][state] = {};
 			data[date][state][variable] = value;
@@ -15,23 +16,9 @@ const parseData = async () => {
 	};
 
 	await addVariable("revenue", parseRevenue);
-
-	// Create some mock data for the regulations for now...
-	for (const date in data) {
-		for (const state in data[date]) {
-			const regulations = Object.fromEntries([
-				"leavehome", "dist", "msk", "shppng", "hcut", "ess_shps",
-				"zoo", "demo", "school", "church", "onefriend", "morefriends",
-				"plygrnd", "daycare", "trvl", "gastr",
-			].map(id => {
-				const bias = Math.ceil(Math.random() * 3);
-				return [id, Math.min(Math.floor(Math.random() * bias + 0.5), 2)];
-			}));
-			const total = Object.entries(regulations).reduce((total, [, value]) => total + value, 0);
-			data[date][state]["regulations"] = regulations;
-			data[date][state]["regulationsTotal"] = total;
-		}
-	}
+	await addVariable("employees", parseEmployees);
+	await addVariable("incidences", parseIncidences);
+	await addVariable("regulations", parseRegulations);
 
 	return data;
 };
@@ -59,23 +46,29 @@ export const data = readable({}, (set) => {
 export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]) => {
 	const allValuesForVariable = Object.values($data).flatMap(states => {
 		return Object.values(states).flatMap(variables => variables[$filter.variable]);
-	});
-	return {
-		ranges: {
-			value: {
-				min: Math.min(...allValuesForVariable),
-				max: Math.max(...allValuesForVariable),
-			},
-			regulationsTotal: {
-				min: 0,
-				max: 32, // 16 regulations * max weight 2
-			},
+	}).filter(value => value);
+
+	const ranges = {
+		value: {
+			min: Math.min(...allValuesForVariable),
+			max: Math.max(...allValuesForVariable),
 		},
-		states: Object.fromEntries(
-			Object.entries($data[$filter.date] || {}).map(([stateID, variables]) => [stateID, {
-				value: variables[$filter.variable],
-				regulationsTotal: variables.regulationsTotal,
-			}]),
-		),
+		regulationsTotal: {
+			min: 0,
+			max: 32, // 16 regulations * max weight 2
+		},
+	};
+
+	return {
+		ranges,
+		states: Object.fromEntries(stateIDs.map(stateID => {
+			const variables = ($data[$filter.date] || {})[stateID];
+			const value = variables && variables[$filter.variable];
+			return [stateID, {
+				value,
+				valueFrac: value && (value - ranges.value.min) / (ranges.value.max - ranges.value.min),
+				regulationsTotal: variables?.regulations?.total,
+			}];
+		})),
 	};
 });

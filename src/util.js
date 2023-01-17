@@ -4,7 +4,14 @@ export const getUID = () => {
 	return uid++;
 };
 
+export const isNullish = (value) => (value === null || value === undefined);
+
 export const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+
+export const mapRange = (value, inMin, inMax, outMin, outMax) => {
+	return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+};
 
 export const stateIDs = [
 	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
