@@ -1,18 +1,21 @@
 <script>
+	import { format } from "d3";
+	import { filter } from "../stores.js";
+	import { isNullish } from "../util.js";
+
 	export let date;
 	export let valueGermany;
 	export let valueState = null;
 	export let tooltipCoords;
 
-	import { filter } from "../stores.js";
+	const width = 85;
 
-	const width = 80;
-
-	function setNaN(v) {
-		if (v === 0){
-			return "NaN";
+	function setValueFormat(v) {
+		if (isNullish(v)){
+			return "No Data";
 		} else {
-			return v;
+			const formatRound = format(".5");
+			return formatRound(v);
 		}
 	}
 </script>
@@ -23,10 +26,10 @@
 >
 	{date}
 	<br />
-	<span class="squareGermany" /> all: {setNaN(valueGermany)}
+	<span class="squareGermany"></span> all: {setValueFormat(valueGermany)}
 	{#if $filter.state}
 		<br />
-		<span class="squareState" /> {$filter.state}: {setNaN(valueState)}
+		<span class="squareState"></span> {$filter.state}: {setValueFormat(valueState)}
 	{/if}
 </div>
 

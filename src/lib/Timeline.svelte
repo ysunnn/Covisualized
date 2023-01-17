@@ -15,6 +15,7 @@
 	import TooltipPoint from "./TooltipPoint.svelte";
 	import Tooltip from "./Tooltip.svelte";
 	import { data, filter, statesForVariableAtDate } from "../stores.js";
+	import { isNullish } from "../util.js";
 
 	let el;
 	let dataGermany, dataState;
@@ -29,12 +30,11 @@
 		value: states["de"][$filter.variable],
 	}));
 
-	$: if ($filter.state !== null){
-		dataState = Object.entries($data).map(([date, states]) => ({
-			date: timeParse("%Y-%m")(date),
-			value: states[$filter.state][$filter.variable],
-		}));
-	}
+	$: dataState = Object.entries($data).map(([date, states]) => ({
+		date: timeParse("%Y-%m")(date),
+		value: states[$filter.state] && states[$filter.state][$filter.variable],
+	}));
+
 
 	let width = 1080;
 	const height = 130;
@@ -51,9 +51,9 @@
 
 	const chartLine = (data, xScale) => line()
 		.curve(curveLinear)
-		.x((d) => xScale(d.date))
-		.y((d) => yScale(d.value))
-		.defined(function (d) { return d.value !== 0; })
+		.x((d) => xScale(d?.date))
+		.y((d) => yScale(d?.value))
+		.defined((d) => !isNullish(d?.value))
 		// eslint-disable-next-line no-unexpected-multiline
 		(data);
 
@@ -71,6 +71,13 @@
 			.attr("font-weight", "bold")
 			.text(dataGermany.y));
 
+	const label = [
+		{ id: "revenue", text: "↑ Revenue (2015 = 1.0)" },
+		{ id: "employees", text: "↑ Employees (2015 = 1.0)" },
+		{ id: "incidences", text: "↑ Average 7 day incidence" },
+	];
+	$: yAxisLabel = label.find(l => l.id === $filter.variable).text;
+
 	// draw Axis
 	$: if (pinXAxis) {
 		select(pinXAxis).call(xAxis, xScale);
@@ -84,9 +91,7 @@
 
 	$: point = dataGermany[Object.keys($data).indexOf($filter.date)];
 	$: selectedPoint = dataGermany[Object.keys($data).indexOf($filter.date)];
-	if ($filter.state){
-		pointState = dataState[Object.keys($data).indexOf($filter.date)];
-	}
+	$: pointState = dataState[Object.keys($data).indexOf($filter.date)];
 
 	function handleMousemove(event) {
 		const [mx] = pointer(event);
@@ -108,8 +113,8 @@
 	const tooltipCoords = {};
 	tooltipCoords.lineLength = height - margin.bottom;
 	// check if scale has changed due to zoom
-	$: if (point !== undefined) {
-		if (newScale !== null) {
+	$: if (!isNullish(point)) {
+		if (!isNullish(newScale)) {
 			tooltipCoords.x = newScale(point.date);
 			tooltipCoords.selectedX = newScale(selectedPoint.date);
 		} else {
@@ -118,9 +123,7 @@
 		}
 		tooltipCoords.y = yScale(point.value);
 		tooltipCoords.selectedY = yScale(selectedPoint.value);
-		if (pointState !== undefined && $filter.state){
-			tooltipCoords.stateY = yScale(pointState.value);
-		}
+		tooltipCoords.stateY = yScale(pointState.value);
 	}
 
 	function handleMouseClick() {
@@ -162,9 +165,9 @@
 </style>
 
 <div id="area" bind:this={el} bind:clientWidth={width} transform="translate({margin.left}, {margin.top})">
-	{#if point !== undefined && pointState !== undefined}
+	{#if !isNullish(point) && !isNullish(pointState)}
 		<Tooltip date={formatDate(point.date)} valueGermany={point.value} valueState={pointState.value} {tooltipCoords} />
-	{:else if point !== undefined}
+	{:else if !isNullish(point)}
 		<Tooltip date={formatDate(point.date)} valueGermany={point.value} valueState={null} {tooltipCoords} />
 	{/if}
 	<svg on:mousemove={handleMousemove}>
@@ -195,17 +198,15 @@
 
 		<g>
 			<!-- line state -->
-			{#if $filter.state}
-				<path
-					bind:this={bindLineStateZoom}
-					id="line"
-					d={chartLine(dataState, xScale)}
-					fill="none"
-					stroke="RoyalBlue"
-					stroke-width="2"
-					clip-path="url(#clip)"
-				/>
-			{/if}
+			<path
+				bind:this={bindLineStateZoom}
+				id="line"
+				d={chartLine(dataState, xScale)}
+				fill="none"
+				stroke="RoyalBlue"
+				stroke-width="2"
+				clip-path="url(#clip)"
+			/>
 		</g>
 
 		<!-- y axis -->
@@ -215,7 +216,7 @@
 			transform="translate({margin.left}, 0)"
 		/>
 
-		<text class="yAxisLabel" x={-margin.left + 55} y="10">↑ {$filter.variable} (2015 = 1.0) </text>
+		<text class="yAxisLabel" x={-margin.left + 55} y="10"> {yAxisLabel} </text>
 
 		<!-- x axis -->
 		<g

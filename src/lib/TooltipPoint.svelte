@@ -1,7 +1,7 @@
 <script>
-	export let tooltipCoords;
-
 	import { filter } from "../stores.js";
+
+	export let tooltipCoords;
 </script>
 
 <!-- tooltip line -->
