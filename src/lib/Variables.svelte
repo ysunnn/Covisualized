@@ -6,7 +6,7 @@
 	const variables = [
 		{ id: "revenue", label: "Revenue", icon: "currency-eur", color: "primary" },
 		{ id: "employees", label: "Employees", icon: "badge-account", color: "primary" },
-		{ id: "covid", label: "COVID-19 Cases", icon: "virus", color: "covid" },
+		{ id: "incidences", label: "COVID-19 Cases", icon: "virus", color: "covid" },
 	];
 </script>
 

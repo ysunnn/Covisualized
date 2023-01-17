@@ -1,5 +1,6 @@
 import { readable, writable, derived } from "svelte/store";
 import { parseRevenue, parseEmployees, parseIncidences } from "./assets/data";
+import { stateIDs } from "./util";
 
 const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
@@ -62,22 +63,28 @@ export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]
 	const allValuesForVariable = Object.values($data).flatMap(states => {
 		return Object.values(states).flatMap(variables => variables[$filter.variable]);
 	}).filter(value => value);
-	return {
-		ranges: {
-			value: {
-				min: Math.min(...allValuesForVariable),
-				max: Math.max(...allValuesForVariable),
-			},
-			regulationsTotal: {
-				min: 0,
-				max: 32, // 16 regulations * max weight 2
-			},
+
+	const ranges = {
+		value: {
+			min: Math.min(...allValuesForVariable),
+			max: Math.max(...allValuesForVariable),
 		},
-		states: Object.fromEntries(
-			Object.entries($data[$filter.date] || {}).map(([stateID, variables]) => [stateID, {
-				value: variables[$filter.variable],
-				regulationsTotal: variables.regulationsTotal,
-			}]),
-		),
+		regulationsTotal: {
+			min: 0,
+			max: 32, // 16 regulations * max weight 2
+		},
+	};
+
+	return {
+		ranges,
+		states: Object.fromEntries(stateIDs.map(stateID => {
+			const variables = ($data[$filter.date] || {})[stateID];
+			const value = variables && variables[$filter.variable];
+			return [stateID, {
+				value,
+				valueFrac: value && (value - ranges.value.min) / (ranges.value.max - ranges.value.min),
+				regulationsTotal: variables?.regulationsTotal,
+			}];
+		})),
 	};
 });

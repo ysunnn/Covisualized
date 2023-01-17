@@ -43,11 +43,11 @@ function normalizePercentage(value) {
 	return Math.round(Number(value) * 10) / 1000;
 }
 
+// We save the Date as YYYY-MM instead of a Date object, because using an object to index
+// our data is a bad idea. We can always convert this by passing it to the Date constructor.
 export async function parseRevenue() {
 	const data = await csv(revenuePerStateCSV);
 	return data.map(({ year, month, state, revenue }) => ({
-		// We save the Date as YYYY-MM instead of a Date object, because using an object to index
-		// our data is a bad idea. We can always convert this by passing it to the Date constructor.
 		date: localeDe.utcParse("%Y %B")(`${year} ${month}`).toISOString().slice(0, 7),
 		state: stateNameToID(state),
 		value: normalizePercentage(revenue),
@@ -57,8 +57,6 @@ export async function parseRevenue() {
 export async function parseEmployees() {
 	const data = await csv(employeesPerStateCSV);
 	return data.map(({ year, month, state, employees }) => ({
-		// We save the Date as YYYY-MM instead of a Date object, because using an object to index
-		// our data is a bad idea. We can always convert this by passing it to the Date constructor.
 		date: localeDe.utcParse("%Y %B")(`${year} ${month}`).toISOString().slice(0, 7),
 		state: stateNameToID(state),
 		value: normalizePercentage(employees),
@@ -68,10 +66,8 @@ export async function parseEmployees() {
 export async function parseIncidences() {
 	const data = await csv(incidencesPerStateCSV);
 	return data.map(({ year, month, state, incidences }) => ({
-		// We save the Date as YYYY-MM instead of a Date object, because using an object to index
-		// our data is a bad idea. We can always convert this by passing it to the Date constructor.
-		date: localeDe.utcParse("%Y %B")(`${year} ${month}`).toISOString().slice(0, 7),
+		date: localeDe.utcParse("%Y %m")(`${year} ${month}`).toISOString().slice(0, 7),
 		state: stateNameToID(state),
-		value: normalizePercentage(incidences),
+		value: Number(incidences),
 	}));
 }

@@ -1,7 +1,7 @@
 <script>
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
 	import { statesForVariableAtDate, filter } from "../stores";
-	import { getUID, stateIDs } from "../util";
+	import { getUID, stateIDs, isNullish, mapRange } from "../util";
 
 	const id = getUID();
 
@@ -11,11 +11,23 @@
 	};
 
 	$: ({ states, ranges } = $statesForVariableAtDate);
-	$: ({ state: selectedState } = $filter);
+	$: ({ state: selectedState, variable } = $filter);
 </script>
 
-<svg viewBox="0 0 1000 1360" fill="none">
+<svg viewBox="0 0 1000 1360" fill="none" class={variable}>
 	<defs>
+		<pattern
+			class="no-data-pattern"
+			id="map-no-data-pattern-{id}"
+			patternUnits="userSpaceOnUse"
+			width="20"
+			height="20"
+			patternTransform="rotate(45)"
+		>
+			<rect width="20" height="20" />
+			<line x1="0" y="0" x2="0" y2="20" stroke-width="20" />
+		</pattern>
+
 		{#each stateIDs as state}
 			<!-- Base vector path per state: -->
 			<path
@@ -38,11 +50,13 @@
 	</defs>
 
 
-	{#each stateIDs as state}
+	{#each Object.entries(states) as [state, { valueFrac, regulationsTotal }]}
 		<use
 			class="state"
+			class:data-available={!isNullish(valueFrac)}
+			style:--lightness={mapRange(valueFrac, 0, 1, 0.9, 0.2)}
+			fill="url(#map-no-data-pattern-{id})"
 			href="#map-state-path-{state}-{id}"
-			style:--fraction={states[state] ? (states[state].value - ranges.value.min) / (ranges.value.max - ranges.value.min) : 0.5}
 			tabindex="0"
 			on:click={() => onSelectState(state)}
 			on:keypress={({ code }) => ["Enter", "Space"].includes(code) && onSelectState(state)}
@@ -50,7 +64,7 @@
 
 		{#if false}
 			<g clip-path="url(#map-state-clip-{state}-{id})">
-				{#each { length: states[state] ? Math.floor(states[state].regulationsTotal / ranges.regulationsTotal.max * 4) : 0 } as _, i}
+				{#each { length: !isNullish(regulationsTotal) ? Math.floor(regulationsTotal / ranges.regulationsTotal.max * 4) : 0 } as _, i}
 					<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
 				{/each}
 			</g>
@@ -87,9 +101,19 @@
 	}
 
 	svg use.state {
-		fill: hsl(var(--c-primary-hsl), var(--fraction));
-
 		transition: fill 300ms ease;
+	}
+	svg use.state.data-available {
+		fill: hsl(var(--c-primary-h), var(--c-primary-s), calc(100% * var(--lightness)));
+	}
+	svg.incidences use.state.data-available {
+		fill: hsl(var(--c-covid-h), var(--c-covid-s), calc(100% * var(--lightness)));
+	}
+	svg .no-data-pattern rect {
+		fill: #f2f2f2;
+	}
+	svg .no-data-pattern line {
+		stroke: #e8e8e8;
 	}
 
 	svg use.state-outline {
@@ -99,7 +123,7 @@
 
 	svg use.regulation-border {
 		pointer-events: none;
-		stroke: #c92d34;
+		stroke: var(--c-covid);
 		opacity: 0.5;
 		/* multiply by 2 because we clip off outside half of the stroke */
 		stroke-width: calc(var(--stroke-width-regulation) * 2 * (var(--index) + 1) + var(--stroke-width-outline) / 2);
