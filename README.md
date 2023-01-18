@@ -30,7 +30,7 @@ COVID19 regulation measures are indicated by a red border of each state, which g
 
 ### The Timeline
 
-At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`. This updates the date of the data displayed on the map.
+At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`, by moving the mouse above the timeline. A gray vertical line shows what would be selected if the user clicks on the gray line, a black vertical indicates the currently selected month. This updates the date of the data displayed on the map.
 
 When a state is selected in the map, a second line appears in the line chart which represents the selected state.
 The timeline can be zoomed in and out by double-clicking or scrolling.
@@ -47,7 +47,7 @@ The timeline can be zoomed in and out by double-clicking or scrolling.
   - __hospitality revenue__: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*
   - __number of employees in the hospitality industry__: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*
   - __average 7 day incidence rate per month__: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases.)
-  - __lockdown measures__: The ZPID Lockdown Measures Dataset for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd*
+  - __lockdown measures__: The __ZPID Lockdown Measures Dataset__ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd*
 
 Note: __revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
 
