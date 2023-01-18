@@ -20,18 +20,36 @@ Information visualization project for Lecture *Information Visualization* of the
 3. Install project dependencies locally: `npm install`
 4. Start a local development server: `npm run dev`
 
+## 🔍 Usage
+
+### The Map
+
+To the top left, the user can see a map of Germany (the state cities Hamburg, Bremen and Berlin were enlarged for better visibility and accessibility). The states are highlighted with different colors, based on which variable is selected in the top row and which point in time is selected in the timeline. Pale / white coloring of a state indicates low values of the selected variable, higher saturation indicates higher values of the selected variable per state. Note that the color scale is constant for each variable across all points in time, thus if e.g. Bavaria's coloring is more saturated at one chosen point in time, then it also has a higher value at that point.
+
+COVID19 regulation measures are indicated by a red border of each state, which grows thicker when regulations are more restrictive. Note that COVID19 regulations were first introduced in March 2020, thus there is no such red border in the months before that.
+
+### The Timeline
+
+At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`, by moving the mouse above the timeline. A gray vertical line shows what would be selected if the user clicks on the gray line, a black vertical indicates the currently selected month. This updates the date of the data displayed on the map.
+
+When a state is selected in the map, a second line appears in the line chart which represents the selected state.
+The timeline can be zoomed in and out by double-clicking or scrolling.
+
 ## 📦 Features
 ### Already implemented
 - Visualization:
-  - Map of Germany & its states. Information regarding the states is highlighted in the map.
-  - Timeline representing information about Germany as a whole. When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany.
-  - Switching between visualized datasets (revenue, number of employees, average 7-day-incidences per month)
-- Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
-  - __hospitality revenue__. Source: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*
-  - __number of employees in the hospitality industry__. Source: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*
-  - __average 7 day incidence rate per month__. Source: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (incidence rate was computed based on cumulative number of reported cases).
+  - Map of Germany & its states: The variable which is selected at the top is represented as the coloring of each state. Red borders around each state indicate how restrictive COVID19 regulations are.
+  - Timeline representing information about Germany as a whole: The timeline shows the same variable as the map (the variable which is selected at the top). When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany.
+  - Switching between visualized datasets: revenue, number of employees, average 7-day-incidences per month
 
-Note: __revenue__ and __number of employees__ values are **relative** and use revenue / number of employees from 2015 as a reference value. Revenue / number of employees from 2015 is represented as 100%. Thus, if e.g. revenue has increased by 10%, it is shown as 110%.
+
+- Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
+  - __hospitality revenue__: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*
+  - __number of employees in the hospitality industry__: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*
+  - __average 7 day incidence rate per month__: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases.)
+  - __lockdown measures__: The __ZPID Lockdown Measures Dataset__ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd*
+
+Note: __revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
 
 ### Next thoughts
 
@@ -41,6 +59,6 @@ Note: __revenue__ and __number of employees__ values are **relative** and use re
 3. Adding filters to timeline to scope out different sections of the hospitality industry (difficult to find datasets which cover the time period and show the values for each state of Germany).
 
 #### Nice to have:
-1. Timeline play button & short tutorial
-2. COVID-19 cases timeline/map variable
+1. Time scrubber and play button for it
+2. Tutorial
 3. About section (project & team)
