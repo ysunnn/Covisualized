@@ -1,8 +1,5 @@
 <script>
 	import Icon from "./Icon.svelte";
-	import vaccinated from "../assets/vaccines.png";
-	import distance from "../assets/6_ft_apart.png";
-	import personlimit from "../assets/reduce_capacity.png";
 
 	import { filter } from "../stores";
 	import { getStateFlag, getStateName } from "../util";
@@ -20,12 +17,12 @@
 <div class="regulations">
 	<Icon name="msk" size="30px" />
 	<p> Masks in Public </p>
-	<img src={personlimit} alt="flag" height="30px" width="30px" />
+	<Icon name="onefriend" size="30px" />
 	<p> max. 4 People </p>
-	<img src={distance} alt="flag" height="30px" width="30px" />
+	<Icon name="dist" size="30px" />
 	<p> Social Distancing </p>
-	<img src={vaccinated} alt="flag" height="30px" width="20px" />
-	<p> 2x Vaccinated </p>
+	<Icon name="virus" size="30px" />2
+	<p> x Vaccinated </p>
 </div>
 <h2> National Comparison </h2>
 <BarChart {data} />

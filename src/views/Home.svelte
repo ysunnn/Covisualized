@@ -30,9 +30,13 @@
 		<Button on:click={() => devOverlayOpen = !devOverlayOpen} variant="outline">
 			{devOverlayOpen ? "❌" : "🚧"}
 		</Button>
+	</div>
 	{#if devOverlayOpen}
 		<DevOverlay />
 	{/if}
+	<div class="details">
+		<DetailView />
+	</div>
 </main>
 
 <style>
