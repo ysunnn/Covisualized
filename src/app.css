@@ -1,7 +1,15 @@
 :root {
+	--c-background: hsl(240, 20%, 96%);
+
+	--c-foreground-h: 266;
+	--c-foreground-s: 35%;
+	--c-foreground-l: 19%;
+	--c-foreground-hsl: var(--c-foreground-h), var(--c-foreground-s), var(--c-foreground-l);
+	--c-foreground: hsl(var(--c-foreground-hsl));
+
 	--c-primary-h: 266;
 	--c-primary-s: 35%;
-	--c-primary-l: 19%;
+	--c-primary-l: 45%;
 	--c-primary-hsl: var(--c-primary-h), var(--c-primary-s), var(--c-primary-l);
 	--c-primary: hsl(var(--c-primary-hsl));
 
@@ -31,11 +39,11 @@
 
 	font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-size: 16px;
-	line-height: 24px;
+	line-height: 1.25;
 	font-weight: 400;
 
 	color-scheme: light /* dark */;
-	color: var(--c-primary);
+	color: var(--c-foreground);
 	background-color: white;
 
 	font-synthesis: none;
@@ -47,7 +55,6 @@
 
 body {
 	margin: 0;
-	min-height: 100vh;
 	box-sizing: border-box;
 }
 
@@ -66,16 +73,19 @@ a:hover {
 	color: #747bff;
 }
 
-h1 {
-	font-size: 3.2em;
-	line-height: 1.1;
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+	margin-top: 0;
 }
 
 #app {
-	max-width: 1280px;
-	margin: 0 auto;
+	height: 100vh;
 	padding: 1rem;
-	text-align: center;
+	background-color: var(--c-background);
 }
 
 /* @media (prefers-color-scheme: dark) {

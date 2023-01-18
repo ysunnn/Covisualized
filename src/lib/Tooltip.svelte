@@ -1,14 +1,12 @@
 <script>
 	import { format } from "d3";
 	import { filter } from "../stores.js";
-	import { isNullish } from "../util.js";
+	import { getStateName, isNullish } from "../util.js";
 
 	export let date;
 	export let valueGermany;
 	export let valueState = null;
 	export let tooltipCoords;
-
-	const width = 85;
 
 	function setValueFormat(v) {
 		if (isNullish(v)){
@@ -21,15 +19,15 @@
 </script>
 
 <div
-	class="arrowBox"
-	style:width="{width}px" style:left="{tooltipCoords.x - width / 2}px" style:line-height="18px"
+	class="tooltip"
+	style:left="{tooltipCoords.x}px" style:line-height="18px"
 >
 	{date}
 	<br />
-	<span class="squareGermany"></span> all: {setValueFormat(valueGermany)}
+	<span class="squareGermany" /> Germany: {setValueFormat(valueGermany)}
 	{#if $filter.state}
 		<br />
-		<span class="squareState"></span> {$filter.state}: {setValueFormat(valueState)}
+		<span class="squareState" /> {getStateName($filter.state)}: {setValueFormat(valueState)}
 	{/if}
 </div>
 
@@ -38,7 +36,7 @@
 		display: inline-block;
 		height: 10px;
 		width: 10px;
-		background-color: #663399;
+		background-color: var(--c-primary);
 	}
 
 	.squareState {
@@ -48,20 +46,20 @@
 		background-color: #4169E1;
 	}
 
-	.arrowBox {
+	.tooltip {
 		z-index: 0;
-		background-color: #000;
-		border-radius: 2px;
+		background-color: rgba(0, 0, 0, 0.8);
+		border-radius: 4px;
 		position: relative;
 		font-size: 0.725em;
-		font-weight: 200;
 		color: white;
 		text-align: center;
-		left: 50px;
-		border-bottom: 5px solid #000;
+		padding: 0.5em;
+		width: max-content;
+		transform: translateX(-50%);
 	}
 
-	.arrowBox:after {
+	.tooltip:after {
 		content: " ";
 		width: 0;
 		height: 0;
@@ -70,7 +68,7 @@
 		left: 0;
 		top: 100% ;
 		margin: 0 auto;
-		border-top: 10px solid #000;
+		border-top: 10px solid rgba(0, 0, 0, 0.8);
 		border-left: 10px solid transparent;
 		border-right: 10px solid transparent;
 	}

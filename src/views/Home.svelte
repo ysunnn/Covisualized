@@ -4,6 +4,7 @@
 	import Timeline from "../lib/Timeline.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
+	import Details from "../lib/Details.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -18,7 +19,9 @@
 	<div class="timeline">
 		<Timeline />
 	</div>
-	<div class="details" />
+	<div class="details">
+		<Details />
+	</div>
 
 	<div class="dev-button">
 		<Button on:click={() => devOverlayOpen = !devOverlayOpen} variant="outline">
@@ -34,11 +37,14 @@
 	main {
 		display: grid;
 		grid-template-areas:
-			"variables details"
+			"variables variables"
 			"map       details"
 			"timeline  timeline";
 		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto minmax(0, 1fr) auto;
 		gap: 1em;
+
+		height: 100%;
 	}
 
 	main > * {
@@ -48,11 +54,20 @@
 
 	.map {
 		grid-area: map;
+		justify-content: center;
 	}
-
-	.variables { grid-area: variables; }
-	.timeline { grid-area: timeline; }
-	.details { grid-area: details; }
+	.variables {
+		grid-area: variables;
+	}
+	.timeline {
+		grid-area: timeline;
+		overflow: hidden;
+		height: 220px; /* TODO: Make responsive. */
+		justify-content: flex-end;
+	}
+	.details {
+		grid-area: details;
+	}
 
 	.dev-button {
 		position: fixed;

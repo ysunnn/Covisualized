@@ -154,16 +154,6 @@
 	}
 </script>
 
-<style>
-	svg {
-		width: 100%;
-		height: 100%;
-	}
-	.yAxisLabel {
-		font-size: 10px;
-	}
-</style>
-
 <div id="area" bind:this={el} bind:clientWidth={width} transform="translate({margin.left}, {margin.top})">
 	{#if !isNullish(point) && !isNullish(pointState)}
 		<Tooltip date={formatDate(point.date)} valueGermany={point.value} valueState={pointState.value} {tooltipCoords} />
@@ -187,10 +177,9 @@
 			<!-- line Germany -->
 			<path
 				bind:this={bindLineGermanyZoom}
-				id="line"
 				d={chartLine(dataGermany, xScale)}
 				fill="none"
-				stroke="rebeccapurple"
+				stroke="var(--c-primary)"
 				stroke-width="2"
 				clip-path="url(#clip)"
 			/>
@@ -200,7 +189,6 @@
 			<!-- line state -->
 			<path
 				bind:this={bindLineStateZoom}
-				id="line"
 				d={chartLine(dataState, xScale)}
 				fill="none"
 				stroke="RoyalBlue"
@@ -231,3 +219,12 @@
 		</g>
 	</svg>
 </div>
+
+<style>
+	svg {
+		width: 100%;
+	}
+	.yAxisLabel {
+		font-size: 10px;
+	}
+</style>
