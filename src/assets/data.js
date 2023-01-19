@@ -5,6 +5,7 @@ import revenueCSV from "./data/revenue.csv?url";
 import employeesCSV from "./data/employees.csv?url";
 import incidencesCSV from "./data/incidences.csv?url";
 import regulationsCSV from "./data/regulations.csv?url";
+import regulationsIndexCSV from "./data/regulations_index.csv?url";
 
 const localeDe = timeFormatLocale(localeDefDe);
 
@@ -88,4 +89,13 @@ export async function parseRegulations() {
 			},
 		};
 	});
+}
+
+export async function parseRegulationsIndex() {
+	const data = await csv(regulationsIndexCSV);
+	return data.map(({ year, month, state, regulationsIndex }) => ({
+		date: localeDe.utcParse("%Y %m")(`${year} ${month}`).toISOString().slice(0, 7),
+		state: stateNameToID(state),
+		value: Number(regulationsIndex),
+	}));
 }

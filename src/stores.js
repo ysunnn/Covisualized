@@ -1,5 +1,5 @@
 import { readable, writable, derived } from "svelte/store";
-import { parseRevenue, parseEmployees, parseIncidences, parseRegulations } from "./assets/data";
+import { parseRevenue, parseEmployees, parseIncidences, parseRegulations, parseRegulationsIndex } from "./assets/data";
 import { stateIDs } from "./util";
 
 const parseData = async () => {
@@ -19,6 +19,7 @@ const parseData = async () => {
 	await addVariable("employees", parseEmployees);
 	await addVariable("incidences", parseIncidences);
 	await addVariable("regulations", parseRegulations);
+	await addVariable("regulations_index", parseRegulationsIndex);
 
 	return data;
 };
