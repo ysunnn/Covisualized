@@ -12,6 +12,11 @@
 
 	$: ({ states, ranges } = $statesForVariableAtDate);
 	$: ({ state: selectedState, variable } = $filter);
+	$: date = (() => {
+		if (!$filter.date) return { year: "", month: "" };
+		const [year, month] = $filter.date.split("-");
+		return { year, month };
+	})();
 </script>
 
 <svg viewBox="0 0 1000 1360" fill="none" class={variable}>
@@ -87,6 +92,13 @@
 			mask="url(#map-state-mask-{selectedState}-{id})"
 		/>
 	{/if}
+
+	<foreignObject width="200" height="192" x="772" y="824">
+		<div class="date">
+			<span class="month">{date.month}</span>
+			<span class="year">{date.year}</span>
+		</div>
+	</foreignObject>
 </svg>
 
 <style>
@@ -137,12 +149,21 @@
 	}
 
 	.date {
-		position: absolute;
-		border: 2px solid red;
-		width: 10px;
-		height: 10px;
-		transform: translateY(-50%);
-		top: 80%;
-		left: 10%;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+
+		font-size: 40px;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+	}
+	.date .month {
+		font-size: 2em;
+	}
+
+	.date .year {
+		font-weight: bold;
 	}
 </style>
