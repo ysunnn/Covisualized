@@ -4,8 +4,7 @@
 	import Timeline from "../lib/Timeline.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
-	import Details from "../lib/Details.svelte";
-	import DetailView from "../lib/DetailView.svelte";
+	import Details from "../lib/details/Details.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -21,9 +20,7 @@
 		<Timeline />
 	</div>
 	<div class="details">
-		<Details>
-			<DetailView />
-		</Details>
+		<Details />
 	</div>
 
 	<div class="dev-button">
@@ -34,9 +31,6 @@
 	{#if devOverlayOpen}
 		<DevOverlay />
 	{/if}
-	<div class="details">
-		<DetailView />
-	</div>
 </main>
 
 <style>

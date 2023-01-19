@@ -37,6 +37,12 @@
 	--c-covid-hsl: var(--c-covid-h), var(--c-covid-s), var(--c-covid-l);
 	--c-covid: hsl(var(--c-covid-hsl));
 
+	--c-positive-h: 110;
+	--c-positive-s: 50%;
+	--c-positive-l: 45%;
+	--c-positive-hsl: var(--c-positive-h), var(--c-positive-s), var(--c-positive-l);
+	--c-positive: hsl(var(--c-positive-hsl));
+
 	font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-size: 16px;
 	line-height: 1.25;

@@ -44,6 +44,10 @@ export const data = readable({}, (set) => {
 	DEBUGSetData = (data) => set(data);
 });
 
+export const dataAtDate = derived([data, filter], ([$data, $filter]) => {
+	return $data[$filter.date];
+});
+
 export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]) => {
 	const allValuesForVariable = Object.values($data).flatMap(states => {
 		return Object.values(states).flatMap(variables => variables[$filter.variable]);
