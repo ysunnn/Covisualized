@@ -96,6 +96,7 @@
 		--stroke-width-outline: 1px;
 		--stroke-width-selected: 2px;
 		--stroke-width-regulation: 4px;
+		filter: drop-shadow(0 0 32px rgba(0, 0, 0, 0.1));
 	}
 
 	svg use.state {
@@ -133,5 +134,15 @@
 		stroke: gold;
 		/* multiply by 2 because we mask off inside half of the stroke */
 		stroke-width: calc(var(--stroke-width-selected) * 2);
+	}
+
+	.date {
+		position: absolute;
+		border: 2px solid red;
+		width: 10px;
+		height: 10px;
+		transform: translateY(-50%);
+		top: 80%;
+		left: 10%;
 	}
 </style>

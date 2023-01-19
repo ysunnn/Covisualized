@@ -10,7 +10,7 @@
 		y1="0"
 		y2={tooltipCoords.lineLength}
 		x1={tooltipCoords.x}
-		x2={tooltipCoords.x}></line>
+		x2={tooltipCoords.x} />
 </g>
 
 <!-- tooltip line -->
@@ -19,27 +19,27 @@
 		y1="0"
 		y2={tooltipCoords.lineLength}
 		x1={tooltipCoords.selectedX}
-		x2={tooltipCoords.selectedX}></line>
+		x2={tooltipCoords.selectedX} />
 </g>
 
 <!-- tooltip point -->
 <g>
 	{#if (tooltipCoords.y !== 120)}
-		<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+		<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4" />
 	{/if}
 	{#if $filter.state && tooltipCoords.stateY !== 120}
-		<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4"></circle>
+		<circle class="pointState" cx={tooltipCoords.x} cy={tooltipCoords.stateY} r="4" />
 	{/if}
 </g>
 
 <!-- tooltip point -->
 <g>
-	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4"></circle>
+	<circle class="pointGermany" cx={tooltipCoords.x} cy={tooltipCoords.y} r="4" />
 </g>
 
 <style>
 	.pointGermany {
-		fill: #663399;
+		fill: var(--c-primary);
 	}
 	.pointState {
 		fill: #4169E1;
