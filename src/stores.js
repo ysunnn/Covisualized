@@ -19,7 +19,7 @@ const parseData = async () => {
 	await addVariable("employees", parseEmployees);
 	await addVariable("incidences", parseIncidences);
 	await addVariable("regulations", parseRegulations);
-	await addVariable("regulations_index", parseRegulationsIndex);
+	await addVariable("regulationsIndex", parseRegulationsIndex);
 
 	return data;
 };
