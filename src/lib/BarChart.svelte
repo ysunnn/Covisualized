@@ -14,6 +14,8 @@
 	$: xDomain = data.map((d) => d.key);
 	$: yDomain = data.map((d) => d.value);
 	$: min = Math.min(...data.map(({ value }) => value));
+	$: max = Math.max(...data.map(({ value }) => value));
+
 
 	$: yScale = scaleBand().domain(xDomain).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
@@ -47,7 +49,7 @@
 					width={xScale(d.value)}
 					height={yScale.bandwidth() * 0.8}
 					fill="#0062B1"
-					fill-opacity={Math.abs(xScale(d.value)) / Math.abs(Math.max.apply(null, yDomain))}
+					fill-opacity={(d.value / max) + 0.2}
 				/>
 			{:else}
 				{#if d.value >= 0}
@@ -57,7 +59,7 @@
 						width={xScale(d.value) - xScale(0)}
 						height={yScale.bandwidth() * 0.8}
 						fill="#0062B1"
-						fill-opacity={Math.abs(xScale(d.value)) / Math.abs(Math.max.apply(null, yDomain))}
+						fill-opacity={(d.value / max) + 0.2}
 					/>
 				{/if}
 				{#if d.value < 0}
@@ -67,7 +69,7 @@
 						width={xScale(0) - xScale(d.value)}
 						height={yScale.bandwidth() * 0.8}
 						fill="rgb(255,0,0)"
-						fill-opacity={Math.abs(xScale(0) - xScale(d.value)) / Math.abs(Math.min.apply(null, yDomain)) + 0.2}
+						fill-opacity={(d.value / min) + 0.2}
 					/>
 				{/if}
 			{/if}
