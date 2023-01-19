@@ -38,10 +38,9 @@
 
 	.flag {
 		height: 4em;
-	}
-
-	.flag {
 		border: 4px solid var(--c-foreground);
+		outline: 4px solid white;
+		box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
 		border-radius: 6px;
 	}
 </style>

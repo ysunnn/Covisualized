@@ -1,8 +1,8 @@
 <script>
 	import { scaleBand, scaleLinear } from "d3-scale";
+	import { mapRange } from "../util";
 
 	export let data;
-	$: console.log(data);
 
 	const width = 600;
 	const height = 400;
@@ -48,8 +48,7 @@
 					y={yScale(d.key)}
 					width={xScale(d.value)}
 					height={yScale.bandwidth() * 0.8}
-					fill="#0062B1"
-					fill-opacity={(d.value / max) + 0.2}
+					fill="hsl(207, {mapRange(d.value / max, 0, 1, 25, 100)}%, 50%)"
 				/>
 			{:else}
 				{#if d.value >= 0}
@@ -58,8 +57,7 @@
 						y={yScale(d.key)}
 						width={xScale(d.value) - xScale(0)}
 						height={yScale.bandwidth() * 0.8}
-						fill="#0062B1"
-						fill-opacity={(d.value / max) + 0.2}
+						fill="hsl(214, {mapRange(d.value / max, 0, 1, 25, 100)}%, 50%)"
 					/>
 				{/if}
 				{#if d.value < 0}
@@ -68,8 +66,7 @@
 						y={yScale(d.key)}
 						width={xScale(0) - xScale(d.value)}
 						height={yScale.bandwidth() * 0.8}
-						fill="rgb(255,0,0)"
-						fill-opacity={(d.value / min) + 0.2}
+						fill="hsl(355, {mapRange(d.value / min, 0, 1, 25, 100)}%, 50%)"
 					/>
 				{/if}
 			{/if}
