@@ -5,7 +5,7 @@ import revenueCSV from "./data/revenue.csv?url";
 import employeesCSV from "./data/employees.csv?url";
 import incidencesCSV from "./data/incidences.csv?url";
 import regulationsCSV from "./data/regulations.csv?url";
-import regulationsIndexCSV from "./data/regulations_index.csv?url";
+import regulationsIndexCSV from "./data/regulations-index.csv?url";
 
 const localeDe = timeFormatLocale(localeDefDe);
 

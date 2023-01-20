@@ -55,7 +55,7 @@
 	</defs>
 
 
-	{#each Object.entries(states) as [state, { valueFrac, regulationsTotal }]}
+	{#each Object.entries(states) as [state, { valueFrac, regulationsIndex }]}
 		<use
 			class="state"
 			class:data-available={!isNullish(valueFrac)}
@@ -68,9 +68,11 @@
 		/>
 
 		<g clip-path="url(#map-state-clip-{state}-{id})">
-			{#each { length: !isNullish(regulationsTotal) ? Math.floor(regulationsTotal / ranges.regulationsTotal.max * 4) : 0 } as _, i}
-				<use class="regulation-border" href="#map-state-path-{state}-{id}" style:--index={i} />
-			{/each}
+			<use
+				class="regulation-border"
+				href="#map-state-path-{state}-{id}"
+				style:--frac={!isNullish(regulationsIndex) ? regulationsIndex / ranges.regulationsIndex.max : 0}
+			/>
 		</g>
 	{/each}
 
@@ -107,7 +109,6 @@
 		stroke-linejoin: round;
 		--stroke-width-outline: 1px;
 		--stroke-width-selected: 2px;
-		--stroke-width-regulation: 4px;
 		filter: drop-shadow(0 0 32px rgba(0, 0, 0, 0.1));
 	}
 
@@ -134,10 +135,8 @@
 
 	svg use.regulation-border {
 		pointer-events: none;
-		stroke: var(--c-covid);
-		opacity: 0.5;
-		/* multiply by 2 because we clip off outside half of the stroke */
-		stroke-width: calc(var(--stroke-width-regulation) * 2 * (var(--index) + 1) + var(--stroke-width-outline) / 2);
+		stroke: hsl(var(--c-covid-hsl), var(--frac));
+		stroke-width: calc(var(--frac) * 20px + var(--stroke-width-outline) / 2);
 	}
 
 	svg use.selected {
