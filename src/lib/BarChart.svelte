@@ -12,14 +12,15 @@
 	const innerWidth = width - margin.left - margin.right;
 
 	$: xDomain = data.map((d) => d.key);
-	$: yDomain = data.map((d) => d.value);
 	$: min = Math.min(...data.map(({ value }) => value));
 	$: max = Math.max(...data.map(({ value }) => value));
+	// $: totalMin = Math.floor(statesForVariableAtDate.ranges.value.min);
+	// $: totalMax = Math.ceil(statesForVariableAtDate.ranges.value.max);
 
 
 	$: yScale = scaleBand().domain(xDomain).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
-		.domain([Math.min.apply(null, yDomain) - 1.99, Math.max.apply(null, yDomain) + 1.99])
+		.domain([Math.min(min - 1.99, 0), max + 1.99])
 		.range([0, innerWidth]);
 </script>
 
