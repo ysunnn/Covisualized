@@ -44,3 +44,24 @@ export const getStateName = (id) => {
 		th: "Thuringia",
 	}[id];
 };
+
+export const getLabelName = (id) => {
+	return {
+		bw: "Ba.-Wü.",
+		by: "Bavaria",
+		be: "Berlin",
+		bb: "Brandenburg",
+		hb: "Bremen",
+		hh: "Hamburg",
+		he: "Hesse",
+		mv: "Meck.-Vorp.",
+		ni: "Lower Saxony",
+		nw: "NRW",
+		rp: "Rhineland-P.",
+		sl: "Saarland",
+		sn: "Saxony",
+		st: "Saxony-Anhalt",
+		sh: "Schles.-Hol.",
+		th: "Thuringia",
+	}[id];
+};

@@ -1,26 +1,24 @@
 <script>
 	import { scaleBand, scaleLinear } from "d3-scale";
-	import { mapRange } from "../util";
+	import { mapRange, getLabelName } from "../util";
 
 	export let data;
+	export let min;
+	export let max;
 
 	const width = 600;
 	const height = 400;
 
-	const margin = { top: 10, right: 20, bottom: 20, left: 30 };
+	const margin = { top: 10, right: 20, bottom: 20, left: 110 };
 	const innerHeight = height - margin.top - margin.bottom;
 	const innerWidth = width - margin.left - margin.right;
 
 	$: xDomain = data.map((d) => d.key);
-	$: min = Math.min(...data.map(({ value }) => value));
-	$: max = Math.max(...data.map(({ value }) => value));
-	// $: totalMin = Math.floor(statesForVariableAtDate.ranges.value.min);
-	// $: totalMax = Math.ceil(statesForVariableAtDate.ranges.value.max);
-
+	$: console.log(min, max);
 
 	$: yScale = scaleBand().domain(xDomain).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
-		.domain([Math.min(min - 1.99, 0), max + 1.99])
+		.domain([min, max])
 		.range([0, innerWidth]);
 </script>
 
@@ -37,11 +35,11 @@
 		{#each data as d}
 			<text
 				text-anchor="end"
-				x="-8"
+				x="-4"
 				dy=".28em"
 				y={yScale(d.key) + yScale.bandwidth() / 2}
 			>
-				{d.key}
+				{getLabelName(d.key)}
 			</text>
 			{#if min > 0}
 				<rect
