@@ -14,8 +14,8 @@
 	} from "d3";
 	import TooltipPoint from "./TooltipPoint.svelte";
 	import Tooltip from "./Tooltip.svelte";
-	import { data, filter, statesForVariableAtDate } from "../stores.js";
-	import { isNullish } from "../util.js";
+	import { data, filter, statesForVariableAtDate } from "../../stores.js";
+	import { isNullish } from "../../util.js";
 
 	let el;
 	let dataGermany, dataState;

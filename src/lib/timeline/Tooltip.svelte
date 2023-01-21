@@ -1,7 +1,7 @@
 <script>
 	import { format } from "d3";
-	import { filter } from "../stores.js";
-	import { getStateName, isNullish } from "../util.js";
+	import { filter } from "../../stores.js";
+	import { getStateName, isNullish } from "../../util.js";
 
 	export let date;
 	export let valueGermany;

@@ -1,7 +1,7 @@
 <script>
 	import Variables from "../lib/Variables.svelte";
 	import Map from "../lib/map/Map.svelte";
-	import Timeline from "../lib/Timeline.svelte";
+	import Timeline from "../lib/timeline/Timeline.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
 	import Details from "../lib/details/Details.svelte";

@@ -1,5 +1,5 @@
 <script>
-	import { filter } from "../stores.js";
+	import { filter } from "../../stores.js";
 
 	export let tooltipCoords;
 </script>
