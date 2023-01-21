@@ -28,9 +28,10 @@
 
 <style>
 	.legend {
-		height: 10em;
+		height: 100%;
 		display: flex;
 	}
+
 	.scale {
 		width: 1em;
 		height: 100%;
