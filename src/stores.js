@@ -1,6 +1,6 @@
 import { readable, writable, derived } from "svelte/store";
-import { parseRevenue, parseEmployees, parseIncidences, parseRegulations } from "./assets/data";
-import { stateIDs } from "./util";
+import { parseRevenue, parseEmployees, parseIncidences, parseRegulations, parseRegulationsIndex } from "./assets/data";
+import { isNullish, stateIDs } from "./util";
 
 const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
@@ -19,6 +19,7 @@ const parseData = async () => {
 	await addVariable("employees", parseEmployees);
 	await addVariable("incidences", parseIncidences);
 	await addVariable("regulations", parseRegulations);
+	await addVariable("regulationsIndex", parseRegulationsIndex);
 
 	return data;
 };
@@ -46,16 +47,19 @@ export const data = readable({}, (set) => {
 export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]) => {
 	const allValuesForVariable = Object.values($data).flatMap(states => {
 		return Object.values(states).flatMap(variables => variables[$filter.variable]);
-	}).filter(value => value);
+	}).filter(value => !isNullish(value));
+	const allRegulationsIndices = Object.values($data).flatMap(states => {
+		return Object.values(states).flatMap(variables => variables.regulationsIndex);
+	}).filter(value => !isNullish(value));
 
 	const ranges = {
 		value: {
 			min: Math.min(...allValuesForVariable),
 			max: Math.max(...allValuesForVariable),
 		},
-		regulationsTotal: {
+		regulationsIndex: {
 			min: 0,
-			max: 32, // 16 regulations * max weight 2
+			max: Math.max(...allRegulationsIndices), // dataset actually implies a fixed 100 here
 		},
 	};
 
@@ -67,7 +71,7 @@ export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]
 			return [stateID, {
 				value,
 				valueFrac: value && (value - ranges.value.min) / (ranges.value.max - ranges.value.min),
-				regulationsTotal: variables?.regulations?.total,
+				regulationsIndex: variables?.regulationsIndex,
 			}];
 		})),
 	};
