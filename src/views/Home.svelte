@@ -36,6 +36,7 @@
 		<DevOverlay />
 	{/if}
 </main>
+<Legend />
 
 <style>
 	main {
