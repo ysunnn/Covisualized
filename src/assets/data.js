@@ -79,7 +79,9 @@ export async function parseIncidences() {
 export async function parseRegulations() {
 	const data = await csv(regulationsCSV);
 	return data.map(({ year, month, state, ...rest }) => {
-		const regulations = Object.fromEntries(Object.entries(rest).map(([key, value]) => [key, Number(value)]));
+		const regulations = Object.fromEntries(
+			Object.entries(rest).map(([key, value]) => [key, Math.floor(Number(value))]),
+		);
 		return {
 			date: localeDe.utcParse("%Y %m")(`${year} ${month}`).toISOString().slice(0, 7),
 			state: stateNameToID(state),

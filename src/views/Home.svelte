@@ -4,7 +4,7 @@
 	import Timeline from "../lib/Timeline.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
-	import Details from "../lib/Details.svelte";
+	import Details from "../lib/details/Details.svelte";
 
 	let devOverlayOpen = false;
 </script>

@@ -1,8 +1,9 @@
 <script>
 	import { onMount } from "svelte";
-	import { statesForVariableAtDate } from "../../stores";
+	import { dataAtDate, statesForVariableAtDate } from "../../stores";
 
 	$: stores = {
+		$dataAtDate,
 		$statesForVariableAtDate,
 	};
 
