@@ -97,8 +97,8 @@
 
 	.squareNoData {
 		display: inline-block;
-		height: 15px;
-		width: 15px;
+		height: 1em;
+		width: 1em;
 		background-image: linear-gradient(135deg,
 		white 0%,
 		white 25%,
