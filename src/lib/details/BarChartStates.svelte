@@ -2,6 +2,16 @@
 	import { extent } from "d3";
 	import { data, filter, statesForVariableAtDate } from "../../stores";
 	import BarChart from "../BarChart.svelte";
+	import BarChartVertically from "./BarChartVertically.svelte";
+	import Tabs from "./Tabs.svelte";
+
+	const tabItems = [
+		{ label: "Details", value: 1 },
+		{ label: "National Comparison", value: 2 },
+		{ label: "Yearly Difference", value: 3 },
+	];
+
+	let currentTab;
 
 	$: minMaxDiff = Math.max(...Object.values($data).map(states => {
 		return extent(Object.entries(states)
@@ -19,4 +29,22 @@
 
 </script>
 
-<BarChart data={chartData} min={-minMaxDiff * 100} max={minMaxDiff * 100} />
+<Tabs bind:activeTabValue={currentTab} items={tabItems} />
+{#if 1 === currentTab}
+	<div class="charts">
+		<h3>{tabItems[currentTab - 1].label}</h3>
+		<p> Construction Place </p>
+	</div>
+{/if}
+{#if 2 === currentTab}
+	<div class="charts">
+		<h3>{tabItems[currentTab - 1].label}</h3>
+		<BarChart data={chartData} min={-minMaxDiff * 100} max={minMaxDiff * 100} />
+	</div>
+{/if}
+{#if 3 === currentTab}
+	<div class="charts">
+		<h3>{tabItems[currentTab - 1].label}</h3>
+		<BarChartVertically data={chartData} min={-minMaxDiff * 100} max={minMaxDiff * 100} />
+	</div>
+{/if}

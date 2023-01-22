@@ -13,11 +13,7 @@
 	const innerHeight = height - margin.top - margin.bottom;
 	const innerWidth = width - margin.left - margin.right;
 
-	$: yScale = scaleBand()
-		.domain(data.map((d) => d.key))
-		.range([0, innerHeight])
-		.padding(0.1);
-
+	$: yScale = scaleBand().domain(data.map((d) => d.key)).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
 		.domain([min, max])
 		.range([0, innerWidth])
