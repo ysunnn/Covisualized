@@ -2,19 +2,26 @@
 	import { getValueColorCSS } from "./Map.svelte";
 	import { labelTitle, mapRange, round } from "../util";
 	import { filter, statesForVariableAtDate } from "../stores";
-	import { format } from "d3";
+	import { format, precisionFixed } from "d3";
 
 	function f (v) {
-		if (v > 1) {
-			const formatSI = format(".2s");
-			return formatSI(v);
-		} else return v;
+		if ($filter.variable === "incidences") {
+			if (v > 1) {
+				const formatSI = format(".2s");
+				return formatSI(v);
+			}
+			return v;
+		} else {
+			const p = Math.max(0, precisionFixed(0.05) - 2);
+			const formatPercent = format("." + p + "%");
+			return formatPercent(v);
+		}
 	}
 	// const f = format(".2s");
 
 	$: ({ variable } = $filter);
 	$: ({ ranges: { value: { min, max } } } = $statesForVariableAtDate);
-	$: yAxisLabelTitle = labelTitle.find(l => l.id === $filter.variable).text;
+	$: yAxisLabelTitle = labelTitle.find(l => l.id === $filter.variable).title;
 	$: yAxisLabelNote = labelTitle.find(l => l.id === $filter.variable).note;
 </script>
 
@@ -23,13 +30,18 @@
 		<span class="titleText"> {yAxisLabelTitle} </span>
 		<br />
 		<span class="titleNote">{yAxisLabelNote} </span>
+		<br />
+		<br />
+		<span class="squareNoData" /> No data
 	</div>
+
 	<div
 		class="scale"
 		style:--min={getValueColorCSS(1.0, variable)}
 		style:--mid={getValueColorCSS(0.5, variable)}
 		style:--max={getValueColorCSS(0.0, variable)}
 	/>
+
 	<div class="labels">
 		<span>
 			{f(round(max, 1))}
@@ -51,7 +63,7 @@
 
 <style>
 	.title {
-		width: 6em;
+		width: 6.5em;
 		margin-right: 0.5em;
 	}
 
@@ -81,5 +93,21 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+	}
+
+	.squareNoData {
+		display: inline-block;
+		height: 15px;
+		width: 15px;
+		background-image: linear-gradient(135deg,
+		white 0%,
+		white 25%,
+		#f2f2f2 25%,
+		#f2f2f2  50%,
+		white  50%,
+		white  75%,
+		#f2f2f2  75%,
+		#f2f2f2  100%);
+		border: 1px solid white;
 	}
 </style>

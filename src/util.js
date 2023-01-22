@@ -24,9 +24,9 @@ export const stateIDs = [
 ];
 
 export const labelTitle = [
-	{ id: "revenue", text: "Revenue (2015 = 1.0)", note: "Relative values based on 2015" },
-	{ id: "employees", text: "Employees (2015 = 1.0)", note: "Relative values based on 2015" },
-	{ id: "incidences", text: "Avg. 7 day incidence", note: "Based on cumulative number of reports" },
+	{ id: "revenue", title: "Revenue", text: "Revenue (2015 = 1.0)", note: "Relative values based on 2015 (2015 = 100%)" },
+	{ id: "employees", title: "Employees", text: "Employees (2015 = 1.0)", note: "Relative values based on 2015 (2015 = 100%)" },
+	{ id: "incidences", title: "Avg. 7 day incidence", text: "Average 7 day incidence", note: "Based on cumulative number of reported cases" },
 ];
 
 export const getStateFlag = (id) => {
