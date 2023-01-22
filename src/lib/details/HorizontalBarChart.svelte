@@ -1,6 +1,6 @@
 <script>
 	import { scaleBand, scaleLinear } from "d3-scale";
-	import { mapRange, getStateNameShort } from "../util";
+	import { mapRange, getStateNameShort } from "../../util";
 
 	export let data;
 	export let min;
@@ -13,7 +13,11 @@
 	const innerHeight = height - margin.top - margin.bottom;
 	const innerWidth = width - margin.left - margin.right;
 
-	$: yScale = scaleBand().domain(data.map((d) => d.key)).range([0, innerHeight]).padding(0.1);
+	$: yScale = scaleBand()
+		.domain(data.map((d) => d.key))
+		.range([0, innerHeight])
+		.padding(0.1);
+
 	$: xScale = scaleLinear()
 		.domain([min, max])
 		.range([0, innerWidth])
@@ -24,7 +28,7 @@
 	<g transform={`translate(${margin.left},${margin.top})`}>
 		{#each xScale.ticks() as tickValue}
 			<g transform={`translate(${xScale(tickValue)},0)`}>
-				<line y2={innerHeight} stroke="black" />
+				<line y2={innerHeight} stroke="grey" />
 				<text text-anchor="middle" dy=".71em" y={innerHeight + 3}>
 					{tickValue}
 				</text>
