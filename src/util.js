@@ -23,6 +23,12 @@ export const stateIDs = [
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
 ];
 
+export const labelTitle = [
+	{ id: "revenue", text: "Revenue (2015 = 1.0)", note: "Relative values based on 2015" },
+	{ id: "employees", text: "Employees (2015 = 1.0)", note: "Relative values based on 2015" },
+	{ id: "incidences", text: "Avg. 7 day incidence", note: "Based on cumulative number of reports" },
+];
+
 export const getStateFlag = (id) => {
 	return flags[id];
 };
