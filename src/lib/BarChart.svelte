@@ -7,7 +7,7 @@
 	export let max;
 
 	const width = 600;
-	const height = 400;
+	const height = 300;
 
 	const margin = { top: 10, right: 20, bottom: 20, left: 110 };
 	const innerHeight = height - margin.top - margin.bottom;
@@ -19,7 +19,8 @@
 	$: yScale = scaleBand().domain(xDomain).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
 		.domain([min, max])
-		.range([0, innerWidth]);
+		.range([0, innerWidth])
+		.nice();
 </script>
 
 <svg {width} {height}>
