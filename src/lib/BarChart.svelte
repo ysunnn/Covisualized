@@ -1,6 +1,6 @@
 <script>
 	import { scaleBand, scaleLinear } from "d3-scale";
-	import { mapRange, getLabelName } from "../util";
+	import { mapRange, getStateNameShort } from "../util";
 
 	export let data;
 	export let min;
@@ -13,10 +13,11 @@
 	const innerHeight = height - margin.top - margin.bottom;
 	const innerWidth = width - margin.left - margin.right;
 
-	$: xDomain = data.map((d) => d.key);
-	$: console.log(min, max);
+	$: yScale = scaleBand()
+		.domain(data.map((d) => d.key))
+		.range([0, innerHeight])
+		.padding(0.1);
 
-	$: yScale = scaleBand().domain(xDomain).range([0, innerHeight]).padding(0.1);
 	$: xScale = scaleLinear()
 		.domain([min, max])
 		.range([0, innerWidth])
@@ -40,35 +41,25 @@
 				dy=".28em"
 				y={yScale(d.key) + yScale.bandwidth() / 2}
 			>
-				{getLabelName(d.key)}
+				{getStateNameShort(d.key)}
 			</text>
-			{#if min > 0}
+			{#if d.value >= 0}
 				<rect
-					x="0"
+					x={xScale(0)}
 					y={yScale(d.key)}
-					width={xScale(d.value)}
+					width={xScale(d.value) - xScale(0)}
 					height={yScale.bandwidth() * 0.8}
-					fill="hsl(207, {mapRange(d.value / max, 0, 1, 25, 100)}%, 50%)"
+					fill="hsl(214, {mapRange(d.value / max, 0, 1, 25, 100)}%, 50%)"
 				/>
-			{:else}
-				{#if d.value >= 0}
-					<rect
-						x={xScale(0)}
-						y={yScale(d.key)}
-						width={xScale(d.value) - xScale(0)}
-						height={yScale.bandwidth() * 0.8}
-						fill="hsl(214, {mapRange(d.value / max, 0, 1, 25, 100)}%, 50%)"
-					/>
-				{/if}
-				{#if d.value < 0}
-					<rect
-						x={xScale(d.value)}
-						y={yScale(d.key)}
-						width={xScale(0) - xScale(d.value)}
-						height={yScale.bandwidth() * 0.8}
-						fill="hsl(355, {mapRange(d.value / min, 0, 1, 25, 100)}%, 50%)"
-					/>
-				{/if}
+			{/if}
+			{#if d.value < 0}
+				<rect
+					x={xScale(d.value)}
+					y={yScale(d.key)}
+					width={xScale(0) - xScale(d.value)}
+					height={yScale.bandwidth() * 0.8}
+					fill="hsl(355, {mapRange(d.value / min, 0, 1, 25, 100)}%, 50%)"
+				/>
 			{/if}
 		{/each}
 	</g>

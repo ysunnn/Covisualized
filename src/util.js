@@ -45,7 +45,7 @@ export const getStateName = (id) => {
 	}[id];
 };
 
-export const getLabelName = (id) => {
+export const getStateNameShort = (id) => {
 	return {
 		bw: "Ba.-Wü.",
 		by: "Bavaria",
