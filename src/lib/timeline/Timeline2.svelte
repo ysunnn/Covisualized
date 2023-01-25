@@ -12,6 +12,7 @@
 	import Axis from "./Axis.svelte";
 	import Scrubber from "./Scrubber.svelte";
 	import ClipIndicators from "./ClipIndicators.svelte";
+
 	import Tooltip from "../Tooltip.svelte";
 	import TooltipContent from "./TooltipContent.svelte";
 
