@@ -1,11 +1,12 @@
 <script>
 	import Variables from "../lib/Variables.svelte";
 	import Map from "../lib/map/Map.svelte";
-	import Timeline from "../lib/timeline/Timeline.svelte";
+	import PlayButton from "../lib/PlayButton.svelte";
+	import Timeline2 from "../lib/timeline/Timeline2.svelte";
+	import Details from "../lib/details/Details.svelte";
+
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
-	import Details from "../lib/details/Details.svelte";
-	import PlayButton from "../lib/PlayButton.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -21,7 +22,7 @@
 		<PlayButton />
 	</div>
 	<div class="timeline">
-		<Timeline />
+		<Timeline2 />
 	</div>
 	<div class="details">
 		<Details />
@@ -45,7 +46,7 @@
 			"playbutton details"
 			"timeline   timeline";
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto minmax(0, 1fr) auto auto;
+		grid-template-rows: auto minmax(0, 1fr) auto 20vh;
 		gap: 1em;
 
 		height: 100%;
@@ -68,8 +69,6 @@
 
 	.timeline {
 		grid-area: timeline;
-		overflow: hidden;
-		height: 220px; /* TODO: Make responsive. */
 		justify-content: flex-end;
 	}
 
