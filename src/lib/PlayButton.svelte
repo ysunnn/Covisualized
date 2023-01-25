@@ -1,0 +1,26 @@
+<script>
+	import { availableDatesForVariable, filter, playback } from "../stores";
+	import Button from "../lib/Button.svelte";
+
+	$: icon = outOfBounds ? "refresh" : $playback.playing ? "pause-circle" : "play-circle";
+	$: index = $availableDatesForVariable.indexOf($filter.date);
+	$: outOfBounds = Boolean(index === -1 || !$availableDatesForVariable[index + 1]);
+
+	function reset() {
+		$filter.date = $availableDatesForVariable[0];
+	}
+	function togglePlayback() {
+		$playback.playing = !$playback.playing;
+	}
+
+	function onClick() {
+		if (outOfBounds) reset();
+		else togglePlayback();
+	}
+</script>
+
+<Button
+	{icon}
+	variant="outline"
+	on:click={onClick}
+/>

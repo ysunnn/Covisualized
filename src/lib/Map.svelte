@@ -1,6 +1,6 @@
 <script>
 	import paths from "../assets/map-germany"; // contains SVG path coordinates for each state
-	import { statesForVariableAtDate, filter } from "../stores";
+	import { statesForVariableAtDate, filter, playback } from "../stores";
 	import { getUID, stateIDs, isNullish, mapRange } from "../util";
 
 	const id = getUID();
@@ -19,7 +19,13 @@
 	})();
 </script>
 
-<svg viewBox="0 0 1000 1360" fill="none" class={variable}>
+<svg
+	viewBox="0 0 1000 1360"
+	fill="none"
+	class={variable}
+	style:--transition-duration="{$playback.playing ? $playback.stepDuration : 300}ms"
+	style:--transition-timing-function={$playback.playing ? "linear" : "ease"}
+>
 	<defs>
 		<pattern
 			class="no-data-pattern"
@@ -113,7 +119,7 @@
 	}
 
 	svg use.state {
-		transition: fill 300ms ease;
+		transition: fill var(--transition-duration) var(--transition-timing-function);
 	}
 	svg use.state.data-available {
 		fill: hsl(var(--c-primary-h), var(--c-primary-s), calc(100% * var(--lightness)));
@@ -137,6 +143,9 @@
 		pointer-events: none;
 		stroke: hsl(var(--c-covid-hsl), var(--frac));
 		stroke-width: calc(var(--frac) * 20px + var(--stroke-width-outline) / 2);
+
+		transition: var(--transition-duration) var(--transition-timing-function);
+		transition-property: stroke, stroke-width;
 	}
 
 	svg use.selected {
