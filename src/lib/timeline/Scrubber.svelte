@@ -25,15 +25,13 @@
 	style:--width="{width}px"
 	style:--width-raw={width}
 >
-	{#if !isNullish(x) || !isNullish(y)}
-		{#if style === "bar"}
-			<div class="overlay" />
-			<div class="bar">
-				{@html barHeadSVG}
-			</div>
-		{:else if style === "dot"}
-			<div class="dot" />
-		{/if}
+	{#if style === "bar" && !isNullish(x)}
+		<div class="overlay" />
+		<div class="bar">
+			{@html barHeadSVG}
+		</div>
+	{:else if style === "dot" && !isNullish(x) && !isNullish(y)}
+		<div class="dot" />
 	{/if}
 </div>
 
@@ -104,7 +102,7 @@
 		transition: 150ms ease;
 		transition-property: opacity /*, transform */;
 	}
-	.scrubber.moving .bar {
+	.scrubber.moving .dot {
 		transition-property: opacity;
 	}
 	.scrubber:not(.visible) .dot {

@@ -30,14 +30,13 @@
 <style>
 	svg {
 		display: block;
-		width: 100%;
-		height: 100%;
+		position: absolute;
+		inset: 0;
 	}
 	svg path {
 		stroke: var(--color);
 		stroke-width: 4px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
-		cursor: auto;
 	}
 </style>

@@ -1,3 +1,5 @@
+import { format } from "d3";
+
 import flags from "./assets/flags/index.js";
 
 // Returns a numeric id unique to this project only.
@@ -42,6 +44,7 @@ export const getStateName = (id) => {
 		st: "Saxony-Anhalt",
 		sh: "Schleswig-Holstein",
 		th: "Thuringia",
+		de: "Germany",
 	}[id];
 };
 
@@ -65,3 +68,10 @@ export const getStateNameShort = (id) => {
 		th: "Thuringia",
 	}[id];
 };
+
+const formatters = {
+	revenue: [format(".1%"), format(".0%")],
+	employees: [format(".1%"), format(".0%")],
+	incidences: [format(",.0f"), format(".2s")],
+};
+export const formatValue = (value, type, compact = false) => formatters[type][Number(compact)]?.(value);

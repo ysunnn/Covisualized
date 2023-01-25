@@ -2,52 +2,52 @@
 	import { onMount, onDestroy } from "svelte";
 	import {
 		utcParse, scaleLinear, scaleUtc, select,
-		extent, timeFormat, format, precisionFixed,
-		zoom, pointer, bisector,
+		extent, timeFormat, zoom, pointer, bisector,
 	} from "d3";
 
-	import { data, filter } from "../../stores.js";
+	import { data, filter, statesForVariableAtDate } from "../../stores.js";
+	import { formatValue } from "../../util.js";
 
 	import Graph from "./Graph.svelte";
 	import Axis from "./Axis.svelte";
 	import Scrubber from "./Scrubber.svelte";
 	import ClipIndicators from "./ClipIndicators.svelte";
+	import Tooltip from "../Tooltip.svelte";
+	import TooltipContent from "./TooltipContent.svelte";
 
 	const graph = { el: null, width: null, height: null };
 
-	$: dataGermany = Object.entries($data).map(([date, states]) => ({
-		dateString: date,
-		date: utcParse("%Y-%m")(date),
-		value: states["de"][$filter.variable],
-	}));
+	$: graphData = (() => {
+		const timePoints = Object.entries($data).map(([date, states]) => ({
+			dateString: date,
+			date: utcParse("%Y-%m")(date),
+			states,
+		}));
+		return Object.fromEntries(["de", $filter.state]
+			.filter(stateID => stateID)
+			.map(stateID => [
+				(stateID === "de" ? "de" : "state"),
+				timePoints.map(({ dateString, date, states }) => ({
+					dateString,
+					date,
+					value: states?.[stateID]?.[$filter.variable],
+				})),
+			]));
+	})();
 
-	$: yearsCount = new Set(dataGermany.map(({ date: date }) => date.getFullYear())).size;
+	$: yearsCount = new Set(graphData.de.map(({ date: date }) => date.getFullYear())).size;
 
 	$: color = ($filter.variable === "incidences") ? "covid" : "primary";
 
-	// TODO: Extract to util.js
-	const valueFormatter = (v) => {
-		if ($filter.variable === "incidences") {
-			if (v > 1) {
-				const formatSI = format(".2s");
-				return formatSI(v);
-			}
-			return v;
-		} else {
-			const p = Math.max(0, precisionFixed(0.05) - 2);
-			const formatPercent = format("." + p + "%");
-			return formatPercent(v);
-		}
-	};
-
 	$: xScale = (() => {
 		const scale = scaleUtc()
-			.domain(extent(dataGermany, d => d.date))
+			.domain(extent(graphData.de, d => d.date))
 			.range([0, graph.width]);
 		return zoomTransform ? zoomTransform.rescaleX(scale) : scale;
 	})();
+	$: valueRange = $statesForVariableAtDate.ranges.value;
 	$: yScale = scaleLinear()
-		.domain(extent(dataGermany, data => data.value))
+		.domain([valueRange.min, valueRange.max])
 		.range([graph.height, 0])
 		.nice();
 
@@ -86,24 +86,34 @@
 		zoomBehavior.on("zoom", null);
 	});
 
-	let hoverPos = [null, null];
-	$: selectedX = xScale(dataGermany.find(({ dateString }) => $filter.date === dateString)?.date);
+	let hoverPos = [null, { de: null, state: null }];
+	let hoverIndex = -1;
+	$: selectedX = xScale(graphData.de.find(({ dateString }) => $filter.date === dateString)?.date);
 	const pointerEventToDataIndex = (event) => {
 		const [pointerX] = pointer(event);
 		const date = xScale.invert(pointerX);
-		return bisector(d => d.date).center(dataGermany, date);
+		return bisector(d => d.date).center(graphData.de, date);
 	};
 	const onPointermove = (event) => {
 		if (!event.isPrimary) return;
-		const index = pointerEventToDataIndex(event);
-		hoverPos = [xScale(dataGermany[index]?.date), yScale(dataGermany[index]?.value)];
+		hoverIndex = pointerEventToDataIndex(event);
+		hoverPos = [
+			xScale(graphData.de[hoverIndex]?.date),
+			{
+				de: yScale(graphData.de[hoverIndex]?.value),
+				state: graphData.state ? yScale(graphData.state[hoverIndex]?.value) : null,
+			},
+		];
 	};
 	const onPointerover = () => hovering = true;
 	const onPointerleave = () => hovering = false;
 	const onClick = (event) => {
 		const index = pointerEventToDataIndex(event);
-		$filter.date = dataGermany[index]?.dateString;
+		$filter.date = graphData.de[index]?.dateString;
 	};
+
+	$: tooltipData = Object.entries(graphData)
+		.map(([type, timePoints]) => [type, timePoints[hoverIndex]]);
 </script>
 
 <div
@@ -136,7 +146,7 @@
 			scale={yScale}
 			type="left"
 			ticks={5}
-			tickformat={valueFormatter}
+			tickformat={(value) => formatValue(value, $filter.variable, true)}
 			gridSize={graph.width}
 		/>
 	</div>
@@ -151,27 +161,53 @@
 		on:pointerleave={onPointerleave}
 		on:click={onClick}
 	>
-		<Graph
-			data={dataGermany}
-			{xScale} {yScale}
-			width={graph.width}
-			height={graph.height}
-			{color}
-		/>
-		<Scrubber
-			x={selectedX}
-			style="bar"
-			{moving}
-		/>
-		<Scrubber
-			x={hoverPos[0]}
-			y={hoverPos[1]}
-			style="dot"
-			{color}
-			visible={hovering && !moving}
-			{moving}
-		/>
-		<ClipIndicators left={contentClipped.left} right={contentClipped.right} />
+		<Tooltip placement="right" followCursor hideOnClick={false} arrow={false}>
+			<TooltipContent
+				slot="content"
+				data={tooltipData}
+				colors={{ de: color, state: "state" }}
+			/>
+			<Graph
+				data={graphData.de}
+				{xScale} {yScale}
+				width={graph.width}
+				height={graph.height}
+				{color}
+			/>
+			{#if graphData.state}
+				<Graph
+					data={graphData.state}
+					{xScale} {yScale}
+					width={graph.width}
+					height={graph.height}
+					color="state"
+				/>
+			{/if}
+			<Scrubber
+				x={selectedX}
+				style="bar"
+				{moving}
+			/>
+			<Scrubber
+				x={hoverPos[0]}
+				y={hoverPos[1].de}
+				style="dot"
+				{color}
+				visible={hovering && !moving}
+				{moving}
+			/>
+			{#if graphData.state}
+				<Scrubber
+					x={hoverPos[0]}
+					y={hoverPos[1].state}
+					style="dot"
+					color="state"
+					visible={hovering && !moving}
+					{moving}
+				/>
+			{/if}
+			<ClipIndicators left={contentClipped.left} right={contentClipped.right} />
+		</Tooltip>
 	</div>
 </div>
 
@@ -228,6 +264,5 @@
 
 	.graph {
 		position: relative;
-		overflow: hidden;
 	}
 </style>

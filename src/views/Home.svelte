@@ -2,7 +2,7 @@
 	import Variables from "../lib/Variables.svelte";
 	import Map from "../lib/map/Map.svelte";
 	import PlayButton from "../lib/PlayButton.svelte";
-	import Timeline2 from "../lib/timeline/Timeline2.svelte";
+	import Timeline from "../lib/timeline/Timeline2.svelte";
 	import Details from "../lib/details/Details.svelte";
 
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
@@ -22,7 +22,7 @@
 		<PlayButton />
 	</div>
 	<div class="timeline">
-		<Timeline2 />
+		<Timeline />
 	</div>
 	<div class="details">
 		<Details />
