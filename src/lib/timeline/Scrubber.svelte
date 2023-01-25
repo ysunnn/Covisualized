@@ -40,7 +40,6 @@
 		position: absolute;
 		inset: 0;
 		pointer-events: none;
-		contain: strict;
 	}
 
 	.dot, .bar {

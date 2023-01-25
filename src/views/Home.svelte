@@ -69,7 +69,6 @@
 
 	.timeline {
 		grid-area: timeline;
-		justify-content: flex-end;
 	}
 
 	.details {
