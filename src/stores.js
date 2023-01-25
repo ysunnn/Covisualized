@@ -25,6 +25,7 @@ const parseData = async () => {
 };
 
 export const filter = writable({ date: null, state: null, variable: "revenue" });
+export const playback = writable({ playing: false, stepDuration: 1200 });
 
 export let DEBUGSetData, DEBUGReparseData;
 export const data = readable({}, (set) => {
@@ -79,4 +80,11 @@ export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]
 			}];
 		})),
 	};
+});
+
+export const availableDatesForVariable = derived([data, filter], ([$data, $filter]) => {
+	return Object.entries($data)
+		.filter(([, states]) => !isNullish(states?.de[$filter.variable]))
+		.map(([date]) => date)
+		.sort((a, b) => a < b ? -1 : 1);
 });

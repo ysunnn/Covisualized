@@ -5,6 +5,7 @@
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
 	import Details from "../lib/details/Details.svelte";
+	import PlayButton from "../lib/PlayButton.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -16,13 +17,15 @@
 	<div class="map">
 		<Map />
 	</div>
+	<div class="playbutton">
+		<PlayButton />
+	</div>
 	<div class="timeline">
 		<Timeline />
 	</div>
 	<div class="details">
 		<Details />
 	</div>
-
 	<div class="dev-button">
 		<Button on:click={() => devOverlayOpen = !devOverlayOpen} variant="outline">
 			{devOverlayOpen ? "❌" : "🚧"}
@@ -37,11 +40,12 @@
 	main {
 		display: grid;
 		grid-template-areas:
-			"variables variables"
-			"map       details"
-			"timeline  timeline";
+			"variables  variables"
+			"map        details"
+			"playbutton details"
+			"timeline   timeline";
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto minmax(0, 1fr) auto;
+		grid-template-rows: auto minmax(0, 1fr) auto auto;
 		gap: 1em;
 
 		height: 100%;
@@ -67,6 +71,10 @@
 	}
 	.details {
 		grid-area: details;
+	}
+
+	.playbutton {
+		align-items: flex-start;
 	}
 
 	.dev-button {

@@ -5,7 +5,7 @@
 	export let height = size;
 	export let color = "currentColor";
 
-	const icon = import(`../assets/icons/${name}.svg?raw`);
+	$: icon = import(`../assets/icons/${name}.svg?raw`);
 </script>
 <div class="icon" style:width style:height style:color>
 	{#await icon then { default: html }}
