@@ -1,6 +1,6 @@
 <script>
 	import Variables from "../lib/Variables.svelte";
-	import Map from "../lib/Map.svelte";
+	import Map from "../lib/map/Map.svelte";
 	import Timeline from "../lib/Timeline.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
@@ -58,17 +58,21 @@
 
 	.map {
 		grid-area: map;
+		position: relative;
 		justify-content: center;
 	}
+
 	.variables {
 		grid-area: variables;
 	}
+
 	.timeline {
 		grid-area: timeline;
 		overflow: hidden;
 		height: 220px; /* TODO: Make responsive. */
 		justify-content: flex-end;
 	}
+
 	.details {
 		grid-area: details;
 	}

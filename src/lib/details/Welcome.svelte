@@ -4,7 +4,7 @@
 
 <h1>Welcome to <span class="covid">Covi</span>sualiz<span class="covid">ed</span></h1>
 <p>
-	Visualize the impacts of the COVID-19 pandemic on the <strong>hospitality</strong> industry.
+	Visualize the impacts of the COVID-19 regulations on the <strong>hospitality</strong> industry.
 </p>
 <p>
 	The <strong>map</strong> gives an overview of the currently selected variable

@@ -1,5 +1,10 @@
 :root {
-	--c-background: hsl(240, 20%, 96%);
+	--c-background-h: 240;
+	--c-background-s: 20%;
+	--c-background-l: 96%;
+	--c-background-hsl: var(--c-background-h), var(--c-background-s), var(--c-background-l);
+	--c-background: hsl(var(--c-background-hsl));
+	--c-background: hsl(var(--c-background-hsl));
 
 	--c-foreground-h: 266;
 	--c-foreground-s: 35%;

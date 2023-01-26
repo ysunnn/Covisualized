@@ -72,11 +72,13 @@ export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]
 		ranges,
 		states: Object.fromEntries(stateIDs.map(stateID => {
 			const variables = ($data[$filter.date] || {})[stateID];
-			const value = variables && variables[$filter.variable];
+			const value = variables?.[$filter.variable];
+			const regIndex = variables?.regulationsIndex;
 			return [stateID, {
 				value,
 				valueFrac: value && (value - ranges.value.min) / (ranges.value.max - ranges.value.min),
-				regulationsIndex: variables?.regulationsIndex,
+				regulationsIndex: regIndex,
+				regulationsIndexFrac: regIndex && (regIndex - ranges.regulationsIndex.min) / (ranges.regulationsIndex.max - ranges.regulationsIndex.min),
 			}];
 		})),
 	};
