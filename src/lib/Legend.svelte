@@ -1,5 +1,5 @@
 <script>
-	import { getValueColorCSS } from "./Map.svelte";
+	import { getValueColorCSS } from "./map/Map.svelte";
 	import { labelTitle, mapRange, round } from "../util";
 	import { filter, statesForVariableAtDate } from "../stores";
 	import { format, precisionFixed } from "d3";
