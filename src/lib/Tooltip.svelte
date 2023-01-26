@@ -1,75 +1,37 @@
 <script>
-	import { format } from "d3";
-	import { filter } from "../stores.js";
-	import { getStateName, isNullish } from "../util.js";
+	import { onDestroy, onMount } from "svelte";
+	import tippy, { followCursor as followCursorPlugin } from "tippy.js";
+	import "tippy.js/dist/tippy.css";
 
-	export let date;
-	export let valueGermany;
-	export let valueState = null;
-	export let tooltipCoords;
+	/** @type {string | undefined} */
+	export let content;
+	export let placement = "top";
+	export let followCursor = false;
+	export let hideOnClick = true;
+	export let arrow = true;
 
-	function setValueFormat(v) {
-		if (isNullish(v)){
-			return "No Data";
-		} else {
-			const formatRound = format(".5");
-			return formatRound(v);
-		}
-	}
+	let el = null;
+	let contentEl = null;
+	let tippyInstance = null;
+	onMount(() => {
+		tippyInstance = tippy(el, {
+			allowHTML: true,
+			content: $$slots.content ? contentEl : content,
+			placement,
+			followCursor,
+			hideOnClick,
+			arrow,
+			plugins: [followCursorPlugin],
+		});
+	});
+	onDestroy(() => tippyInstance.destroy());
 </script>
 
-<div
-	class="tooltip"
-	style:left="{tooltipCoords.x}px" style:line-height="18px"
->
-	{date}
-	<br />
-	<span class="squareGermany" /> Germany: {setValueFormat(valueGermany)}
-	{#if $filter.state}
-		<br />
-		<span class="squareState" /> {getStateName($filter.state)}: {setValueFormat(valueState)}
+<span class="tooltip" bind:this={el}>
+	<slot />
+	{#if $$slots.content}
+		<div class="tooltip-content" bind:this={contentEl}>
+			<slot name="content" />
+		</div>
 	{/if}
-</div>
-
-<style>
-	.squareGermany {
-		display: inline-block;
-		height: 10px;
-		width: 10px;
-		background-color: var(--c-primary);
-	}
-
-	.squareState {
-		display: inline-block;
-		height: 10px;
-		width: 10px;
-		background-color: #4169E1;
-	}
-
-	.tooltip {
-		z-index: 0;
-		background-color: rgba(0, 0, 0, 0.8);
-		border-radius: 4px;
-		position: relative;
-		font-size: 0.725em;
-		color: white;
-		text-align: center;
-		padding: 0.5em;
-		width: max-content;
-		transform: translateX(-50%);
-	}
-
-	.tooltip:after {
-		content: " ";
-		width: 0;
-		height: 0;
-		position: absolute;
-		right: 0;
-		left: 0;
-		top: 100% ;
-		margin: 0 auto;
-		border-top: 10px solid rgba(0, 0, 0, 0.8);
-		border-left: 10px solid transparent;
-		border-right: 10px solid transparent;
-	}
-</style>
+</span>

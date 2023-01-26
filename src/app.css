@@ -18,23 +18,11 @@
 	--c-primary-hsl: var(--c-primary-h), var(--c-primary-s), var(--c-primary-l);
 	--c-primary: hsl(var(--c-primary-hsl));
 
-	--c-restaurants-h: 220;
-	--c-restaurants-s: 89%;
-	--c-restaurants-l: 50%;
-	--c-restaurants-hsl: var(--c-restaurants-h), var(--c-restaurants-s), var(--c-restaurants-l);
-	--c-restaurants: hsl(var(--c-restaurants-hsl));
-
-	--c-hotels-h: 292;
-	--c-hotels-s: 69%;
-	--c-hotels-l: 45%;
-	--c-hotels-hsl: var(--c-hotels-h), var(--c-hotels-s), var(--c-hotels-l);
-	--c-hotels: hsl(var(--c-hotels-hsl));
-
-	--c-bars-h: 184;
-	--c-bars-s: 45%;
-	--c-bars-l: 50%;
-	--c-bars-hsl: var(--c-bars-h), var(--c-bars-s), var(--c-bars-l);
-	--c-bars: hsl(var(--c-bars-hsl));
+	--c-state-h: 184;
+	--c-state-s: 45%;
+	--c-state-l: 50%;
+	--c-state-hsl: var(--c-state-h), var(--c-state-s), var(--c-state-l);
+	--c-state: hsl(var(--c-state-hsl));
 
 	--c-covid-h: 356;
 	--c-covid-s: 50%;
