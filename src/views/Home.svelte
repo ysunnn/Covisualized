@@ -10,7 +10,6 @@
 
 	let devOverlayOpen = false;
 </script>
-
 <main>
 	<div class="variables">
 		<Variables />

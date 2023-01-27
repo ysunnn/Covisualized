@@ -1,5 +1,5 @@
 import { format } from "d3";
-
+import profiles from "./assets/profiles/index.js";
 import flags from "./assets/flags/index.js";
 
 // Returns a numeric id unique to this project only.
@@ -33,8 +33,12 @@ export const getStateFlag = (id) => {
 	return flags[id];
 };
 
+export const getProfilePicture = (id) => {
+	return profiles[id];
+};
+
 export const getStateName = (id) => {
-	return {
+	  return {
 		bw: "Baden-Württemberg",
 		by: "Bavaria",
 		be: "Berlin",
