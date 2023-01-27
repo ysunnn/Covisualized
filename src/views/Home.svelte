@@ -6,7 +6,7 @@
 	import Details from "../lib/details/Details.svelte";
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
-	import Legend from "../lib/Legend.svelte";
+	import Legend from "../lib/map/Legend.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -61,7 +61,6 @@
 	.map {
 		grid-area: map;
 		position: relative;
-		flex-direction: row;
 		justify-content: center;
 	}
 

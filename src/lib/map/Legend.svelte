@@ -1,8 +1,8 @@
 <script>
-	import { getValueColorCSS } from "./map/Map.svelte";
-	import { labelTitle, mapRange, round } from "../util";
-	import { filter, statesForVariableAtDate } from "../stores";
+	import { labelTitle, mapRange, round } from "../../util.js";
+	import { filter, statesForVariableAtDate } from "../../stores.js";
 	import { format, precisionFixed } from "d3";
+	import { getValueColorCSS } from "./Map.svelte";
 
 	function f (v) {
 		if ($filter.variable === "incidences") {
@@ -17,7 +17,6 @@
 			return formatPercent(v);
 		}
 	}
-	// const f = format(".2s");
 
 	$: ({ variable } = $filter);
 	$: ({ ranges: { value: { min, max } } } = $statesForVariableAtDate);
@@ -78,7 +77,6 @@
 	.legend {
 		height: 20%;
 		display: flex;
-		align-self: flex-end;
 		margin-right: 2em;
 		margin-bottom: 2em;
 	}

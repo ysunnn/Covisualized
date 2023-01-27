@@ -1,3 +1,14 @@
+<script context="module">
+	const MIN_VALUE_LIGHTNESS = 0.9;
+	const MAX_VALUE_LIGHTNESS = 0.2;
+	export const getValueColorCSS = (valueFrac, variable) => {
+		if (isNullish(valueFrac)) return;
+		const color = (variable === "incidences" ? "covid" : "primary");
+		const lightness = mapRange(valueFrac, 0, 1, MIN_VALUE_LIGHTNESS, MAX_VALUE_LIGHTNESS);
+		return `hsl(var(--c-${color}-h), var(--c-${color}-s), calc(${lightness} * 100%))`;
+	};
+</script>
+
 <script>
 	import paths from "../../assets/map-germany"; // contains SVG path coordinates for each state
 	import barOrigins from "../../assets/map-germany-bar-origins";
