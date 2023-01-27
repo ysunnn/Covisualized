@@ -1,13 +1,25 @@
 <script>
 	import { getProfilePicture } from "../util";
 	export let person;
+	let text = "";
+
+	function setText() {
+		if (text === "") {
+			text = person.text;
+		} else {
+			text = "";
+		}
+	}
 </script>
-<div>
-		<h1>{person.name}</h1>
-		<img class="profile_picture"
-				 src={getProfilePicture(person.picture)}
-				 alt="a dancing man." />
-		<p>{person.text}</p>
+<div style="padding: 5px">
+	<h1>{person.name}</h1>
+	<img
+		class="profile_picture"
+		on:mouseenter={setText}
+		on:mouseleave={setText}
+		src={getProfilePicture(person.picture)}
+		alt="a dancing man." />
+	<p>{text}</p>
 </div>
 
 <style>
@@ -20,6 +32,7 @@
 	}
 
 	.profile_picture:hover {
+		height: 8em;
     filter: drop-shadow(0 0 2em #646cffaa);
   }
 </style>

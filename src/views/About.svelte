@@ -8,6 +8,7 @@
 		{ picture: "goodcat", name: "Timy", text: "Timy is a grad student in computer science and a dabbler in artificial intelligence, particularly decision-making and computer vision. He is tasked with managing and analyzing the datasets so that interesting insights can be visualized in the UI." },
 		{ picture: "simon", name: "Simon", text: "Simon is a former physics student and enthusiastic coffee drinker, who likes to play around with data. His role in the team falls in the realms of Mädchen für alles." },
 	];
+
 </script>
 <main>
 	<h1>Meet the team</h1>
