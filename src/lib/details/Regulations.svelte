@@ -133,7 +133,7 @@
 			</div>
 		{/each}
 	{:else}
-		COVID-Regulations <strong>data unavailable</strong>.
+		Granular COVID-Regulations <strong>data unavailable</strong>.
 	{/if}
 </div>
 
@@ -152,6 +152,7 @@
 		border-radius: 6px;
 		border: 1px solid rgb(0, 0, 0, 0.1);
 		box-shadow: 0 4px 16px 0 rgb(0, 0, 0, 0.05);
+		text-align: center;
 	}
 
 	.category {
