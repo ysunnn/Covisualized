@@ -44,12 +44,7 @@
 	}
 
 	.color-indicator.no-data {
-		background-image: repeating-linear-gradient(-45deg,
-			#f2f2f2,
-			#f2f2f2 0.25em,
-			#e8e8e8 0.25em,
-			#e8e8e8 0.5em
-		);
+		background-image: var(--gradient-no-data-legend);
 		background-size: 100%;
 	}
 </style>
