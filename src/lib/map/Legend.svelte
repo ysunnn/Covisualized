@@ -4,6 +4,8 @@
 	import { format, precisionFixed } from "d3";
 	import { getValueColorCSS } from "./Map.svelte";
 
+	const SECTIONS = 5;
+
 	function f (v) {
 		if ($filter.variable === "incidences") {
 			if (v > 1) {
@@ -20,11 +22,12 @@
 
 	$: ({ variable } = $filter);
 	$: ({ ranges: { value: { min, max } } } = $statesForVariableAtDate);
+	$: indexRange = $statesForVariableAtDate.ranges.regulationsIndex;
 	$: yAxisLabelTitle = labelTitle.find(l => l.id === $filter.variable).title;
 	$: yAxisLabelNote = labelTitle.find(l => l.id === $filter.variable).note;
 </script>
 
-<div class="legend">
+<div class="legendVariable">
 	<div class="title">
 		<span class="titleText"> {yAxisLabelTitle} </span>
 		<br />
@@ -60,10 +63,44 @@
 	</div>
 </div>
 
+<div class="legendRegulation">
+	<div class="title">
+		<span class="titleText"> COVID-19 Regulation index </span> <span class="squareRegulation" />
+		<br />
+		<span class="titleNote"> Coded index for corona regulations and their severity </span>
+	</div>
+	<div class="regulations-bar">
+		<div class="border" />
+		{#each { length: SECTIONS - 1 } as _, i}
+			<div class="tick" style:--tick-fraction={(i + 1) / SECTIONS} />
+		{/each}
+	</div>
+	<div class="labels">
+		<span>
+			{round(indexRange.max, 1)}
+		</span>
+		<span>
+			{round(mapRange(0.8, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
+		</span>
+		<span>
+			{round(mapRange(0.6, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
+		</span>
+		<span>
+			{round(mapRange(0.4, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
+		</span>
+		<span>
+			{round(mapRange(0.2, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
+		</span>
+		<span>
+			{round(indexRange.min, 1)}
+		</span>
+	</div>
+</div>
+
 <style>
 	.title {
-		width: 6.5em;
-		margin-right: 0.5em;
+		width: 7em;
+		margin-right: 0.3em;
 	}
 
 	.titleText{
@@ -74,11 +111,16 @@
 		font-size: small;
 	}
 
-	.legend {
+	.legendVariable {
 		height: 20%;
 		display: flex;
-		margin-right: 2em;
-		margin-bottom: 2em;
+		margin: 2.5em;
+	}
+
+	.legendRegulation{
+		height: 20%;
+		display: flex;
+		margin: 2.5em;
 	}
 
 	.scale {
@@ -107,5 +149,26 @@
 		#f2f2f2  75%,
 		#f2f2f2  100%);
 		border: 1px solid white;
+	}
+
+	.squareRegulation{
+		display: inline-block;
+		height: 0.5em;
+		width: 1em;
+		background-color: hsl(var(--c-covid-h), calc(var(--c-covid-s) + 20%), var(--c-covid-l));
+	}
+
+	.regulations-bar {
+		width: 1em;
+		border: 2px solid white;
+		background-color: hsl(var(--c-background-h), var(--c-background-s), calc(var(--c-background-l) - 20%));
+		box-sizing: content-box;
+	}
+
+	.tick {
+		position: relative;
+		top: calc(var(--tick-fraction) * 93%);
+		height: 2px;
+		background-color: rgb(255, 255, 255, 0.5);
 	}
 </style>
