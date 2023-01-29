@@ -12,14 +12,21 @@ export const isNullish = (value) => (value === null || value === undefined);
 
 export const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-
 export const mapRange = (value, inMin, inMax, outMin, outMax) => {
 	return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 };
 
+export const round = (value, decimals = 0) => Math.round(value * 10 ** decimals) / 10 ** decimals;
+
 export const stateIDs = [
 	"bw", "by", "be", "bb", "hb", "hh", "he", "mv",
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
+];
+
+export const labelTitle = [
+	{ id: "revenue", title: "Revenue", text: "Revenue (2015 = 1.0)", note: "Relative values based on 2015 (2015 = 100%)" },
+	{ id: "employees", title: "Employees", text: "Employees (2015 = 1.0)", note: "Relative values based on 2015 (2015 = 100%)" },
+	{ id: "incidences", title: "Avg. 7 day incidence", text: "Average 7 day incidence", note: "Based on cumulative number of reported cases" },
 ];
 
 export const getStateFlag = (id) => {

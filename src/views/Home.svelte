@@ -4,9 +4,9 @@
 	import PlayButton from "../lib/PlayButton.svelte";
 	import Timeline from "../lib/timeline/Timeline.svelte";
 	import Details from "../lib/details/Details.svelte";
-
 	import DevOverlay from "../lib/dev/DevOverlay.svelte";
 	import Button from "../lib/Button.svelte";
+	import Legend from "../lib/map/Legend.svelte";
 
 	let devOverlayOpen = false;
 </script>
@@ -16,6 +16,7 @@
 		<Variables />
 	</div>
 	<div class="map">
+		<Legend />
 		<Map />
 	</div>
 	<div class="playbutton">
