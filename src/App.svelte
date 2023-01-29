@@ -5,7 +5,7 @@
 </script>
 
 
-{#if $page.home}
+{#if $page === "home"}
 	<Home />
 {:else}
 	<About />

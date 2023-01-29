@@ -16,7 +16,7 @@
 		<div class="cols">
 			<h1 class="title">Meet the team</h1>
 			<div class="homeButton">
-				<Button on:click={() => $page.home = !$page.home} variant="outline">
+				<Button on:click={() => $page = "home"} variant="outline">
 					Home
 				</Button>
 			</div>

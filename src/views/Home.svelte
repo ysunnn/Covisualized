@@ -30,7 +30,7 @@
 		<Details />
 	</div>
 	<div class="dev-button">
-		<Button on:click={() => $page.home = !$page.home} variant="outline">
+		<Button on:click={() => $page = "about"} variant="outline">
 			About
 		</Button>
 	</div>
