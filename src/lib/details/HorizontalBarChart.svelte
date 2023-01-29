@@ -10,7 +10,7 @@
 	const width = 600;
 	const height = 300;
 
-	const margin = { top: 10, right: 20, bottom: 20, left: 110 };
+	const margin = { top: 10, right: 20, bottom: 20, left: 90 };
 	const innerHeight = height - margin.top - margin.bottom;
 	const innerWidth = width - margin.left - margin.right;
 

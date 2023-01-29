@@ -24,23 +24,28 @@
 	{#each valueItems as item}
 		{#if currentValue === item.value}
 			<span on:click={handleClick(item.value)}>
-				<table class="active">
-					<tr>
-						<th class="label">{item.label}</th>
-						<th>{valueItems[currentValue - 1].amount}€</th>
-						{#if valueItems[currentValue - 1].difference >= 0}
-							<th class="positive">(+{valueItems[currentValue - 1].difference})</th>
-						{:else}
-							<th class="negative">({valueItems[currentValue - 1].difference})</th>
-						{/if}
-					</tr>
-				</table>
+				<ul class="active">
+					<li class="label">{item.label}</li>
+					<li>{item.amount}€</li>
+					{#if item.difference >= 0}
+						<li class="positive">(+{item.difference})</li>
+					{:else}
+						<li class="negative">({item.difference})</li>
+					{/if}
+				</ul>
 			</span>
-		{/if}
-	{/each}
-	{#each valueItems as item}
-		{#if currentValue !== item.value}
-			<span on:click={handleClick(item.value)}>{item.label}</span>
+		{:else}
+			<span on:click={handleClick(item.value)}>
+				<ul>
+					<li class="label">{item.label}</li>
+					<li>{item.amount}€</li>
+					{#if item.difference >= 0}
+						<li class="positive">(+{item.difference})</li>
+					{:else}
+						<li class="negative">({item.difference})</li>
+					{/if}
+				</ul>
+			</span>
 		{/if}
 	{/each}
 {/if}
@@ -56,7 +61,6 @@
         font-size: 30px;
     }
     .label {
-        font-weight: bold;
         padding-right: 25px;
     }
     span {
@@ -67,7 +71,15 @@
       padding: 0.5rem 1rem;
       cursor: pointer;
     }
-
+	ul {
+		list-style-type: none;
+		text-align: left;
+		margin: 0;
+		padding: 0;
+	}
+	li {
+		display: inline-block;
+	}
     span:hover {
       border-color: #e9ecef #e9ecef #dee2e6;
     }

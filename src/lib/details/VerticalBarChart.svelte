@@ -40,9 +40,9 @@
 				text-anchor="start"
 				y="0"
 				dx=".28em"
-				x={xScale(d.key)}
+				x={xScale(d.key) + 15}
 			>
-				{(d.key).toUpperCase()}
+				{(d.key)}
 			</text>
 			{#if d.value >= 0}
 				<rect
