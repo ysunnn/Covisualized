@@ -1,6 +1,6 @@
 <script>
 	import { extent } from "d3";
-	import { data, filter, statesForVariableAtDate } from "../../stores";
+	import { data, filter, statesForVariableAtDate, availableDatesForVariable } from "../../stores";
 	import HorizontalBarChart from "./HorizontalBarChart.svelte";
 	import VerticalBarChart from "./VerticalBarChart.svelte";
 	import Tabs from "./Tabs.svelte";
@@ -20,7 +20,7 @@
 			.map(([, variables]) => variables[$filter.variable]));
 	}).filter(([min]) => min !== undefined).map(([min, max]) => max - min));
 
-	$: chartData = Object.entries($statesForVariableAtDate.states)
+	$: stateChartData = Object.entries($statesForVariableAtDate.states)
 		.filter(([state, values]) => values?.value && state !== $filter.state)
 		.map(([state, values]) => ({
 			key: state,
@@ -28,24 +28,31 @@
 		}))
 		.sort(({ value: a }, { value: b }) => b - a);
 
+	$: yearsChartData = $availableDatesForVariable
+		.filter(date => date.slice(-2) === $filter.date.slice(-2))
+		.map(date => ({
+			key: date,
+			value: $data[$filter.date]?.[$filter.state]?.[$filter.variable] - $data[date]?.[$filter.state]?.[$filter.variable],
+		}));
+	$: console.log(yearsChartData);
 </script>
 
 <Tabs bind:activeTabValue={currentTab} items={tabItems} />
 {#if 1 === currentTab}
 	<div class="charts">
 		<h3>{tabItems[currentTab - 1].label}</h3>
-		<DetailOverview />
+		<DetailOverview data={stateChartData} />
 	</div>
 {/if}
 {#if 2 === currentTab}
 	<div class="charts">
 		<h3>{tabItems[currentTab - 1].label}</h3>
-		<HorizontalBarChart data={chartData} min={-minMaxDiff} max={minMaxDiff} />
+		<HorizontalBarChart data={stateChartData} min={-minMaxDiff} max={minMaxDiff} />
 	</div>
 {/if}
 {#if 3 === currentTab}
 	<div class="charts">
 		<h3>{tabItems[currentTab - 1].label}</h3>
-		<VerticalBarChart data={chartData} min={-minMaxDiff} max={minMaxDiff} />
+		<VerticalBarChart data={yearsChartData} min={-minMaxDiff} max={minMaxDiff} />
 	</div>
 {/if}
