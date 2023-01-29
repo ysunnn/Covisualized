@@ -1,6 +1,6 @@
 <script>
-  import Home from "./views/Home.svelte";
-  import About from "./views/About.svelte";
+	import Home from "./views/Home.svelte";
+	import About from "./views/About.svelte";
 	import { page } from "./stores";
 </script>
 
