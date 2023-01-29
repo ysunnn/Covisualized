@@ -8,6 +8,8 @@
 	import Button from "../lib/Button.svelte";
 	import Legend from "../lib/map/Legend.svelte";
 
+	import { page } from "../stores";
+
 	let devOverlayOpen = false;
 </script>
 <main>
@@ -28,8 +30,8 @@
 		<Details />
 	</div>
 	<div class="dev-button">
-		<Button on:click={() => devOverlayOpen = !devOverlayOpen} variant="outline">
-			{devOverlayOpen ? "❌" : "🚧"}
+		<Button on:click={() => $page.home = !$page.home} variant="outline">
+			About
 		</Button>
 	</div>
 	{#if devOverlayOpen}
