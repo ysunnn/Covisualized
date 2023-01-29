@@ -11,11 +11,13 @@
 	({$filter.variable}) <strong>per state</strong>.
 </p>
 <p>
-	On the <strong>timeline</strong>, the national total can be seen for each day.
+	On the <strong>timeline</strong>, the national total can be seen for each day, as well as a
+	state-specific line if a state is selected by clicking on it. A state can be de-selected by
+	clicking on it again.
 </p>
 <p>
-	When <strong class="covid">COVID-19 regulations</strong> were instantiated, these are
-	marked on the map by <strong class="covid">red state borders</strong>.
+	When <strong class="covid">COVID-19 regulations</strong> are active, these are shown in the
+	bars above the states in the map with <strong class="covid">red coloring</strong>.
 </p>
 
 <style>
