@@ -15,7 +15,7 @@
 
 <style>
 	.card {
-	padding: 5px;
+		padding: 5px;
 		margin: 5px;
 		background: white;
 		border-radius: 6px;
@@ -31,12 +31,10 @@
 		padding-left: 5px;
 		line-break: auto;
 	}
-	.card:hover {
-		cursor: pointer;
-  }
 	.profile_picture {
 		height: 5em;
 		border: 4px solid var(--c-foreground);
 		border-radius: 6px;
+		flex-shrink: 0;
 	}
 </style>
