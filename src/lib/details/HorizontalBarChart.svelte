@@ -1,6 +1,7 @@
 <script>
 	import { scaleBand, scaleLinear } from "d3-scale";
-	import { mapRange, getStateNameShort } from "../../util";
+	import { mapRange, getStateNameShort, formatValue } from "../../util";
+	import { filter } from "../../stores";
 
 	export let data;
 	export let min;
@@ -30,7 +31,7 @@
 			<g transform={`translate(${xScale(tickValue)},0)`}>
 				<line y2={innerHeight} stroke="grey" />
 				<text text-anchor="middle" dy=".71em" y={innerHeight + 3}>
-					{tickValue}
+					{formatValue(tickValue, $filter.variable, true)}
 				</text>
 			</g>
 		{/each}
@@ -64,3 +65,9 @@
 		{/each}
 	</g>
 </svg>
+
+<style>
+	text{
+		font-size: small;
+	}
+</style>

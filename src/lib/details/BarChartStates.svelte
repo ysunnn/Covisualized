@@ -24,7 +24,7 @@
 		.filter(([state, values]) => values?.value && state !== $filter.state)
 		.map(([state, values]) => ({
 			key: state,
-			value: (values.value - $statesForVariableAtDate.states[$filter.state].value) * 100,
+			value: (values.value - $statesForVariableAtDate.states[$filter.state].value),
 		}))
 		.sort(({ value: a }, { value: b }) => b - a);
 
@@ -40,12 +40,12 @@
 {#if 2 === currentTab}
 	<div class="charts">
 		<h3>{tabItems[currentTab - 1].label}</h3>
-		<HorizontalBarChart data={chartData} min={-minMaxDiff * 100} max={minMaxDiff * 100} />
+		<HorizontalBarChart data={chartData} min={-minMaxDiff} max={minMaxDiff} />
 	</div>
 {/if}
 {#if 3 === currentTab}
 	<div class="charts">
 		<h3>{tabItems[currentTab - 1].label}</h3>
-		<VerticalBarChart data={chartData} min={-minMaxDiff * 100} max={minMaxDiff * 100} />
+		<VerticalBarChart data={chartData} min={-minMaxDiff} max={minMaxDiff} />
 	</div>
 {/if}
