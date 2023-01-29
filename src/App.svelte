@@ -5,10 +5,8 @@
 </script>
 
 
-<div>
-	{#if $page.home}
-		<Home />
-	{:else}
-		<About />
-	{/if}
-</div>
+{#if $page.home}
+	<Home />
+{:else}
+	<About />
+{/if}
