@@ -3,11 +3,11 @@
 	export let person;
 </script>
 <div class="card">
-	<h1>{person.name}</h1>
+	<h1>{person.name[0].toUpperCase() + person.name.substring(1)}</h1>
 	<div class="cols">
 		<img
 			class="profile_picture"
-			src={getProfilePicture(person.picture)}
+			src={getProfilePicture(person.name)}
 			alt={person.text} />
 		<p class="text">{@html person.text}</p>
 	</div>

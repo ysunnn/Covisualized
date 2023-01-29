@@ -1,8 +1,8 @@
-import goodcat from "./goodcat.png";
-import grafik  from "./grafik.png";
-import image   from "./image.png";
-import simon   from "./simon.png"
-import yss     from "./yss.png";
+import timy   from "./timy.png";
+import felix  from "./felix.png";
+import janka  from "./janka.png";
+import simon  from "./simon.png"
+import yousun from "./yousun.png";
 
-export default { goodcat, grafik, image, simon, yss };
+export default { timy, felix, janka, simon, yousun };
 
