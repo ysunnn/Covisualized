@@ -39,7 +39,7 @@ The timeline can be zoomed in and out by double-clicking or scrolling.
 ### Already implemented
 - Visualization:
   - Map of Germany & its states: The variable which is selected at the top is represented as the coloring of each state. The split bars above the states indicate the severity of corona regulations at the selected time.
-  - Timeline representing information about Germany as a whole: The timeline shows the same variable as the map (the variable which is selected at the top). When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany.
+  - Timeline representing information about Germany as a whole: The timeline shows the same variable as the map (the variable which is selected at the top). When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany. A point in time can be selected via scrubber in the timeline or by using the playback feature.
   - Switching between visualized datasets: revenue, number of employees, average 7-day-incidences per month
 
 
