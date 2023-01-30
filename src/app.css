@@ -30,8 +30,8 @@
 	--c-covid-hsl: var(--c-covid-h), var(--c-covid-s), var(--c-covid-l);
 	--c-covid: hsl(var(--c-covid-hsl));
 
-	--c-positive-h: 110;
-	--c-positive-s: 50%;
+	--c-positive-h: 139;
+	--c-positive-s: 30%;
 	--c-positive-l: 45%;
 	--c-positive-hsl: var(--c-positive-h), var(--c-positive-s), var(--c-positive-l);
 	--c-positive: hsl(var(--c-positive-hsl));

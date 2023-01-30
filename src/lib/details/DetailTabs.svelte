@@ -48,7 +48,7 @@
 <Tabs bind:activeTabValue={currentTab} items={tabItems} />
 {#if 1 === currentTab}
 	<div class="charts">
-		<DetailOverview data={statesChartData} />
+		<DetailOverview />
 	</div>
 {/if}
 {#if 2 === currentTab}

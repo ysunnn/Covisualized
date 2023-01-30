@@ -1,13 +1,8 @@
 <script>
 	import { filter } from "../stores";
+	import { variables } from "../util";
 
 	import Button from "./Button.svelte";
-
-	const variables = [
-		{ id: "revenue", label: "Revenue", icon: "currency-eur", color: "primary" },
-		{ id: "employees", label: "Employees", icon: "badge-account", color: "primary" },
-		{ id: "incidences", label: "COVID-19 Cases", icon: "virus", color: "covid" },
-	];
 </script>
 
 <div class="variables">

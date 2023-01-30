@@ -1,12 +1,11 @@
 <script>
-	import { filter } from "../../stores";
-	import { getStateFlag, getStateName } from "../../util";
+	import { filter, statesForVariableAtDate } from "../../stores";
+	import { getStateFlag, getStateName, isNullish } from "../../util";
 
-	import BarChartStates from "./BarChartStates.svelte";
+	import DetailTabs from "./DetailTabs.svelte";
 	import Regulations from "./Regulations.svelte";
 
 	$: ({ state } = $filter);
-
 </script>
 
 <div class="state">
@@ -17,8 +16,9 @@
 
 	<Regulations />
 
-	<BarChartStates />
-
+	{#if !isNullish($statesForVariableAtDate.states[$filter.state].value)}
+		<DetailTabs />
+	{/if}
 </div>
 
 <style>

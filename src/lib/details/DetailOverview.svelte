@@ -1,88 +1,93 @@
 <script>
-	import { onMount } from "svelte";
+	import { data, filter, availableDatesForVariable } from "../../stores";
+	import { formatValue, isNullish, variables } from "../../util";
+	import Tooltip from "../Tooltip.svelte";
 
-	const valueItems = [
-		{ label: "Revenue", amount: 421208, difference: 1413, value: 1 },
-		{ label: "Employees", amount: 76157, difference: 10, value: 2 },
-		{ label: "COVID-19 Cases", amount: 1810, difference: 8, value: 3 },
-	];
-
-	let currentValue;
-
-	onMount(() => {
-		if (Array.isArray(valueItems) && valueItems.length && valueItems[0].value) {
-			currentValue = valueItems[0].value;
-		}
-	});
-
-	const handleClick = tabValue => () => (currentValue = tabValue);
-
+	$: variablesData = variables
+		.map(variable => {
+			const value = $data[$filter.date]?.[$filter.state]?.[variable.id];
+			const dateIndex = $availableDatesForVariable.indexOf($filter.date);
+			const prevMonthDate = $availableDatesForVariable[dateIndex - 1];
+			return {
+				...variable,
+				value,
+				diffPrevMonth: prevMonthDate && (value - $data[prevMonthDate]?.[$filter.state]?.[variable.id]),
+				active: variable.id === $filter.variable,
+			};
+		})
+		.filter(({ value }) => !isNullish(value));
 </script>
 
-{#if Array.isArray(valueItems)}
-	{#each valueItems as item}
-		{#if currentValue === item.value}
-			<span on:click={handleClick(item.value)}>
-				<ul class="active">
-					<li class="label">{item.label}</li>
-					<li>{item.amount}€</li>
-					{#if item.difference >= 0}
-						<li class="positive">(+{item.difference})</li>
-					{:else}
-						<li class="negative">({item.difference})</li>
-					{/if}
-				</ul>
-			</span>
-		{/if}
+<div class="overview">
+	{#each variablesData as variable (variable.id)}
+		<div
+			class="variable"
+			class:active={variable.active}
+		>
+			<div class="label" on:click={() => $filter.variable = variable.id}>
+				{variable.label}
+			</div>
+			<div class="value">
+				{formatValue(variable.value, variable.id)}
+				{#if !isNullish(variable.diffPrevMonth)}
+					<Tooltip content="compared to previous month" hideOnClick={false}>
+						<span class="difference" class:negative={variable.diffPrevMonth < 0}>
+							({variable.diffPrevMonth < 0 ? "" : "+"}{formatValue(variable.diffPrevMonth, variable.id)})
+						</span>
+					</Tooltip>
+				{/if}
+			</div>
+		</div>
 	{/each}
-	{#each valueItems as item}
-		{#if currentValue !== item.value}
-			<span on:click={handleClick(item.value)}>
-				<ul>
-					<li class="label">{item.label}</li>
-					<li>{item.amount}€</li>
-					{#if item.difference >= 0}
-						<li class="positive">(+{item.difference})</li>
-					{:else}
-						<li class="negative">({item.difference})</li>
-					{/if}
-				</ul>
-			</span>
-		{/if}
-	{/each}
-{/if}
+	<div class="hint">
+		Click on another category to compare.
+	</div>
+</div>
+
 
 <style>
-    .positive{
-        color: green;
-    }
-    .negative {
-        color: red;
-    }
-    .active {
-        font-size: 30px;
-    }
-    .label {
-        padding-right: 25px;
-    }
-    span {
-      border: 1px solid transparent;
-      border-top-left-radius: 0.25rem;
-      border-top-right-radius: 0.25rem;
-      display: block;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-    }
-	ul {
-		list-style-type: none;
-		text-align: left;
-		margin: 0;
-		padding: 0;
+	.overview {
+		display: grid;
+		grid-template-columns: auto 1fr;
 	}
-	li {
-		display: inline-block;
+
+	.variable {
+		display: contents;
+		margin-top: 0.5em;
 	}
-    span:hover {
-      border-color: #e9ecef #e9ecef #dee2e6;
-    }
+	.variable.active {
+		font-size: 2em;
+		order: -2;
+	}
+
+	.label {
+		font-weight: bold;
+		padding-right: 1em;
+
+		order: inherit;
+		margin-top: inherit;
+	}
+	.variable:not(.active) .label {
+		cursor: pointer;
+		text-decoration: underline;
+	}
+
+	.value {
+		order: inherit;
+		margin-top: inherit;
+	}
+
+	.difference {
+		color: var(--c-positive);
+	}
+	.difference.negative {
+		color: var(--c-covid);
+	}
+
+	.hint {
+		order: -1;
+		grid-column: 1 / 3;
+		font-size: smaller;
+		margin-top: 1.5em;
+	}
 </style>
