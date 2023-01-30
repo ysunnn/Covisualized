@@ -7,10 +7,12 @@
 	/** @type {string | undefined} */
 	export let content;
 	export let placement = "top";
-	export let offset = [0, 10];
+	export let offset = [0, 8];
 	export let followCursor = false;
 	export let hideOnClick = true;
 	export let arrow = true;
+
+	export let tag = "span";
 
 	let el = null;
 	let contentEl = null;
@@ -33,11 +35,11 @@
 	$: tippyInstance?.setContent(content);
 </script>
 
-<span class="tooltip" bind:this={el}>
+<svelte:element class="tooltip" this={tag} bind:this={el}>
 	<slot />
 	{#if $$slots.content}
 		<div class="tooltip-content" bind:this={contentEl}>
 			<slot name="content" />
 		</div>
 	{/if}
-</span>
+</svelte:element>

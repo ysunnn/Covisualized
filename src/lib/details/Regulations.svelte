@@ -5,79 +5,79 @@
 
 	const labels = {
 		church: {
-			0: "Places of worship open",
-			1: "Places of worship partially accessible",
-			2: "Places of worship closed",
+			0: "<b>Places of worship:</b> Open without restriction",
+			1: "<b>Places of worship:</b> One or more of:<ul><li>limited in numbers or duration</li><li>appointment required</li><ul>",
+			2: "<b>Places of worship:</b> Closed",
 		},
 		daycare: {
-			0: "Kindergartens open",
-			1: "Kindergartens only for essential professions",
-			2: "Kindergartens closed",
+			0: "<b>Kindergartens:</b> Open",
+			1: "<b>Kindergartens:</b> Only for parents of essential professions",
+			2: "<b>Kindergartens:</b> Closed",
 		},
 		demo: {
-			0: "Public assembly allowed",
-			1: "Public assembly restricted",
-			2: "Public assembly banned",
+			0: "<b>Public assembly:</b> Allowed",
+			1: "<b>Public assembly:</b> Limited in numbers or duration",
+			2: "<b>Public assembly:</b> Banned",
 		},
 		dist: {
-			0: "No Social distancing required",
-			1: "Social distancing",
+			0: "<b>Social distancing:</b> Not required",
+			1: "<b>Social distancing:</b> Required",
 		},
 		"ess_shps": {
-			0: "Essential shops open",
-			1: "Essential shops partially unavailable",
-			2: "Essential shops closed",
+			0: "<b>Essential stores:</b> Open",
+			1: "<b>Essential stores:</b> One or more of:<ul><li>partial sections open</li><li>appointment required</li></ul>",
+			2: "<b>Essential stores:</b> Closed",
 		},
 		gastr: {
-			0: "Gastronomy open",
-			1: "Gastronomy partially restricted",
-			2: "Gastronomy closed",
+			0: "<b>Gastronomy:</b> Open",
+			1: "<b>Gastronomy:</b> One or more of:<ul><li>only take-away & delivery</li><li>food-serving restaurants only</li><li>negative test or vaccination required</li></ul>",
+			2: "<b>Gastronomy:</b> Closed",
 		},
 		hcut: {
-			0: "Body care related shops open",
-			1: "Some body care services unavailable",
-			2: "Body care related shops closed",
+			0: "<b>Body care studios:</b> Open",
+			1: "<b>Body care studios:</b> Some services unavailable",
+			2: "<b>Body care studios:</b> Closed",
 		},
 		leavehome: {
-			0: "Leaving home unrestricted",
-			1: "Leaving home restricted at some locations/times",
-			2: "Leaving home only for sound reasons",
+			0: "<b>Leaving home:</b> Unrestricted",
+			1: "<b>Leaving home:</b> Restricted for some locations or times",
+			2: "<b>Leaving home:</b> Only for sound reasons",
 		},
 		friends: {
-			0: "Public company not limited",
-			1: "Public company limited in number",
-			2: "Public company only with 1 person",
-			3: "No public company allowed",
+			0: "<b>Meeting in public:</b> Unrestricted",
+			1: "<b>Meeting in public:</b> Limited in number",
+			2: "<b>Meeting in public:</b> Only with 1 other person",
+			3: "<b>Meeting in public:</b> Banned",
 		},
 		msk: {
-			0: "Face masks optional",
-			1: "Face masks compulsory in some locations",
-			2: "Face masks compulsory in public",
+			0: "<b>Face masks:</b> Optional",
+			1: "<b>Face masks:</b> Compulsory in some locations",
+			2: "<b>Face masks:</b> Compulsory in public",
 		},
 		plygrnd: {
-			0: "Playgrounds unrestricted",
-			1: "Conditions apply to playground visits",
-			2: "Playground visits prohibited",
+			0: "<b>Playgrounds:</b> Unrestricted",
+			1: "<b>Playgrounds:</b> Conditions apply (e. g. limit in numbers)",
+			2: "<b>Playgrounds:</b> Visits prohibited",
 		},
 		school: {
-			0: "Schools unrestricted",
-			1: "Schools closed with exceptions",
-			2: "Schools closed",
+			0: "<b>Schools:</b> Unrestricted",
+			1: "<b>Schools:</b> One or more of:<ul><li>open only to certain classes</li><li>open only to essential professions</li><li>split in face-to-face & online teaching</li></ul>",
+			2: "<b>Schools:</b> Closed (online teaching allowed)",
 		},
 		shppng: {
-			0: "Non-essential stores open",
-			1: "Non-essential stores partially unavailable",
-			2: "Non-essential stores closed",
+			0: "<b>Non-essential stores:</b> Open",
+			1: "<b>Non-essential stores:</b> One or more of:<ul><li>open dependant on size or type</li><li>appointment required</li><li>negative test or vaccination required</li></ul>",
+			2: "<b>Non-essential stores:</b> Closed",
 		},
 		trvl: {
-			0: "Domestic travel unrestricted",
-			1: "Domestic travel restricted",
-			2: "Domestic travel banned",
+			0: "<b>Domestic travel:</b> Unrestricted",
+			1: "<b>Domestic travel:</b> One or more of:<ul><li>allowed but accomodation prohibited</li><li>entry ban for certain groups</li><li>negative test or vaccination required</li></ul>",
+			2: "<b>Domestic travel:</b> Only for sound reasons",
 		},
 		zoo: {
-			0: "Zoos & botanic gardens open",
-			1: "Zoos & botanic gardens restricted",
-			2: "Zoos & botanic gardens closed",
+			0: "<b>Zoos & Botanic gardens:</b> Open",
+			1: "<b>Zoos & Botanic gardens:</b> One or more of:<ul><li>outdoor areas only</li><li>closure of animal houses/aquariums</li><li>appointment required</li><li>negative test or vaccination required</li></ul>",
+			2: "<b>Zoos & Botanic gardens:</b> Closed",
 		},
 	};
 
@@ -119,7 +119,7 @@
 				<div class="category-regulations">
 					{#each regulations as [name, level] (name)}
 						<div class="regulation level-{level}">
-							<Tooltip content={labels[name][level]} hideOnClick={false}>
+							<Tooltip tag="div" content={labels[name][level]} hideOnClick={false}>
 								<Icon {name} size="2rem" />
 								<div class="severity">
 									{#each { length: level } as _}
