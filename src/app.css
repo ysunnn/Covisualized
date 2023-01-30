@@ -36,6 +36,19 @@
 	--c-positive-hsl: var(--c-positive-h), var(--c-positive-s), var(--c-positive-l);
 	--c-positive: hsl(var(--c-positive-hsl));
 
+	--gradient-no-data: repeating-linear-gradient(-45deg,
+		#f2f2f2,
+		#f2f2f2 0.5em,
+		#e8e8e8 0.5em,
+		#e8e8e8 1em
+	);
+	--gradient-no-data-legend: repeating-linear-gradient(-45deg,
+		#f2f2f2,
+		#f2f2f2 0.25em,
+		#e8e8e8 0.25em,
+		#e8e8e8 0.5em
+	);
+
 	font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-size: 16px;
 	line-height: 1.25;
