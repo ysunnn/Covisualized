@@ -8,13 +8,26 @@
 	import Button from "../lib/Button.svelte";
 	import Legend from "../lib/map/Legend.svelte";
 
-	import { page } from "../stores";
+	export let page;
 
 	let devOverlayOpen = false;
 </script>
+
 <main>
-	<div class="variables">
-		<Variables />
+	<div class="head">
+		<div class="left">
+			<Variables />
+		</div>
+		<div class="right">
+			<Button on:click={() => page = "about"} variant="outline">
+				About
+			</Button>
+			{#if import.meta.env.MODE === "development"}
+				<Button on:click={() => devOverlayOpen = true} variant="outline">
+					🚧
+				</Button>
+			{/if}
+		</div>
 	</div>
 	<div class="map">
 		<Legend />
@@ -29,13 +42,8 @@
 	<div class="details">
 		<Details />
 	</div>
-	<div class="dev-button">
-		<Button on:click={() => $page = "about"} variant="outline">
-			About
-		</Button>
-	</div>
 	{#if devOverlayOpen}
-		<DevOverlay />
+		<DevOverlay on:close={() => devOverlayOpen = false} />
 	{/if}
 </main>
 
@@ -43,7 +51,7 @@
 	main {
 		display: grid;
 		grid-template-areas:
-			"variables  variables"
+			"head       head"
 			"map        details"
 			"playbutton details"
 			"timeline   timeline";
@@ -61,12 +69,16 @@
 
 	.map {
 		grid-area: map;
+
 		position: relative;
 		justify-content: center;
 	}
 
-	.variables {
-		grid-area: variables;
+	.head {
+		grid-area: head;
+
+		flex-direction: row;
+		justify-content: space-between;
 	}
 
 	.timeline {
@@ -79,12 +91,5 @@
 
 	.playbutton {
 		align-items: flex-start;
-	}
-
-	.dev-button {
-		position: fixed;
-		top: 1rem;
-		right: 1rem;
-		z-index: 1050;
 	}
 </style>

@@ -1,12 +1,13 @@
 <script>
 	import Home from "./views/Home.svelte";
 	import About from "./views/About.svelte";
-	import { page } from "./stores";
+
+	const pages = {
+		"home": Home,
+		"about": About,
+	};
+	let page = "home";
 </script>
 
 
-{#if $page === "home"}
-	<Home />
-{:else}
-	<About />
-{/if}
+<svelte:component this={pages[page]} bind:page />

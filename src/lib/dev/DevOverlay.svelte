@@ -1,12 +1,19 @@
 <script>
+	import { createEventDispatcher } from "svelte";
 	import { fly } from "svelte/transition";
 
+	import Button from "../Button.svelte";
 	import DataRaw from "./DataRaw.svelte";
 	import DataDerived from "./DataDerived.svelte";
 	import Filters from "./Filters.svelte";
+
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="dev-overlay" transition:fly={{ x: 520 }}>
+	<Button on:click={() => dispatch("close")} variant="outline" style="margin-left: auto">
+		❌
+	</Button>
 	<Filters />
 	<DataRaw />
 	<DataDerived />

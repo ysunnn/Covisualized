@@ -90,5 +90,3 @@ export const availableDatesForVariable = derived([data, filter], ([$data, $filte
 		.map(([date]) => date)
 		.sort((a, b) => a < b ? -1 : 1);
 });
-
-export const page = writable("home");
