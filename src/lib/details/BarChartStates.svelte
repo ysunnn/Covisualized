@@ -48,19 +48,16 @@
 <Tabs bind:activeTabValue={currentTab} items={tabItems} />
 {#if 1 === currentTab}
 	<div class="charts">
-		<h3>{tabItems[currentTab - 1].label}</h3>
 		<DetailOverview data={statesChartData} />
 	</div>
 {/if}
 {#if 2 === currentTab}
 	<div class="charts">
-		<h3>{tabItems[currentTab - 1].label}</h3>
 		<HorizontalBarChart data={statesChartData} min={-statesMinMaxDiff} max={statesMinMaxDiff} />
 	</div>
 {/if}
 {#if 3 === currentTab}
 	<div class="charts">
-		<h3>{tabItems[currentTab - 1].label}</h3>
 		<VerticalBarChart data={yearsChartData} min={-yearsMinMaxDiff} max={yearsMinMaxDiff} />
 	</div>
 {/if}

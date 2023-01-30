@@ -4,8 +4,7 @@
 	const valueItems = [
 		{ label: "Revenue", amount: 421208, difference: 1413, value: 1 },
 		{ label: "Employees", amount: 76157, difference: 10, value: 2 },
-		{ label: "Salaries", amount: 1422, difference: -23, value: 3 },
-		{ label: "COVID-19 Cases", amount: 1810, difference: 8, value: 4 },
+		{ label: "COVID-19 Cases", amount: 1810, difference: 8, value: 3 },
 	];
 
 	let currentValue;
@@ -34,7 +33,10 @@
 					{/if}
 				</ul>
 			</span>
-		{:else}
+		{/if}
+	{/each}
+	{#each valueItems as item}
+		{#if currentValue !== item.value}
 			<span on:click={handleClick(item.value)}>
 				<ul>
 					<li class="label">{item.label}</li>
