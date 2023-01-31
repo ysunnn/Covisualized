@@ -1,8 +1,8 @@
 <script>
-	import { filter } from "../../stores";
-	import { getStateFlag, getStateName } from "../../util";
+	import { filter, statesForVariableAtDate } from "../../stores";
+	import { getStateFlag, getStateName, isNullish } from "../../util";
 
-	import BarChartStates from "./BarChartStates.svelte";
+	import DetailTabs from "./DetailTabs.svelte";
 	import Regulations from "./Regulations.svelte";
 
 	$: ({ state } = $filter);
@@ -16,10 +16,9 @@
 
 	<Regulations />
 
-	<div class="charts">
-		<h3>National Comparison</h3>
-		<BarChartStates />
-	</div>
+	{#if !isNullish($statesForVariableAtDate.states[$filter.state].value)}
+		<DetailTabs />
+	{/if}
 </div>
 
 <style>

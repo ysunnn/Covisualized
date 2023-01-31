@@ -29,6 +29,12 @@ export const labelTitle = [
 	{ id: "incidences", title: "Avg. 7 day incidence", text: "Average 7 day incidence", note: "Based on cumulative number of reported cases" },
 ];
 
+export const variables = [
+	{ id: "revenue", label: "Revenue", icon: "currency-eur", color: "primary" },
+	{ id: "employees", label: "Employees", icon: "badge-account", color: "primary" },
+	{ id: "incidences", label: "COVID-19 Cases", icon: "virus", color: "covid" },
+];
+
 export const getStateFlag = (id) => {
 	return flags[id];
 };
