@@ -9,7 +9,9 @@
 <p>
 	The <strong>map</strong> gives an overview of the currently selected variable
 	({$filter.variable}) <strong>per state</strong>. States can be selected for more details by
-	clicking on them or deselected by clicking on them again.
+	clicking on them or deselected by clicking on them again. <strong>Note:</strong> the map does
+	not completely represent topographic scale. The city-states Bremen, Berlin and Hamburg have been
+	magnified so that they can be seen and clicked more easily.
 </p>
 <p>
 	On the <strong>timeline</strong>, the national total can be seen for each day, as well as a
