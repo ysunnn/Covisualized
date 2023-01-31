@@ -1,6 +1,6 @@
 <script>
 	import { filter } from "../../stores";
-	import { formatValue, getStateName } from "../../util";
+	import { formatValue, getStateName, isNullish } from "../../util";
 
 	export let data;
 	export let colors;
@@ -13,14 +13,14 @@
 		<div class="entry">
 			<span
 				class="color-indicator"
-				class:no-data={!point?.value}
+				class:no-data={isNullish(point?.value)}
 				style:background-color={colorsCSS[type]}
 			/>
 			<span class="state">
 				{getStateName(type === "state" ? $filter.state : type)}:
 			</span>
 			<span class="value">
-				{#if point?.value}
+				{#if !isNullish(point?.value)}
 					<b>{formatValue(point.value, $filter.variable)}</b>
 				{:else}
 					<i>no data</i>
