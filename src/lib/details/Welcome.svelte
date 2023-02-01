@@ -2,7 +2,7 @@
 	import { filter } from "../../stores";
 </script>
 
-<h1>Welcome to <span class="covid">Covi</span>sualiz<span class="covid">ed</span></h1>
+<h1>Welcome to <span class="covid">Covi</span>sualize<span class="covid">d</span></h1>
 <p>
 	Visualize the impacts of the COVID-19 regulations on the <strong>hospitality</strong> industry.
 </p>
