@@ -23,17 +23,30 @@ export const stateIDs = [
 	"ni", "nw", "rp", "sl", "sn", "st", "sh", "th",
 ];
 
-export const labelTitle = [
-	{ id: "revenue", title: "Revenue", text: "Revenue (2015 = 1.0)", note: "Relative values based on 2015 (2015 = 100%)" },
-	{ id: "employees", title: "Employees", text: "Employees (2015 = 1.0)", note: "Relative values based on 2015 (2015 = 100%)" },
-	{ id: "incidences", title: "Avg. 7 day incidence", text: "Average 7 day incidence", note: "Based on cumulative number of reported cases" },
-];
-
-export const variables = [
-	{ id: "revenue", label: "Revenue", icon: "currency-eur", color: "primary" },
-	{ id: "employees", label: "Employees", icon: "badge-account", color: "primary" },
-	{ id: "incidences", label: "COVID-19 Cases", icon: "virus", color: "covid" },
-];
+export const variables = [{
+	id: "revenue",
+	label: "Revenue",
+	icon: "currency-eur",
+	color: "primary",
+	desc: "Revenue",
+	details: "Relative values based on 2015 (2015 = 100%)",
+},
+{
+	id: "employees",
+	label: "Employees",
+	icon: "badge-account",
+	color: "primary",
+	desc: "Number of Employees",
+	details: "Relative values based on 2015 (2015 = 100%)",
+},
+{
+	id: "incidences",
+	label: "COVID-19 Cases",
+	icon: "virus",
+	color: "covid",
+	desc: "Avg. 7 day incidence",
+	details: "Based on cumulative number of reported cases",
+}];
 
 export const getStateFlag = (id) => {
 	return flags[id];
@@ -43,26 +56,26 @@ export const getProfilePicture = (id) => {
 	return profiles[id];
 };
 
-export const getStateName = (id) => {
-	  return {
-		bw: "Baden-Württemberg",
-		by: "Bavaria",
-		be: "Berlin",
-		bb: "Brandenburg",
-		hb: "Bremen",
-		hh: "Hamburg",
-		he: "Hesse",
-		mv: "Mecklenburg-Vorpommern",
-		ni: "Lower Saxony",
-		nw: "North Rhine-Westphalia",
-		rp: "Rhineland-Palatinate",
-		sl: "Saarland",
-		sn: "Saxony",
-		st: "Saxony-Anhalt",
-		sh: "Schleswig-Holstein",
-		th: "Thuringia",
-		de: "Germany",
-	}[id];
+export const getStateName = (id, short = false) => {
+	return {
+		bw: ["Baden-Württemberg", "Baden-Wü."],
+		by: ["Bavaria", "Bavaria"],
+		be: ["Berlin", "Berlin"],
+		bb: ["Brandenburg", "Brandenburg"],
+		hb: ["Bremen", "Bremen"],
+		hh: ["Hamburg", "Hamburg"],
+		he: ["Hesse", "Hesse"],
+		mv: ["Mecklenburg-Vorpommern", "Meck.-Vorp."],
+		ni: ["Lower Saxony", "Lw. Saxony"],
+		nw: ["North Rhine-Westphalia", "NRW"],
+		rp: ["Rhineland-Palatinate", "Rhinel.-P."],
+		sl: ["Saarland", "Saarland"],
+		sn: ["Saxony", "Saxony"],
+		st: ["Saxony-Anhalt", "Saxony-Anh."],
+		sh: ["Schleswig-Holstein", "Schles.-Hol."],
+		th: ["Thuringia", "Thuringia"],
+		de: ["Germany", "Germany"],
+	}[id]?.[Number(short)];
 };
 
 export const getStateNameShort = (id) => {
@@ -83,12 +96,14 @@ export const getStateNameShort = (id) => {
 		st: "Saxony-Anhalt",
 		sh: "Schles.-Hol.",
 		th: "Thuringia",
+		de: "Germany",
 	}[id];
 };
 
 const formatters = {
 	revenue: [format(".1%"), format(".0%")],
 	employees: [format(".1%"), format(".0%")],
-	incidences: [format(",.0f"), format(".2s")],
+	incidences: [format(",.0f"), value => Math.abs(value) < 10 ? String(value) : format(".2s")(value)],
+	regulationsIndex: [format(".1f"), format(".1f")],
 };
 export const formatValue = (value, type, compact = false) => formatters[type][Number(compact)]?.(value);

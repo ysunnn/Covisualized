@@ -2,10 +2,12 @@
 	import { filter } from "../../stores";
 	import { formatValue, getStateName, isNullish } from "../../util";
 
-	export let data;
+	export let data = [];
 	export let colors;
 
-	$: colorsCSS = Object.fromEntries(Object.entries(colors).map(([type, color]) => [type, `var(--c-${color})`]));
+	$: colorsCSS = Object.fromEntries(
+		Object.entries(colors).map(([type, color]) => [type, `var(--c-${color})`]),
+	);
 </script>
 
 <div class="tooltip-content">
@@ -17,7 +19,7 @@
 				style:background-color={colorsCSS[type]}
 			/>
 			<span class="state">
-				{getStateName(type === "state" ? $filter.state : type)}:
+				&nbsp;{getStateName(type === "state" ? $filter.state : type)}:&nbsp;
 			</span>
 			<span class="value">
 				{#if !isNullish(point?.value)}
@@ -36,8 +38,12 @@
 		flex-direction: column;
 	}
 
+	.entry {
+		display: flex;
+		align-items: center;
+	}
+
 	.color-indicator {
-		display: inline-block;
 		width: 1em;
 		height: 1em;
 		border-radius: 50%;

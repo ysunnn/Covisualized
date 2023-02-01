@@ -1,5 +1,6 @@
 <script>
 	import { isNullish } from "../../util";
+	import { playback } from "../../stores";
 	import barHeadSVG from "../../assets/icons/scrubber.svg?raw";
 
 	/** @type {"bar" | "dot"} */
@@ -18,15 +19,17 @@
 	class="scrubber"
 	class:moving
 	class:visible
+	class:playing={$playback.playing}
 	style:--x="{x}px"
 	style:--x-raw={x}
 	style:--y="{y}px"
 	style:--color="var(--c-{color})"
 	style:--width="{width}px"
 	style:--width-raw={width}
+	style:--transition-duration="{$playback.playing ? $playback.stepDuration - 20 : 300}ms"
+	style:--transition-timing-function={$playback.playing ? "linear" : "ease"}
 >
 	{#if style === "bar" && !isNullish(x)}
-		<div class="overlay" />
 		<div class="bar">
 			{@html barHeadSVG}
 		</div>
@@ -40,6 +43,11 @@
 		position: absolute;
 		inset: 0;
 		pointer-events: none;
+		transition: opacity 150ms ease;
+	}
+
+	.scrubber:not(.visible) {
+		opacity: 0;
 	}
 
 	.dot, .bar {
@@ -48,34 +56,19 @@
 	}
 
 	/* BAR Style */
-	.overlay {
-		position: absolute;
-		inset: 0;
-		background-color: var(--c-background);
-		opacity: 0.4;
-		transform-origin: left;
-		/* We need to animate via transform as this gets laggy otherwise: */
-		transform: scaleX(calc(var(--x-raw) / var(--width-raw)));
-	}
-
 	.bar {
 		position: absolute;
 		width: 4px;
 		top: 0;
 		bottom: 0;
 		left: 0;
-		transform: translateX(-50%) translateX(var(--x));
 		background-color: var(--color);
+
+		transform: translateX(-50%) translateX(var(--x));
+		transition: transform var(--transition-duration) var(--transition-timing-function);
 	}
-	.scrubber > * {
-		transition: 300ms ease;
-		transition-property: opacity, transform;
-	}
-	.scrubber.moving > * {
-		transition-property: opacity;
-	}
-	.scrubber:not(.visible) > * {
-		opacity: 0;
+	.scrubber.moving .bar {
+		transition: none;
 	}
 
 	.bar :global(svg) {
@@ -97,14 +90,5 @@
 		border-radius: 50%;
 		background-color: var(--color);
 		transform: translate(-50%, -50%) translate(var(--x), var(--y));
-
-		transition: 150ms ease;
-		transition-property: opacity /*, transform */;
-	}
-	.scrubber.moving .dot {
-		transition-property: opacity;
-	}
-	.scrubber:not(.visible) .dot {
-		opacity: 0;
 	}
 </style>

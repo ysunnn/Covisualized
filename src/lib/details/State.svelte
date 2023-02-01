@@ -13,12 +13,8 @@
 		<h1>{getStateName(state)}</h1>
 		<img class="flag" src={getStateFlag(state)} role="presentation" />
 	</div>
-
 	<Regulations />
-
-	{#if !isNullish($statesForVariableAtDate.states[$filter.state].value)}
-		<DetailTabs />
-	{/if}
+	<DetailTabs show={!isNullish($statesForVariableAtDate.states[$filter.state].value)} />
 </div>
 
 <style>
@@ -36,10 +32,10 @@
 	.header h1 { margin: 0; }
 
 	.flag {
-		height: 4em;
+		height: 3em;
 		border: 4px solid var(--c-foreground);
 		outline: 4px solid white;
-		box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
+		box-shadow: 0 0.25em 1em 0 rgb(0, 0, 0, 0.2);
 		border-radius: 6px;
 	}
 </style>

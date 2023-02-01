@@ -9,6 +9,7 @@
 	export let type = "top";
 	export let ticks;
 	export let tickformat;
+	export let tickpadding = 8;
 	export let gridSize = 0;
 
 	let svgEl = null;
@@ -19,11 +20,11 @@
 		const axisGenerator = axis(scale)
 			.ticks(ticks)
 			.tickFormat(tickformat)
-			.tickPadding(0)
+			.tickPadding(tickpadding)
 			.tickSize(32);
 		if (gridSize) {
 			axisGenerator
-				.tickPadding(8)
+				.tickPadding(tickpadding)
 				.tickSize(gridSize);
 		}
 		axisGenerator(select(svgEl));

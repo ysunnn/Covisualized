@@ -29,7 +29,7 @@
 	z-index: 1000;
 
 	background-color: lightyellow;
-	box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.25);
+	box-shadow: 0 0 2rem 0 rgb(0, 0, 0, 0.25);
 
 	padding: 1em;
 

@@ -46,6 +46,7 @@
 	}
 
 	.icon {
+		display: none;
 		width: 1em;
 		height: 1em;
 		color: hsl(var(--c-background-h), var(--c-background-s), calc(var(--c-background-l) - 20%), 0.5);

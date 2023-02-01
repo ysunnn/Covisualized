@@ -72,7 +72,7 @@ export async function parseIncidences() {
 	return data.map(({ year, month, state, incidences }) => ({
 		date: localeDe.utcParse("%Y %m")(`${year} ${month}`).toISOString().slice(0, 7),
 		state: stateNameToID(state),
-		value: Number(incidences),
+		value: Math.round(incidences),
 	}));
 }
 

@@ -1,13 +1,16 @@
 <script>
 	import { onDestroy, onMount } from "svelte";
+	import { isNullish } from "../util";
+
 	import tippy, { followCursor as followCursorPlugin } from "tippy.js";
 	import "tippy.js/dist/tippy.css";
 	import "tippy.js/animations/shift-away-subtle.css";
 
 	/** @type {string | undefined} */
 	export let content;
+	export let show = undefined;
 	export let placement = "top";
-	export let offset = [0, 8];
+	export let offset = [0, 10];
 	export let followCursor = false;
 	export let hideOnClick = true;
 	export let arrow = true;
@@ -17,6 +20,7 @@
 	let el = null;
 	let contentEl = null;
 	let tippyInstance = null;
+
 	onMount(() => {
 		tippyInstance = tippy(el, {
 			allowHTML: true,
@@ -27,12 +31,18 @@
 			followCursor,
 			hideOnClick,
 			arrow,
+			trigger: isNullish(show) ? undefined : "manual",
 			plugins: [followCursorPlugin],
 		});
 	});
 	onDestroy(() => tippyInstance.destroy());
 
-	$: tippyInstance?.setContent(content);
+	$: if (tippyInstance) tippyInstance.setContent(content);
+	$: if (tippyInstance) tippyInstance.trigger = isNullish(show) ? undefined : "manual";
+	$: if (tippyInstance && !isNullish(show)) {
+		if (show) tippyInstance.show();
+		else tippyInstance.hide();
+	}
 </script>
 
 <svelte:element class="tooltip" this={tag} bind:this={el}>
