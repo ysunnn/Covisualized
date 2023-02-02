@@ -189,17 +189,14 @@
 	}
 	.severity .dot {
 		width: 0.25em;
-		aspect-ratio: 1;
+		height: 0.25em;
+		transform: scale(1); /* rounds better when rendering */
 		background-color: currentColor;
 		border-radius: 50%;
 	}
 
 	.regulation {
 		transition: color 300ms ease;
-	}
-	.regulation :global(.tooltip),
-	.regulation :global(.icon) {
-		display: flex;
 	}
 	.level-0 {
 		color: hsl(var(--c-foreground-hsl), 0.2);
