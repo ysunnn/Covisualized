@@ -8,10 +8,11 @@
 			const value = $data[$filter.date]?.[$filter.state]?.[variable.id];
 			const dateIndex = $availableDatesForVariable.indexOf($filter.date);
 			const prevMonthDate = $availableDatesForVariable[dateIndex - 1];
+			const prevMonthValue = $data[prevMonthDate]?.[$filter.state]?.[variable.id];
 			return {
 				...variable,
 				value,
-				diffPrevMonth: prevMonthDate && (value - $data[prevMonthDate]?.[$filter.state]?.[variable.id]),
+				diffPrevMonth: prevMonthDate && prevMonthValue && (value - prevMonthValue),
 				active: variable.id === $filter.variable,
 			};
 		})
