@@ -12,7 +12,9 @@
 	};
 </script>
 
-<strong>{getStateName(cached.state)}</strong>
+<div class="state">
+	{getStateName(cached.state)}
+</div>
 {#each cached.data || [] as { label, type, color, value }}
 	<div class="entry {type}">
 		<span
@@ -34,6 +36,11 @@
 {/each}
 
 <style>
+	.state {
+		font-weight: 500;
+		margin-bottom: 0.5em;
+	}
+
 	.entry {
 		display: flex;
 		align-items: center;

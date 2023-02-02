@@ -1,9 +1,12 @@
 <script>
 	import { filter } from "../../stores";
 	import { formatValue, getStateName, isNullish } from "../../util";
+	import { utcFormat } from "d3";
 
 	export let data = [];
 	export let colors;
+
+	const formatDate = utcFormat("%B %Y");
 
 	$: colorsCSS = Object.fromEntries(
 		Object.entries(colors).map(([type, color]) => [type, `var(--c-${color})`]),
@@ -11,7 +14,12 @@
 </script>
 
 <div class="tooltip-content">
-	{#each data as [type, point]}
+	{#each data as [type, point], i}
+		{#if i === 0}
+			<div class="date">
+				{formatDate(point?.date)}
+			</div>
+		{/if}
 		<div class="entry">
 			<span
 				class="color-indicator"
@@ -36,6 +44,11 @@
 	.tooltip-content {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.date {
+		font-weight: 500;
+		margin-bottom: 0.5em;
 	}
 
 	.entry {
