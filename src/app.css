@@ -55,7 +55,7 @@
 		-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
 		helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-size: clamp(12px, min(1.3vw, 1.7vh), 18px);
-	line-height: 1.25;
+	line-height: 1.4;
 
 	color-scheme: light /* dark */;
 	color: var(--c-foreground);

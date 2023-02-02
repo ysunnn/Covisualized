@@ -165,7 +165,8 @@
 		border-radius: 6px;
 		border: 1px solid hsl(var(--c-covid-hsl), 0.25);
 		box-shadow: 0 0.25em 1em 0 hsl(var(--c-covid-h), var(--c-covid-s), 40%, 0.15);
-		padding: 0.5em 1em;
+		padding: 0.625em;
+		padding-left: 1em;
 	}
 
 	.category-title {
@@ -195,6 +196,10 @@
 
 	.regulation {
 		transition: color 300ms ease;
+	}
+	.regulation :global(.tooltip),
+	.regulation :global(.icon) {
+		display: flex;
 	}
 	.level-0 {
 		color: hsl(var(--c-foreground-hsl), 0.2);

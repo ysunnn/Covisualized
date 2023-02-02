@@ -16,6 +16,7 @@
 <style>
 	.card {
 		padding: 1em;
+		padding-bottom: 2em;
 		background: white;
 		border: 6px solid hsl(var(--c-foreground-hsl), 0.15);
 		border-radius: 12px;
