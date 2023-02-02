@@ -77,7 +77,7 @@
 				viewBox="0 0 {COORDS_WIDTH} {COORDS_HEIGHT}"
 				fill="none"
 				class={variableID}
-				style:--transition-duration="{$playback.playing ? $playback.stepDuration - 20 : 300}ms"
+				style:--transition-duration="{$playback.playing ? $playback.stepDuration - 30 : 300}ms"
 				style:--transition-timing-function={$playback.playing ? "linear" : "ease"}
 			>
 				<defs>

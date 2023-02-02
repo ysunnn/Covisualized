@@ -26,7 +26,7 @@
 	style:--color="var(--c-{color})"
 	style:--width="{width}px"
 	style:--width-raw={width}
-	style:--transition-duration="{$playback.playing ? $playback.stepDuration - 20 : 300}ms"
+	style:--transition-duration="{$playback.playing ? $playback.stepDuration - 30 : 300}ms"
 	style:--transition-timing-function={$playback.playing ? "linear" : "ease"}
 >
 	{#if style === "bar" && !isNullish(x)}

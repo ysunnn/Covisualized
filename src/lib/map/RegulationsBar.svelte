@@ -15,7 +15,7 @@
 	style:--x={x}
 	style:--y={y}
 	style:--fraction={fraction ?? 0}
-	style:--transition-duration="{$playback.playing ? $playback.stepDuration - 20 : 300}ms"
+	style:--transition-duration="{$playback.playing ? $playback.stepDuration - 30 : 300}ms"
 	style:--transition-timing-function={$playback.playing ? "ease-in-out" : "ease"}
 	on:click
 	on:pointerover
