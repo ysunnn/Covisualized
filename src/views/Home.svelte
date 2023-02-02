@@ -1,4 +1,6 @@
 <script>
+	import { tutorial, filter } from "../stores";
+
 	import Variables from "../lib/Variables.svelte";
 	import Map from "../lib/map/Map.svelte";
 	import PlayButton from "../lib/PlayButton.svelte";
@@ -11,15 +13,30 @@
 	export let page;
 
 	let devOverlayOpen = false;
+
+	// eslint-disable-next-line svelte/no-reactive-functions
+	$: tutorialSteps = (min, max) => {
+		return $tutorial.step > 0 && $tutorial.step >= min && $tutorial.step <= max;
+	};
+
+	const onTutorialRepeat = () => {
+		$filter.state = "";
+		$tutorial.step = 1;
+	};
 </script>
 
 <main>
-	<div class="head">
+	<div class="head tutorial-transition" class:tutorial-deactivate={tutorialSteps(1, 4)}>
 		<div class="left">
 			<Variables />
 		</div>
 		<div class="right">
-			<Button on:click={() => page = "about"} variant="outline">
+			{#if !$tutorial.step}
+				<Button icon="refresh" size="0.875em" variant="outline" on:click={onTutorialRepeat}>
+					Repeat Tutorial
+				</Button>
+			{/if}
+			<Button variant="outline" on:click={() => page = "about"}>
 				About
 			</Button>
 			{#if import.meta.env.MODE === "development"}
@@ -30,10 +47,20 @@
 		</div>
 	</div>
 
-	<div class="map">
+	<div
+		class="map tutorial-transition"
+		class:tutorial-deactivate={tutorialSteps(1, 2)}
+		class:tutorial-block={tutorialSteps(1, 4)}
+	>
 		<div class="extras">
 			<Legend />
-			<PlayButton />
+			<div
+				class="play-button"
+				class:tutorial-hide={tutorialSteps(1, 2)}
+				class:tutorial-block={tutorialSteps(1, 4)}
+			>
+				<PlayButton />
+			</div>
 		</div>
 		<Map />
 	</div>
@@ -42,7 +69,11 @@
 		<Details />
 	</div>
 
-	<div class="timeline">
+	<div
+		class="timeline tutorial-transition"
+		class:tutorial-deactivate={tutorialSteps(1, 2)}
+		class:tutorial-block={tutorialSteps(1, 4)}
+	>
 		<Timeline />
 	</div>
 
@@ -77,6 +108,11 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
+	.head .left,
+	.head .right {
+		display: flex;
+		gap: 0.5em;
+	}
 
 	.map {
 		grid-area: map;
@@ -97,5 +133,28 @@
 
 	.timeline {
 		grid-area: timeline;
+	}
+
+	.play-button {
+		margin-bottom: -1em;
+	}
+
+	.tutorial-block {
+		cursor: not-allowed;
+	}
+	.tutorial-block :global(> *) {
+		pointer-events: none;
+	}
+	.tutorial-deactivate {
+		pointer-events: none;
+		opacity: 0.5;
+		filter: grayscale(1);
+	}
+	.tutorial-hide {
+		opacity: 0;
+	}
+	.tutorial-transition {
+		transition: ease 1s;
+		transition-property: opacity, filter;
 	}
 </style>
