@@ -184,13 +184,12 @@
 	.severity {
 		display: flex;
 		justify-content: center;
-		height: 0.25em;
+		height: 4px;
 		gap: 0.25em;
 	}
 	.severity .dot {
-		width: 0.25em;
-		height: 0.25em;
-		transform: scale(1); /* rounds better when rendering */
+		width: 4px;
+		height: 4px;
 		background-color: currentColor;
 		border-radius: 50%;
 	}
