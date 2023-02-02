@@ -7,7 +7,7 @@
 	import "tippy.js/animations/shift-away-subtle.css";
 
 	/** @type {string | undefined} */
-	export let content;
+	export let content = undefined;
 	export let show = undefined;
 	export let placement = "top";
 	export let offset = [0, 10];

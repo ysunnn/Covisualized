@@ -33,7 +33,7 @@
 
 <div class="axis" class:grid={gridSize} bind:clientWidth={width} bind:clientHeight={height}>
 	<svg
-		transform="translate({type === "left" ? width : 0} {type === "top" ? height : 0})"
+		transform="translate({type === "left" && width ? width : 0} {type === "top" && height ? height : 0})"
 		overflow="visible"
 		bind:this={svgEl}
 	/>

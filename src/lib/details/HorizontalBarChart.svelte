@@ -32,13 +32,15 @@
 	const onDatePointerover = ({ key, value }) => {
 		tooltipData = {
 			key: getStateName(key),
-			value: formatValue(value, $filter.variable),
+			value: `${plus(value)}${formatValue(value, $filter.variable)}`,
 		};
 		hoveringDate = true;
 	};
 	const onDatePointerleave = () => {
 		if (hoveringDate) hoveringDate = false;
 	};
+
+	const plus = value => value > 0 ? "+" : "";
 </script>
 
 <Tooltip
@@ -56,7 +58,7 @@
 				<g transform={`translate(${xScale(tickValue)}, 0)`}>
 					<line y2={innerHeight} class:zero={i === Math.ceil((xScale.ticks().length - 1) / 2)} />
 					<text class="axis-x" text-anchor="middle" dy="12" y={innerHeight + 3}>
-						{formatValue(tickValue, $filter.variable, true)}
+						{plus(tickValue)}{formatValue(tickValue, $filter.variable, true)}
 					</text>
 				</g>
 			{/each}

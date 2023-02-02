@@ -16,7 +16,7 @@
 </script>
 
 <svg
-	viewBox="0 0 {width} {height}"
+	viewBox="0 0 {width ?? 0} {height ?? 0}"
 	preserveAspectRatio="none"
 	fill="none"
 	style:--color="var(--c-{color})"

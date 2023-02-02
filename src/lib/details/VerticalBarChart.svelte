@@ -14,7 +14,7 @@
 	const width = 600;
 	const height = 240;
 
-	const margin = { top: 20, right: 20, bottom: 10, left: 50 };
+	const margin = { top: 15, right: 20, bottom: 15, left: 50 };
 
 	$: xScale = scaleBand()
 		.domain(data.map((d) => d.key))
@@ -31,13 +31,15 @@
 	const onDatePointerover = ({ key, value }) => {
 		tooltipData = {
 			key: utcFormat("%b %Y")(utcParse("%Y-%m")(key)),
-			value: formatValue(value, $filter.variable),
+			value: `${plus(value)}${formatValue(value, $filter.variable)}`,
 		};
 		hoveringDate = true;
 	};
 	const onDatePointerleave = () => {
 		if (hoveringDate) hoveringDate = false;
 	};
+
+	const plus = value => value > 0 ? "+" : "";
 </script>
 
 <Tooltip
@@ -57,8 +59,9 @@
 					<text
 						class="axis-y"
 						x="7%"
+						y="4"
 						text-anchor="end">
-						{formatValue(tickValue, $filter.variable, true)}
+						{plus(tickValue)}{formatValue(tickValue, $filter.variable, true)}
 					</text>
 				</g>
 			{/each}
@@ -66,7 +69,7 @@
 				<text
 					class="axis-x"
 					text-anchor="middle"
-					y="0"
+					y={height - margin.bottom - 2}
 					x={xScale(d.key) + 180 / data.length + margin.left / data.length}
 				>
 					{utcFormat("%b %Y")(utcParse("%Y-%m")(d.key))}
