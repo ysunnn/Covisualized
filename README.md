@@ -36,14 +36,16 @@ When a state is selected in the map, a second line appears in the line chart whi
 The timeline can be zoomed in and out by double-clicking or scrolling.
 
 ## 📦 Features
-### Already implemented
-- Visualization:
+### Visualization:
   - Map of Germany & its states: The variable which is selected at the top is represented as the coloring of each state. The split bars above the states indicate the severity of corona regulations at the selected time.
   - Timeline representing information about Germany as a whole: The timeline shows the same variable as the map (the variable which is selected at the top). When a state is selected in the map, a second line is shown in the timeline which represents the selected state in addition to the line which represents Germany. A point in time can be selected via scrubber in the timeline or by using the playback feature.
   - Switching between visualized datasets: revenue, number of employees, average 7-day-incidences per month
+  - Detail View representing additional information to the currently selected state: The Detailview is opened by clicking on a state. It contains Details on the selected states and charts representing one a yearly and one a national comparison.
+  - Play Button: On the left of the timeline is a Play Button. By clicking on it, an automatic timeline flow starts.
+  - About Section: The About Section contains information about the five developers of Covi**sualize**d. 
 
 
-- Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
+### Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
   - __hospitality revenue__: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*
   - __number of employees in the hospitality industry__: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*
   - __average 7 day incidence rate per month__: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases.)
@@ -53,12 +55,5 @@ Note: __revenue__ and __number of employees__ values are __relative__ and use re
 
 ### Next thoughts
 
-#### Additional Features:
-1. Add a detailed view for each state which is shown when the corresponding state is clicked.
-2. Add tabs in detailed view with graphs and additional information.
-3. Adding filters to timeline to scope out different sections of the hospitality industry (difficult to find datasets which cover the time period and show the values for each state of Germany).
-
-#### Nice to have:
-1. Time scrubber and play button for it
-2. Tutorial
-3. About section (project & team)
+- Filtering by Hospitality Industry: One could add filters to the timeline to scope out different sections of the hospitality industry. Challenge: it is difficult to find datasets which cover the time period and show the values for each state of Germany.
+- Tutorial: An Introduction to Covi**sualize**d and the information that can be retreived on the page could be implemented. 
