@@ -144,7 +144,7 @@
 			"a a c c c"
 			"b b d d d"
 			"b b d d d";
-		gap: 1em;
+		gap: 0.5em;
 	}
 	.regulations.none {
 		padding: 1em;
@@ -204,5 +204,6 @@
 	}
 	.level-2, .level-3 {
 		color: hsl(var(--c-covid-h), 100%, calc(var(--c-covid-l) - 20%));
+		filter: drop-shadow(0 0 0.5em hsl(var(--c-covid-hsl), 0.8));
 	}
 </style>
