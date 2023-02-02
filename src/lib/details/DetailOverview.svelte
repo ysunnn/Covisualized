@@ -12,7 +12,7 @@
 			return {
 				...variable,
 				value,
-				diffPrevMonth: prevMonthDate && prevMonthValue && (value - prevMonthValue),
+				diffPrevMonth: prevMonthDate && !isNullish(prevMonthValue) && (value - prevMonthValue),
 				active: variable.id === $filter.variable,
 			};
 		})

@@ -103,7 +103,7 @@ export const getStateNameShort = (id) => {
 const formatters = {
 	revenue: [format(".1%"), format(".0%")],
 	employees: [format(".1%"), format(".0%")],
-	incidences: [format(",.0f"), value => Math.abs(value) < 10 ? String(value) : format(".2s")(value)],
+	incidences: [format(",.1f"), value => Math.abs(value) < 10 ? String(value) : format(".2s")(value)],
 	regulationsIndex: [format(".1f"), format(".1f")],
 };
 export const formatValue = (value, type, compact = false) => formatters[type][Number(compact)]?.(value);
