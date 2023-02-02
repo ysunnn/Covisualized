@@ -119,8 +119,8 @@
 				<div class="category-regulations">
 					{#each regulations as [name, level] (name)}
 						<div class="regulation level-{level}">
-							<Tooltip tag="div" content={labels[name][level]} hideOnClick={false}>
-								<Icon {name} size="2rem" />
+							<Tooltip tag="div" content={labels[name][level]} hideOnClick={false} offset={[0, 8]}>
+								<Icon {name} size="1.75em" />
 								<div class="severity">
 									{#each { length: level } as _}
 										<span class="dot" />
@@ -144,14 +144,14 @@
 			"a a c c c"
 			"b b d d d"
 			"b b d d d";
-		gap: 1em;
+		gap: 0.5em;
 	}
 	.regulations.none {
 		padding: 1em;
 		background-image: var(--gradient-no-data);
 		border-radius: 6px;
 		border: 1px solid rgb(0, 0, 0, 0.1);
-		box-shadow: 0 4px 16px 0 rgb(0, 0, 0, 0.05);
+		box-shadow: 0 0.25em 1em 0 rgb(0, 0, 0, 0.05);
 		text-align: center;
 	}
 
@@ -159,17 +159,20 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		gap: 0.5em;
 
 		background-color: hsl(var(--c-covid-hsl), 0.05);
 		border-radius: 6px;
 		border: 1px solid hsl(var(--c-covid-hsl), 0.25);
-		box-shadow: 0 4px 16px 0 hsl(var(--c-covid-h), var(--c-covid-s), 40%, 0.15);
-		padding: 0.5em 1em;
+		box-shadow: 0 0.25em 1em 0 hsl(var(--c-covid-h), var(--c-covid-s), 40%, 0.15);
+		padding: 0.625em;
+		padding-left: 1em;
 	}
 
 	.category-title {
 		margin: 0;
-		font-size: 0.75em;
+		font-size: 0.8125em;
+		font-weight: 500;
 		color: var(--c-covid);
 	}
 
@@ -181,12 +184,12 @@
 	.severity {
 		display: flex;
 		justify-content: center;
-		height: 0.25em;
+		height: 4px;
 		gap: 0.25em;
 	}
 	.severity .dot {
-		width: 0.25em;
-		aspect-ratio: 1;
+		width: 4px;
+		height: 4px;
 		background-color: currentColor;
 		border-radius: 50%;
 	}
@@ -202,5 +205,6 @@
 	}
 	.level-2, .level-3 {
 		color: hsl(var(--c-covid-h), 100%, calc(var(--c-covid-l) - 20%));
+		filter: drop-shadow(0 0 0.5em hsl(var(--c-covid-hsl), 0.8));
 	}
 </style>

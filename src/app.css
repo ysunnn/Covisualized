@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,700;1,400;1,700&display=block');
+
 :root {
 	--c-background-h: 240;
 	--c-background-s: 20%;
@@ -18,8 +20,8 @@
 	--c-primary-hsl: var(--c-primary-h), var(--c-primary-s), var(--c-primary-l);
 	--c-primary: hsl(var(--c-primary-hsl));
 
-	--c-state-h: 184;
-	--c-state-s: 45%;
+	--c-state-h: 178;
+	--c-state-s: 60%;
 	--c-state-l: 50%;
 	--c-state-hsl: var(--c-state-h), var(--c-state-s), var(--c-state-l);
 	--c-state: hsl(var(--c-state-hsl));
@@ -30,9 +32,9 @@
 	--c-covid-hsl: var(--c-covid-h), var(--c-covid-s), var(--c-covid-l);
 	--c-covid: hsl(var(--c-covid-hsl));
 
-	--c-positive-h: 139;
-	--c-positive-s: 30%;
-	--c-positive-l: 45%;
+	--c-positive-h: 222;
+	--c-positive-s: 75%;
+	--c-positive-l: 50%;
 	--c-positive-hsl: var(--c-positive-h), var(--c-positive-s), var(--c-positive-l);
 	--c-positive: hsl(var(--c-positive-hsl));
 
@@ -49,10 +51,11 @@
 		#e8e8e8 0.5em
 	);
 
-	font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-	font-size: 16px;
-	line-height: 1.25;
-	font-weight: 400;
+	font-family: 'IBM Plex Sans',
+		-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
+		helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+	font-size: clamp(12px, min(1.3vw, 1.7vh), 18px);
+	line-height: 1.4;
 
 	color-scheme: light /* dark */;
 	color: var(--c-foreground);
@@ -62,11 +65,11 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	-webkit-text-size-adjust: 100%;
 }
 
 body {
 	margin: 0;
+	background-color: var(--c-background);
 	box-sizing: border-box;
 }
 
@@ -74,10 +77,9 @@ body {
 	box-sizing: inherit;
 }
 *:focus { outline: none; }
-*:focus-visible { outline: auto; }
+*:focus-visible { outline: none; } /* oof */
 
 a {
-	font-weight: 500;
 	color: #646cff;
 	text-decoration: inherit;
 }
@@ -94,10 +96,15 @@ h6:first-child {
 	margin-top: 0;
 }
 
+ul, ol {
+	padding-left: 1em;
+}
+
 #app {
 	height: 100vh;
+	max-width: 2200px;
+	margin: 0 auto;
 	padding: 1rem;
-	background-color: var(--c-background);
 }
 
 /* @media (prefers-color-scheme: dark) {

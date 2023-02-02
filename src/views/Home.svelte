@@ -29,19 +29,23 @@
 			{/if}
 		</div>
 	</div>
+
 	<div class="map">
-		<Legend />
+		<div class="extras">
+			<Legend />
+			<PlayButton />
+		</div>
 		<Map />
 	</div>
-	<div class="playbutton">
-		<PlayButton />
-	</div>
-	<div class="timeline">
-		<Timeline />
-	</div>
+
 	<div class="details">
 		<Details />
 	</div>
+
+	<div class="timeline">
+		<Timeline />
+	</div>
+
 	{#if devOverlayOpen}
 		<DevOverlay on:close={() => devOverlayOpen = false} />
 	{/if}
@@ -53,11 +57,11 @@
 		grid-template-areas:
 			"head       head"
 			"map        details"
-			"playbutton details"
 			"timeline   timeline";
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto minmax(0, 1fr) auto 20vh;
-		gap: 1em;
+		grid-template-rows: auto minmax(0, 1fr) max(20vh, 128px);
+		column-gap: 4em;
+		row-gap: 2em;
 
 		height: 100%;
 	}
@@ -67,13 +71,6 @@
 		flex-direction: column;
 	}
 
-	.map {
-		grid-area: map;
-
-		position: relative;
-		justify-content: center;
-	}
-
 	.head {
 		grid-area: head;
 
@@ -81,15 +78,24 @@
 		justify-content: space-between;
 	}
 
-	.timeline {
-		grid-area: timeline;
+	.map {
+		grid-area: map;
+
+		flex-direction: row;
+	}
+	.map .extras {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: flex-start;
 	}
 
 	.details {
+		flex-shrink: 1;
 		grid-area: details;
 	}
 
-	.playbutton {
-		align-items: flex-start;
+	.timeline {
+		grid-area: timeline;
 	}
 </style>

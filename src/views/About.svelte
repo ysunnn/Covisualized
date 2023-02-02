@@ -18,49 +18,38 @@
 		text: "Timy is a grad student in computer science and a dabbler in artificial intelligence, particularly decision-making and computer vision. He is tasked with managing and analyzing the datasets so that interesting insights can be visualized in the UI.",
 	}, {
 		name: "simon",
-		text: "Simon is a former physics student and enthusiastic coffee drinker, who likes to play around with data. His role in the team falls in the realms of M&aumldchen f&uumlr alles.",
+		text: "Simon is a former physics student and enthusiastic coffee drinker, who likes to play around with data. His role in the team falls in the realms of Mädchen für alles.",
 	}];
 </script>
 
 <main>
-	<div class="cols">
+	<div class="head">
 		<h1 class="title">Meet the team</h1>
-		<div class="homeButton">
-			<Button on:click={() => page = "home"} variant="outline">
-				Back to Covisualized
-			</Button>
-		</div>
+		<Button on:click={() => page = "home"}>
+			Back to Covisualized
+		</Button>
 	</div>
-	<ul class="block">
+	<div class="profiles">
 		{#each people as person}
 			<Profile {person} />
 		{/each}
-	</ul>
+	</div>
 </main>
 
 <style>
-	.block {
-		width: 60%;
-		margin-left: auto;
-		margin-right: auto;
+	.head {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
 	}
 
-	.cols {
+	.profiles {
 		display: grid;
-		grid-template-areas:
-			"title homeButton";
-		grid-template-columns: 1fr 1fr;
-		gap: 1em;
+		grid-template-columns: repeat(auto-fit, minmax(min(24em, 100%), 1fr));
+		gap: 2em;
 	}
 
 	.title {
 		grid-area: title;
-	}
-
-	.homeButton {
-		position: fixed;
-		top: 1rem;
-		right: 1rem;
-		z-index: 1050;
 	}
 </style>

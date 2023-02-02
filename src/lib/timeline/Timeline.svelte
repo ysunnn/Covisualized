@@ -5,8 +5,9 @@
 		extent, timeFormat, zoom, pointer, bisector,
 	} from "d3";
 
-	import { data, filter, statesForVariableAtDate } from "../../stores.js";
+	import { data, filter, statesForVariableAtDate, playback } from "../../stores.js";
 	import { formatValue } from "../../util.js";
+	import { registerPlayingBlocker } from "../../playback.js";
 
 	import Graph from "./Graph.svelte";
 	import Axis from "./Axis.svelte";
@@ -56,27 +57,47 @@
 	let dragging = false;
 	let moving = false;
 	let zoomed = false;
-	const contentClipped = { left: false, right: false };
+	let programmaticZoom = false;
 	const zoomBehavior = zoom()
 		.scaleExtent([1, 5])
 		.clickDistance(2)
+		.on("start", ({ sourceEvent }) => {
+			if (!sourceEvent) {
+				programmaticZoom = true;
+			}
+		})
 		.on("zoom", ({ transform, sourceEvent }) => {
-			dragging = ["pointermove", "mousemove", "touchmove"].includes(sourceEvent.type);
+			dragging = ["pointermove", "mousemove", "touchmove"].includes(sourceEvent?.type);
 			zoomed = (transform.k !== 1);
-			moving = zoomed;
-			// 1 pixel extra to combat rounding errors:
-			contentClipped.left = transform.x < -1;
-			contentClipped.right = transform.x > graph.width - (graph.width * transform.k) + 1;
+			blockPlayback(zoomed);
+			if (zoomed) moving = true;
 			zoomTransform = transform;
 		})
-		.on("end", () => {
+		.on("end", ({ sourceEvent }) => {
+			if (!sourceEvent) { // was programmatic zoom
+				programmaticZoom = false;
+				blockPlayback(false);
+			}
 			dragging = false;
 			moving = false;
+		}).filter(event => {
+			return (event.type !== "wheel" || !event.ctrlKey) && !event.button && !programmaticZoom && !$playback.play;
 		});
+
 	$: zoomBehavior
 		.extent([[0, 0], [graph.width, graph.height]])
 		.translateExtent([[0, -Infinity], [graph.width, Infinity]]);
+
 	let zoomTransform = null;
+	// 1 pixel extra to combat rounding errors:
+	$: contentClipped = {
+		left: zoomTransform && zoomTransform.x < -1,
+		right: zoomTransform && zoomTransform.x > graph.width - (graph.width * zoomTransform.k) + 1,
+	};
+
+	$: if ($playback.play && zoomTransform && zoomTransform.k !== 1 && !programmaticZoom) {
+		zoomBehavior.scaleTo(select(graph.el).transition().duration(600), 1);
+	}
 
 	onMount(() => {
 		select(graph.el)
@@ -111,7 +132,10 @@
 	const onClick = (event) => {
 		const index = pointerEventToDataIndex(event);
 		$filter.date = graphData.de[index]?.dateString;
+		$playback.play = false;
 	};
+
+	const blockPlayback = registerPlayingBlocker();
 
 	$: tooltipData = Object.entries(graphData)
 		.map(([type, timePoints]) => [type, timePoints[hoverIndex]]);
@@ -129,6 +153,7 @@
 			type="top"
 			ticks={yearsCount / (zoomTransform?.k ?? 1)}
 			tickformat={timeFormat("%Y")}
+			tickpadding={4}
 		/>
 	</div>
 
@@ -138,6 +163,7 @@
 			type="bottom"
 			ticks={graph.width / 140}
 			tickformat={timeFormat("%B")}
+			tickpadding={16}
 			gridSize={graph.height}
 		/>
 	</div>
@@ -162,7 +188,14 @@
 		on:pointerleave={onPointerleave}
 		on:click={onClick}
 	>
-		<Tooltip placement="right" followCursor hideOnClick={false} arrow={false}>
+		<Tooltip
+			placement="top-start"
+			offset={[0, 16]}
+			followCursor
+			hideOnClick={false}
+			arrow={false}
+			show={hovering && !moving}
+		>
 			<TooltipContent
 				slot="content"
 				data={tooltipData}
@@ -220,8 +253,8 @@
 			".             axis-year"
 			"axis-variable graph"
 			".             axis-month";
-		grid-template-columns: 8ch 1fr;
-		grid-template-rows: 2em minmax(0, 1fr) 2em;
+		grid-template-columns: 6ch 1fr;
+		grid-template-rows: calc(4px + 2em) minmax(0, 1fr) calc(16px + 1em);
 
 		overflow: hidden;
 	}
@@ -256,12 +289,12 @@
 	.axis-month :global(.tick line) {
 		display: none;
 	}
-	.axis-variable :global(.tick:first-of-type text) {
+	/* .axis-variable :global(.tick:first-of-type text) {
 		transform: translateY(-0.5em);
-	}
-	.axis-variable :global(.tick:last-of-type text) {
+	} */
+	/* .axis-variable :global(.tick:last-of-type text) {
 		transform: translateY(0.5em);
-	}
+	} */
 
 	.graph {
 		position: relative;

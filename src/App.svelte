@@ -1,4 +1,7 @@
 <script>
+	import { parsed } from "./stores";
+
+	import Loading from "./views/Loading.svelte";
 	import Home from "./views/Home.svelte";
 	import About from "./views/About.svelte";
 
@@ -9,5 +12,8 @@
 	let page = "home";
 </script>
 
-
-<svelte:component this={pages[page]} bind:page />
+{#if $parsed}
+	<svelte:component this={pages[page]} bind:page />
+{:else}
+	<Loading />
+{/if}

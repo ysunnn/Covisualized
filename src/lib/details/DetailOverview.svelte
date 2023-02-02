@@ -8,10 +8,11 @@
 			const value = $data[$filter.date]?.[$filter.state]?.[variable.id];
 			const dateIndex = $availableDatesForVariable.indexOf($filter.date);
 			const prevMonthDate = $availableDatesForVariable[dateIndex - 1];
+			const prevMonthValue = $data[prevMonthDate]?.[$filter.state]?.[variable.id];
 			return {
 				...variable,
 				value,
-				diffPrevMonth: prevMonthDate && (value - $data[prevMonthDate]?.[$filter.state]?.[variable.id]),
+				diffPrevMonth: prevMonthDate && !isNullish(prevMonthValue) && (value - prevMonthValue),
 				active: variable.id === $filter.variable,
 			};
 		})
@@ -31,7 +32,11 @@
 				{formatValue(variable.value, variable.id)}
 				{#if !isNullish(variable.diffPrevMonth)}
 					<Tooltip content="compared to previous month" hideOnClick={false}>
-						<span class="difference" class:negative={variable.diffPrevMonth < 0}>
+						<span
+							class="difference"
+							class:positive={variable.diffPrevMonth > 0}
+							class:negative={variable.diffPrevMonth < 0}
+						>
 							({variable.diffPrevMonth < 0 ? "" : "+"}{formatValue(variable.diffPrevMonth, variable.id)})
 						</span>
 					</Tooltip>
@@ -39,9 +44,11 @@
 			</div>
 		</div>
 	{/each}
-	<div class="hint">
-		Click on another category to compare.
-	</div>
+	{#if variablesData.length > 1}
+		<div class="hint">
+			Click on another category to compare.
+		</div>
+	{/if}
 </div>
 
 
@@ -49,6 +56,7 @@
 	.overview {
 		display: grid;
 		grid-template-columns: auto 1fr;
+		margin-top: 1em;
 	}
 
 	.variable {
@@ -56,8 +64,9 @@
 		margin-top: 0.5em;
 	}
 	.variable.active {
-		font-size: 2em;
+		font-size: 1.75em;
 		order: -2;
+		margin-top: 0;
 	}
 
 	.label {
@@ -77,7 +86,7 @@
 		margin-top: inherit;
 	}
 
-	.difference {
+	.difference.positive {
 		color: var(--c-positive);
 	}
 	.difference.negative {

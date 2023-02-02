@@ -2,6 +2,10 @@ import { readable, writable, derived } from "svelte/store";
 import { parseRevenue, parseEmployees, parseIncidences, parseRegulations, parseRegulationsIndex } from "./assets/data";
 import { isNullish, stateIDs } from "./util";
 
+export const parsed = writable(false);
+export const filter = writable({ date: null, state: null, variable: "revenue" });
+export const playback = writable({ play: false, playing: false, playingBlockers: new Map(), stepDuration: 1200 });
+
 const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
 	const data = {};
@@ -23,25 +27,23 @@ const parseData = async () => {
 
 	return data;
 };
-
-export const filter = writable({ date: null, state: null, variable: "revenue" });
-export const playback = writable({ playing: false, stepDuration: 1200 });
-
-export let DEBUGSetData, DEBUGReparseData;
+export let DEBUGSetData;
 export const data = readable({}, (set) => {
 	// Our main data store is an empty object on page load. Once all data has been parsed,
 	// it gets updated with it accordingly:
 	(async () => {
 		const data = await parseData();
 		set(data);
+
 		// Set selected date to the earliest available one:
 		filter.update(filterOptions => ({
 			...filterOptions,
 			date: Object.keys(data).reduce((earliest, current) => earliest > current ? current : earliest),
 		}));
+
+		parsed.set(true);
 	})();
 
-	DEBUGReparseData = async () => set(await parseData());
 	DEBUGSetData = (data) => set(data);
 });
 
@@ -73,7 +75,7 @@ export const statesForVariableAtDate = derived([data, filter], ([$data, $filter]
 		states: Object.fromEntries(stateIDs.map(stateID => {
 			const variables = ($data[$filter.date] || {})[stateID];
 			const value = variables?.[$filter.variable];
-			const regIndex = variables?.regulationsIndex;
+			const regIndex = $filter.date < "2020-03" ? 0 : variables?.regulationsIndex;
 			return [stateID, {
 				value,
 				valueFrac: value && (value - ranges.value.min) / (ranges.value.max - ranges.value.min),

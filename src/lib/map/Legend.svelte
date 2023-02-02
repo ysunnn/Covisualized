@@ -1,174 +1,156 @@
 <script>
-	import { labelTitle, mapRange, round } from "../../util.js";
+	import { variables, mapRange, formatValue } from "../../util.js";
 	import { filter, statesForVariableAtDate } from "../../stores.js";
-	import { format, precisionFixed } from "d3";
 	import { getValueColorCSS } from "./Map.svelte";
 
-	const SECTIONS = 5;
+	const SECTIONS = {
+		variable: 5,
+		regulations: 5,
+	};
 
-	function f (v) {
-		if ($filter.variable === "incidences") {
-			if (v > 1) {
-				const formatSI = format(".2s");
-				return formatSI(v);
-			}
-			return v;
-		} else {
-			const p = Math.max(0, precisionFixed(0.05) - 2);
-			const formatPercent = format("." + p + "%");
-			return formatPercent(v);
-		}
-	}
-
-	$: ({ variable } = $filter);
-	$: ({ ranges: { value: { min, max } } } = $statesForVariableAtDate);
-	$: indexRange = $statesForVariableAtDate.ranges.regulationsIndex;
-	$: yAxisLabelTitle = labelTitle.find(l => l.id === $filter.variable).title;
-	$: yAxisLabelNote = labelTitle.find(l => l.id === $filter.variable).note;
+	$: ({ ranges: { value: rangeValue } } = $statesForVariableAtDate);
+	$: rangeRegulations = $statesForVariableAtDate.ranges.regulationsIndex;
+	$: variable = variables.find(({ id }) => id === $filter.variable);
 </script>
 
-<div class="legendVariable">
-	<div class="title">
-		<span class="titleText"> {yAxisLabelTitle} </span>
-		<br />
-		<span class="titleNote">{yAxisLabelNote} </span>
-		<br />
-		<br />
-		<span class="squareNoData" /> No data
+<div class="legend">
+	<div class="variable">
+		<div class="description">
+			<div class="desc">{variable.desc}</div>
+			<div class="details">{variable.details}</div>
+			<div class="note-no-data">
+				<span class="indicator-no-data" /><i>no data</i>
+			</div>
+		</div>
+		<div class="scale">
+			<div
+				class="bar"
+				style:--min={getValueColorCSS(1.0, variable.id)}
+				style:--mid={getValueColorCSS(0.5, variable.id)}
+				style:--max={getValueColorCSS(0.0, variable.id)}
+			/>
+			<div class="labels">
+				{#each { length: SECTIONS.variable } as _, i}
+					<span>
+						{formatValue(mapRange(i / (SECTIONS.variable - 1), 0.0, 1.0, rangeValue.min, rangeValue.max), variable.id, true)}
+					</span>
+				{/each}
+			</div>
+		</div>
 	</div>
 
-	<div
-		class="scale"
-		style:--min={getValueColorCSS(1.0, variable)}
-		style:--mid={getValueColorCSS(0.5, variable)}
-		style:--max={getValueColorCSS(0.0, variable)}
-	/>
-
-	<div class="labels">
-		<span>
-			{f(round(max, 1))}
-		</span>
-		<span>
-			{f(round(mapRange(0.75, 0.0, 1.0, min, max), 1))}
-		</span>
-		<span>
-			{f(round(mapRange(0.5, 0.0, 1.0, min, max), 1))}
-		</span>
-		<span>
-			{f(round(mapRange(0.25, 0.0, 1.0, min, max), 1))}
-		</span>
-		<span>
-			{f(round(min, 1))}
-		</span>
-	</div>
-</div>
-
-<div class="legendRegulation">
-	<div class="title">
-		<span class="titleText"> COVID-19 Regulation index </span> <span class="squareRegulation" />
-		<br />
-		<span class="titleNote"> Coded index for corona regulations and their severity </span>
-	</div>
-	<div class="regulations-bar">
-		<div class="border" />
-		{#each { length: SECTIONS - 1 } as _, i}
-			<div class="tick" style:--tick-fraction={(i + 1) / SECTIONS} />
-		{/each}
-	</div>
-	<div class="labels">
-		<span>
-			{round(indexRange.max, 1)}
-		</span>
-		<span>
-			{round(mapRange(0.8, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
-		</span>
-		<span>
-			{round(mapRange(0.6, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
-		</span>
-		<span>
-			{round(mapRange(0.4, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
-		</span>
-		<span>
-			{round(mapRange(0.2, 0.0, 1.0, indexRange.min, indexRange.max), 1)}
-		</span>
-		<span>
-			{round(indexRange.min, 1)}
-		</span>
+	<div class="regulations">
+		<div class="description">
+			<div class="desc">COVID-19 Regulation index <span class="indicator-regulations" /></div>
+			<div class="details">Coded index for corona regulations and their severity</div>
+		</div>
+		<div class="scale">
+			<div class="bar">
+				{#each { length: SECTIONS.regulations - 1 } as _, i}
+					<div class="tick" style:--tick-fraction={(i + 1) / SECTIONS.regulations} />
+				{/each}
+			</div>
+			<div class="labels">
+				{#each { length: SECTIONS.regulations + 1 } as _, i}
+					<span>
+						{formatValue(mapRange(i / SECTIONS.regulations, 0.0, 1.0, rangeRegulations.min, rangeRegulations.max), "regulationsIndex", true)}
+					</span>
+				{/each}
+			</div>
+		</div>
 	</div>
 </div>
 
 <style>
-	.title {
-		width: 7em;
-		margin-right: 0.3em;
-	}
-
-	.titleText{
-		font-weight: bold;
-	}
-
-	.titleNote {
-		font-size: small;
-	}
-
-	.legendVariable {
-		height: 20%;
-		display: flex;
-		margin: 2.5em;
-	}
-
-	.legendRegulation{
-		height: 20%;
-		display: flex;
-		margin: 2.5em;
-	}
-
-	.scale {
-		width: 1em;
-		height: 100%;
-		background-image: linear-gradient(to bottom, var(--min), var(--mid), var(--max));
-	}
-
-	.labels {
+	.legend {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		gap: 2em;
+		font-size: 0.875em;
 	}
 
-	.squareNoData {
+	.variable, .regulations {
+		display: flex;
+		gap: 0.5em;
+	}
+
+	.description {
+		width: 12ch;
+		display: flex;
+		flex-direction: column;
+	}
+	.description .desc {
+		font-weight: bold;
+	}
+	.description .details {
+		font-size: 0.8125em;
+	}
+	.description .note-no-data {
+		margin-top: auto;
+		font-size: 0.8125em;
+
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+	}
+	.indicator-no-data {
 		display: inline-block;
 		height: 1em;
 		width: 1em;
-		background-image: linear-gradient(135deg,
-		white 0%,
-		white 25%,
-		#f2f2f2 25%,
-		#f2f2f2  50%,
-		white  50%,
-		white  75%,
-		#f2f2f2  75%,
-		#f2f2f2  100%);
+		background-image: var(--gradient-no-data-legend);
 		border: 1px solid white;
+		box-shadow: 0 0 1em 0 rgb(0, 0, 0, 0.15);
 	}
 
-	.squareRegulation{
+	.scale {
+		display: flex;
+		gap: 0.25em;
+		font-size: 0.8125em;
+		line-height: 1;
+		padding-right: 0.5em;
+	}
+
+	.scale .bar {
+		width: 1em;
+		min-height: 10em;
+		/* Correctly align text to bars */
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+		box-shadow: 0 0 2em 0 rgb(0, 0, 0, 0.15);
+	}
+
+	.scale .labels {
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: space-between;
+		width: 5ch;
+		text-align: right;
+	}
+
+	.indicator-regulations {
 		display: inline-block;
 		height: 0.5em;
 		width: 1em;
 		background-color: hsl(var(--c-covid-h), calc(var(--c-covid-s) + 20%), var(--c-covid-l));
 	}
 
-	.regulations-bar {
-		width: 1em;
-		border: 2px solid white;
-		background-color: hsl(var(--c-background-h), var(--c-background-s), calc(var(--c-background-l) - 20%));
-		box-sizing: content-box;
+	.variable .bar {
+		background-image: linear-gradient(to bottom, var(--min), var(--mid), var(--max));
 	}
-
-	.tick {
+	.regulations .bar {
 		position: relative;
-		top: calc(var(--tick-fraction) * 93%);
+		box-sizing: content-box;
+		border: 2px solid white;
+		margin-left: -2px;
+		background-color: hsl(var(--c-background-h), var(--c-background-s), calc(var(--c-background-l) - 20%));
+	}
+	.regulations .bar .tick {
+		position: absolute;
+		top: calc(var(--tick-fraction) * 100%);
+		left: 0;
+		right: 0;
 		height: 2px;
+		transform: translateY(-50%);
 		background-color: rgb(255, 255, 255, 0.5);
 	}
 </style>

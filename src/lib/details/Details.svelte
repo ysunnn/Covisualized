@@ -15,7 +15,7 @@
 
 <style>
 	.details {
-		max-width: 80ch;
+		max-width: 48em;
 		max-height: 100%;
 		overflow: auto;
 
@@ -23,6 +23,6 @@
 		border-radius: 12px;
 		padding: 1em;
 		background-color: white;
-		box-shadow: 0 0 64px 0 rgba(0, 0, 0, 0.1);
+		box-shadow: 0 0 4em 0 rgb(0, 0, 0, 0.08);
 	}
 </style>

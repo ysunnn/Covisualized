@@ -7,10 +7,12 @@
 	import Tabs from "./Tabs.svelte";
 	import DetailOverview from "./DetailOverview.svelte";
 
+	export let show; // hide the component from the inside to keep it's state
+
 	const tabItems = [
-		{ label: "Details", value: 1 },
-		{ label: "National Comparison", value: 2 },
-		{ label: "Yearly Difference", value: 3 },
+		{ label: "Details", icon: "info", value: 1 },
+		{ label: "National Comparison", icon: "difference", value: 2 },
+		{ label: "Yearly Difference", icon: "compare", value: 3 },
 	];
 
 	let currentTab;
@@ -45,19 +47,33 @@
 		}));
 </script>
 
-<Tabs bind:activeTabValue={currentTab} items={tabItems} />
-{#if 1 === currentTab}
-	<div class="charts">
-		<DetailOverview />
+<div class="tabs" class:show>
+	<Tabs bind:activeTabValue={currentTab} items={tabItems} />
+	<div class="content">
+		{#if 1 === currentTab}
+			<div class="charts">
+				<DetailOverview />
+			</div>
+		{/if}
+		{#if 2 === currentTab}
+			<div class="charts">
+				<HorizontalBarChart data={statesChartData} min={-statesMinMaxDiff} max={statesMinMaxDiff} />
+			</div>
+		{/if}
+		{#if 3 === currentTab}
+			<div class="charts">
+				<VerticalBarChart data={yearsChartData} min={-yearsMinMaxDiff} max={yearsMinMaxDiff} />
+			</div>
+		{/if}
 	</div>
-{/if}
-{#if 2 === currentTab}
-	<div class="charts">
-		<HorizontalBarChart data={statesChartData} min={-statesMinMaxDiff} max={statesMinMaxDiff} />
-	</div>
-{/if}
-{#if 3 === currentTab}
-	<div class="charts">
-		<VerticalBarChart data={yearsChartData} min={-yearsMinMaxDiff} max={yearsMinMaxDiff} />
-	</div>
-{/if}
+</div>
+
+<style>
+	.tabs {
+		display: flex;
+		flex-direction: column;
+	}
+	.tabs:not(.show) {
+		display: none;
+	}
+</style>
