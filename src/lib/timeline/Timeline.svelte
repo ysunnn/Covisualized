@@ -7,6 +7,7 @@
 
 	import { data, filter, statesForVariableAtDate, playback } from "../../stores.js";
 	import { formatValue } from "../../util.js";
+	import { registerPlayingBlocker } from "../../playback.js";
 
 	import Graph from "./Graph.svelte";
 	import Axis from "./Axis.svelte";
@@ -56,24 +57,31 @@
 	let dragging = false;
 	let moving = false;
 	let zoomed = false;
+	let programmaticZoom = false;
 	const zoomBehavior = zoom()
 		.scaleExtent([1, 5])
 		.clickDistance(2)
-		.on("zoom", ({ transform, sourceEvent }) => {
-			if ($playback.playing) {
-				transform.x = 0;
-				transform.y = 0;
-				transform.k = 1;
+		.on("start", ({ sourceEvent }) => {
+			if (!sourceEvent) {
+				programmaticZoom = true;
 			}
-
-			dragging = ["pointermove", "mousemove", "touchmove"].includes(sourceEvent.type);
+		})
+		.on("zoom", ({ transform, sourceEvent }) => {
+			dragging = ["pointermove", "mousemove", "touchmove"].includes(sourceEvent?.type);
 			zoomed = (transform.k !== 1);
+			blockPlayback(zoomed);
 			if (zoomed) moving = true;
 			zoomTransform = transform;
 		})
-		.on("end", () => {
+		.on("end", ({ sourceEvent }) => {
+			if (!sourceEvent) { // was programmatic zoom
+				programmaticZoom = false;
+				blockPlayback(false);
+			}
 			dragging = false;
 			moving = false;
+		}).filter(event => {
+			return (event.type !== "wheel" || !event.ctrlKey) && !event.button && !programmaticZoom && !$playback.play;
 		});
 
 	$: zoomBehavior
@@ -87,11 +95,8 @@
 		right: zoomTransform && zoomTransform.x > graph.width - (graph.width * zoomTransform.k) + 1,
 	};
 
-	$: if ($playback.playing === true && zoomTransform) {
-		zoomTransform.x = 0;
-		zoomTransform.y = 0;
-		zoomTransform.k = 1;
-		zoomed = false;
+	$: if ($playback.play && zoomTransform && zoomTransform.k !== 1 && !programmaticZoom) {
+		zoomBehavior.scaleTo(select(graph.el).transition().duration(600), 1);
 	}
 
 	onMount(() => {
@@ -127,8 +132,10 @@
 	const onClick = (event) => {
 		const index = pointerEventToDataIndex(event);
 		$filter.date = graphData.de[index]?.dateString;
-		$playback.playing = false;
+		$playback.play = false;
 	};
+
+	const blockPlayback = registerPlayingBlocker();
 
 	$: tooltipData = Object.entries(graphData)
 		.map(([type, timePoints]) => [type, timePoints[hoverIndex]]);

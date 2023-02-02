@@ -4,7 +4,7 @@ import { isNullish, stateIDs } from "./util";
 
 export const parsed = writable(false);
 export const filter = writable({ date: null, state: null, variable: "revenue" });
-export const playback = writable({ playing: false, stepDuration: 1200 });
+export const playback = writable({ play: false, playing: false, playingBlockers: new Map(), stepDuration: 1200 });
 
 const parseData = async () => {
 	/** @type {{ [date: string]: { [state: string]: { [variable: string]: number } | { regulations: 0 | 1 | 2 } } } }} */
