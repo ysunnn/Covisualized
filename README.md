@@ -47,12 +47,10 @@ When a state is selected in the map, a second line appears in the line chart whi
 
 
 ### Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`)
-
-### Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`):
-  - __hospitality revenue__: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*.
-  - __number of employees in the hospitality industry__: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*.
-  - __average 7 day incidence rate per month__: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases).
-  - __lockdown measures__: The __ZPID Lockdown Measures Dataset__ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd* and the __Massnahmenindex Bundeslaender pro Monat__ from *https://www.corona-daten-deutschland.de/dataset/massnahmenindex_bundeslaender_pro_monat*.
+  - __Hospitality revenue__: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*.
+  - __Number of employees in the hospitality industry__: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*.
+  - __Average 7 day incidence rate per month__: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases).
+  - __Lockdown measures__: The __ZPID Lockdown Measures Dataset__ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd* and the __Massnahmenindex Bundeslaender pro Monat__ from *https://www.corona-daten-deutschland.de/dataset/massnahmenindex_bundeslaender_pro_monat*.
 
 Notes:
 - __Revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
