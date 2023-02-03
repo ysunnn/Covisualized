@@ -60,6 +60,7 @@
 			<div class="play-button" bind:this={buttonEl}>
 				<Button icon="play" shape="pill" size="2em" on:click={onPlayClick}>Start</Button>
 			</div>
+			<Button variant="text" on:click={() => $tutorial.step = 0}>Skip Tutorial</Button>
 		</div>
 	{:else if $tutorial.step >= 2 && $tutorial.step <= 4}
 		<h1>Getting Started</h1>
@@ -112,6 +113,8 @@
 	.play-button-container {
 		display: flex;
 		justify-content: center;
+		align-items: center;
+		gap: 1em;
 		margin: 2em 0;
 	}
 
