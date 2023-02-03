@@ -55,10 +55,5 @@ When a state is selected in the map, a second line appears in the line chart whi
   - __lockdown measures__: The __ZPID Lockdown Measures Dataset__ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd* and the __Massnahmenindex Bundeslaender pro Monat__ from *https://www.corona-daten-deutschland.de/dataset/massnahmenindex_bundeslaender_pro_monat*.
 
 Notes:
-- __revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
-- __average 7 day incidence rate per month__: The incidence rate was not given but calculated based on the number of reported cases in __RKI History__.
-
-### Next thoughts
-
-- Filtering by Hospitality Industry: One could add filters to the timeline to scope out different sections of the hospitality industry. Challenge: it is difficult to find datasets which cover the time period and show the values for each state of Germany.
-- Tutorial: An Introduction to Covi**sualize**d and the information that can be retreived on the page could be implemented. 
+- __Revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
+- __Average 7 day incidence rate per month__: The incidence rate was not given but calculated based on the number of reported cases in __RKI History__.
