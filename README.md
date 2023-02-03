@@ -24,14 +24,14 @@ Information visualization project for Lecture *Information Visualization* of the
 
 ### The Map
 
-To the top left, the user can see a map of Germany (the state cities Hamburg, Bremen and Berlin were enlarged for better visibility and accessibility). The states are highlighted with different colors, based on which variable is selected in the top row and which point in time is selected in the timeline. Pale / white coloring of a state indicates low values of the selected variable, higher saturation indicates higher values of the selected variable per state. Note that the color scale is constant for each variable across all points in time, thus if e.g. Bavaria's coloring is more saturated at one chosen point in time, then it also has a higher value at that point.
+To the top left, the user can see a map of Germany (the state cities Hamburg, Bremen and Berlin were enlarged for better visibility and accessibility). The states are highlighted with different colors, based on which variable is selected in the top row and which point in time is selected in the timeline. Light coloring of a state indicates low values of the selected variable, while darker colors indicate higher values of the selected variable per state. Note that the color scale is constant across all points in time per variable, thus if e. g. Bavaria's coloring is more saturated at one chosen point in time, then it also has a higher value at that point.
 
-COVID19 regulation measures are indicated by red coloring of the otherwise white-gray bars above the states. The red color is filled bottom-up (akin to filling a vessel with liquid) and is derived from the __Massnahmenindex Bundeslaender pro Monat__. Note that COVID19 regulations were first introduced in March 2020, thus there is no such red coloring in the months before that.
+COVID-19 regulation measures are indicated by red coloring of the otherwise gray bars above the states. The red color is filled bottom-up (akin to filling a vessel with liquid) and is derived from the _Massnahmenindex Bundeslaender pro Monat_. Note that COVID-19 regulations were first introduced in March 2020, thus there is no such red coloring in the months before that.
 
 ### The Timeline
 
-At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`, by moving the mouse above the timeline.
-When a state is selected in the map, a second line appears in the line chart which represents the selected state.
+At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`, by clicking on the timeline.
+When a state is selected in the map, a second graph line appears in the line chart which represents the selected state for comparison.
 
 ## 📦 Features
 
@@ -47,10 +47,10 @@ When a state is selected in the map, a second line appears in the line chart whi
 
 
 ### Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`)
-  - __Hospitality revenue__: Datasets __45213-0014__ and __45213-0005__ from *https://www-genesis.destatis.de/*.
-  - __Number of employees in the hospitality industry__: Datasets __45213-0002__ and __45213-0012__ from *https://www-genesis.destatis.de/*.
-  - __Average 7 day incidence rate per month__: Dataset __RKI History__ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases).
-  - __Lockdown measures__: The __ZPID Lockdown Measures Dataset__ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd* and the __Massnahmenindex Bundeslaender pro Monat__ from *https://www.corona-daten-deutschland.de/dataset/massnahmenindex_bundeslaender_pro_monat*.
+  - __Hospitality revenue__: Datasets _45213-0014_ and _45213-0005_ from *https://www-genesis.destatis.de/*.
+  - __Number of employees in the hospitality industry__: Datasets _45213-0002_ and _45213-0012_ from *https://www-genesis.destatis.de/*.
+  - __Average 7 day incidence rate per month__: Dataset _RKI History_ from *https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/6d78eb3b86ad4466a8e264aa2e32a2e4_0/about* (Incidence rate was computed based on cumulative number of reported cases).
+  - __Lockdown measures__: The _ZPID Lockdown Measures Dataset_ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd* and the _Massnahmenindex Bundeslaender pro Monat_ from *https://www.corona-daten-deutschland.de/dataset/massnahmenindex_bundeslaender_pro_monat*.
 
 Notes:
 - __Revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
