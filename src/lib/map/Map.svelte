@@ -62,7 +62,7 @@
 				slot="content"
 				state={hoveredState}
 				data={hoveredState && [{
-					label: variable.label,
+					label: variable.desc,
 					type: variable.id,
 					color: `var(--c-${variable.color})`,
 					value: states[hoveredState]?.value,

@@ -50,11 +50,6 @@
 		opacity: 0;
 	}
 
-	.dot, .bar {
-		pointer-events: auto;
-		cursor: auto;
-	}
-
 	/* BAR Style */
 	.bar {
 		position: absolute;

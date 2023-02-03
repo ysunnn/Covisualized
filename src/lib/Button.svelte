@@ -44,7 +44,6 @@
 		border: 2px solid transparent;
 		padding: 0.5em 1em;
 		font-family: inherit;
-		font-size: 1em;
 		font-weight: 500;
 		cursor: pointer;
 

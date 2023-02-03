@@ -1,13 +1,16 @@
 <script>
-	import { filter } from "../../stores";
+	import { filter, tutorial } from "../../stores";
 
 	import State from "./State.svelte";
+	import Tutorial from "./Tutorial.svelte";
 	import Welcome from "./Welcome.svelte";
 </script>
 
 <div class="details">
 	{#if $filter.state}
 		<State />
+	{:else if $tutorial.step}
+		<Tutorial />
 	{:else}
 		<Welcome />
 	{/if}
