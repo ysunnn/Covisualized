@@ -20,6 +20,7 @@
 	};
 
 	const onTutorialRepeat = () => {
+		$filter.variable = "revenue";
 		$filter.state = "";
 		$tutorial.step = 1;
 	};
@@ -148,7 +149,7 @@
 	.tutorial-deactivate {
 		pointer-events: none;
 		opacity: 0.5;
-		filter: grayscale(1);
+		filter: grayscale(1) blur(0.25rem);
 	}
 	.tutorial-hide {
 		opacity: 0;
