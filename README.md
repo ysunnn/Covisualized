@@ -30,10 +30,8 @@ COVID19 regulation measures are indicated by red coloring of the otherwise white
 
 ### The Timeline
 
-At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`, by moving the mouse above the timeline. A gray vertical line shows what would be selected if the user clicks on the gray line, a black vertical indicates the currently selected month. This updates the date of the data displayed on the map.
-
+At the bottom, the user can see a timeline which shows the same variable as the map, but applied to all of Germany (map coloring is state-specific). Points in time can be selected at month-level granularity, like `June 2020`, by moving the mouse above the timeline.
 When a state is selected in the map, a second line appears in the line chart which represents the selected state.
-The timeline can be zoomed in and out by double-clicking or scrolling.
 
 ## 📦 Features
 
@@ -44,8 +42,8 @@ The timeline can be zoomed in and out by double-clicking or scrolling.
   - **Switching between visualized datasets:** revenue, number of employees, average 7-day-incidences per month
   - **Detail View representing additional information to the currently selected state:** The Detailview is opened by clicking on a state. It contains Details on the selected states and charts representing one a yearly and one a national comparison.
   - **Play Button:** On the left of the timeline is a play button. By clicking on it, an automatic timeline flow starts.
-  - **Tutorial:** A short tutorial in the beginning gives an Introduction to Covi**sualize**d and the information that can be retreived on the page. 
-  - **About Section:** The About Section contains information about the five developers of Covi**sualize**d. 
+  - **Tutorial:** A short tutorial in the beginning gives an Introduction to **Covi**sualize**d** and the information that can be retreived on the page. 
+  - **About Section:** The About Section contains information about the five developers of **Covi**sualize**d**. 
 
 
 ### Used datasets (preprocessed for formatting and data reduction, filtered files can be found in `src/assets/data`)
