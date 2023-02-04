@@ -10,11 +10,11 @@ Information visualization project for Lecture *Information Visualization* of the
 ### 👥 Team Members
 | Felix Bastian | Simon Grätz | Janka Hartmann | Timy Phan | You Sun Song |
 |---|---|---|---|---|
-| Design & Codestyle | Handyman | Project Management | Data Specialist | Ideation & Code |
+| Design & Code-Quality | Handyman | Project Management | Data Specialist | Ideation & Code |
 
 > Team member functions are fluid and everyone chips in with programming.
 
-## 🛫 Getting Started
+## 🛫 Development Setup
 1. Make sure [Node.js](https://nodejs.org/) version 18+ is installed (LTS recommended), includes npm.
 2. Install recommended project extensions for your code editor (see `.vscode/extensions.json`).
 3. Install project dependencies locally: `npm install`
@@ -53,5 +53,5 @@ When a state is selected in the map, a second graph line appears in the line cha
   - __Lockdown measures__: The _ZPID Lockdown Measures Dataset_ for Germany from *https://www.psycharchives.org/en/item/8a0c3db3-d4bf-46dd-8ffc-557430d45ddd* and the _Massnahmenindex Bundeslaender pro Monat_ from *https://www.corona-daten-deutschland.de/dataset/massnahmenindex_bundeslaender_pro_monat*.
 
 Notes:
-- __Revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 1.0 (100%). Thus, if e.g. revenue has increased by 10%, it is shown as 1.1 (110%).
+- __Revenue__ and __number of employees__ values are __relative__ and use revenue or number of employees from 2015 as a reference value. Revenue or number of employees from 2015 is represented as 100%. Thus, if e.g. revenue has increased by 10% since 2015, it is shown as 110%.
 - __Average 7 day incidence rate per month__: The incidence rate was not given but calculated based on the number of reported cases in __RKI History__.
